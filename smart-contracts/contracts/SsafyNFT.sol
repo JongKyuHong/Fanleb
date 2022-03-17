@@ -33,8 +33,8 @@ contract SsafyNFT is ERC721{
         // _mint(to,new_ids);
         // return new_ids;
         uint256 new_ids = current()+1;
-        tokenURIs[new_ids] = _tokenURI;
         _mint(to,new_ids);
+        tokenURIs[new_ids] = _tokenURI;
         return new_ids;
     }
 }

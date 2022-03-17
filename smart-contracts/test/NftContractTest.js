@@ -16,6 +16,7 @@
          return NftCreator.deployed()
              .then(instance =>{
                  instance.create(owner, "")
+                 
                  instance.transferFrom(owner, sender, instance.current())
              })
      });

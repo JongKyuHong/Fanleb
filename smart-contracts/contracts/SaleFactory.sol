@@ -27,6 +27,7 @@ contract SaleFactory is Ownable {
      * @dev 반드시 구현해야하는 함수입니다. 
      */
     function createSale(
+        address owner,
         uint256 itemId,
         uint256 minPrice,
         uint256 purchasePrice,
@@ -36,6 +37,9 @@ contract SaleFactory is Ownable {
         address nftAddress
     ) public returns (address) {
         // TODO
+        
+        Sale newContract = new Sale(admin,owner,itemId,minPrice,purchasePrice,startTime,endTime,currencyAddress,nftAddress);
+        return 
     }
 
     function allSales() public view returns (address[] memory) {
@@ -96,16 +100,31 @@ contract Sale {
         erc721Constract = IERC721(_nftAddress);
     }
 
-    function bid(uint256 bid_amount) public {
+    function bid(uint256 bid_amount) public onlySeller, onlyAfterStart{
         // TODO
+        require(getTimeLeft());
+        require(erc20Contract.approve(buyer, msg.value));
     }
 
-    function purchase() public {
+    function purchase() public onlySeller, onlyAfterStart{
         // TODO 
+        require(getTimeLeft());
+        require(erc20Contract.approve(buyer, msg.value));
+
+        erc20Contract.transfer(buyer,msg.value); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
+        erc20Contract._approve(buyer,msg.value); 
+        erc721Constract// NFT소유권을 구매자에게 이전
+        // 컨트랙트의 거래 상태와 구매자 정보를 업데이트
+
+
     }
 
     function confirmItem() public {
         // TODO 
+        require(!getTimeLeft());
+        require(msg.sender == highestBidder);
+
+
     }
     
     function cancelSales() public {
@@ -153,13 +172,13 @@ contract Sale {
         ended = true;
     }
 
-    function _getCurrencyAmount() private view returns (uint256) {
-        return erc20Contract.balanceOf(msg.sender);
+    function _getCurrencyAmount() private view returns (uint256) { 
+        return erc20Contract.balanceOf(msg.sender); // 계정이 소유한 토큰의 양을 반환
     }
 
     // modifier를 사용하여 함수 동작 조건을 재사용하는 것을 권장합니다. 
     modifier onlySeller() {
-        require(msg.sender == seller, "Sale: You are not seller.");
+        require(msg.sender == seller, "Sale: You are not seller."); 
         _;
     }
 
