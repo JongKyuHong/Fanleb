@@ -1,9 +1,6 @@
 package a107.fanleb.common.model.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * 서버 요청에대한 기본 응답값(바디) 정의.
@@ -12,23 +9,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseResponseBody {
+public class BaseResponseBody<T> {
     String message = null;
-    Integer statusCode = null;
+    T data;
 
-    public BaseResponseBody(Integer statusCode) {
-        this.statusCode = statusCode;
-    }
-
-    public BaseResponseBody(Integer statusCode, String message) {
-        this.statusCode = statusCode;
-        this.message = message;
-    }
-
-    public static BaseResponseBody of(Integer statusCode, String message) {
+    public static <T> BaseResponseBody of(String message, T data) {
         BaseResponseBody body = new BaseResponseBody();
         body.message = message;
-        body.statusCode = statusCode;
+        body.data = data;
         return body;
     }
 }

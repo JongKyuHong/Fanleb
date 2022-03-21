@@ -4,11 +4,11 @@ import a107.fanleb.domain.Status;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @ToString
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Entity
@@ -27,7 +27,9 @@ public class Contents {
 
     @Column(nullable = false)
     private String contentTitle;
+
     private String contentDescription;
+
     private String ownerAddress;
 
     private LocalDateTime createdAt;
@@ -36,7 +38,7 @@ public class Contents {
 
     private String collection;
 
-    @Column(unique=true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String imgUrl;
 
 }

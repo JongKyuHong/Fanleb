@@ -1,10 +1,7 @@
 package a107.fanleb.domain.sales;
 
 import a107.fanleb.domain.Status;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +9,7 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Entity
 public class Sales {

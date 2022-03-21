@@ -1,4 +1,4 @@
-package a107.fanleb.aws;
+package a107.fanleb.config.aws;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.Protocol;

@@ -1,15 +1,13 @@
 package a107.fanleb.domain.usersCategory;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @ToString
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Entity
 public class UsersCategory {
