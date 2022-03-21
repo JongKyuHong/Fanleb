@@ -1,0 +1,15 @@
+#### 회원가입
+#POST http://localhost:8080/shop/member/join
+#Content-Type: application/json
+#
+#{
+#  "id": "c",
+#  "password": "c",
+#  "name": "c",
+#  "email": "c",
+#  "phone_number": "a",
+#  "address": "a",
+#  "gender": "Male",
+#  "birth": "1999-99-99",
+#  "referral_id": "a"
+#}
