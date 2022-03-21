@@ -1,7 +1,11 @@
 import { alpha, styled } from '@mui/material/styles';
-import { Box, Stack, Button, AppBar, Toolbar } from '@mui/material';
+import { Box, Stack, Button, AppBar, Toolbar, Avatar, CircularProgress } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import Logo from '../../components/Logo';
+import { useState } from 'react';
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { updateUser } from '../../redux/apiCalls';
 
 // 헤더 화면 (상단 메뉴바)
 const DashboardNavbar = () => {
@@ -22,6 +26,9 @@ const DashboardNavbar = () => {
       padding: theme.spacing(0, 5)
     }
   }));
+
+  const dispatch = useDispatch();
+  const { userInfo, pending, error } = useSelector(state => state.user);
 
   return (
     <RootStyle>
@@ -44,6 +51,12 @@ const DashboardNavbar = () => {
           <Button to="/whosart" size="large" sx={{ fontSize: 17 }} component={RouterLink}>
             후즈컬렉션
           </Button>
+          {!pending ?          
+              !error ? <Avatar onClick={() => updateUser(dispatch)} size="large" src={userInfo.url} sx={{ width: 56, height: 56 }} /> 
+              : <Avatar onClick={() => updateUser(dispatch)} size="large" src={""} sx={{ width: 56, height: 56 }} />
+            :
+            <CircularProgress />
+          }                   
         </Stack>
       </ToolbarStyle>
     </RootStyle>
