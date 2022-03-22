@@ -22,21 +22,48 @@ contract("Sale Contract Testing", (accounts) => {
         console.log(`Bidder2: ${bidder2} ${await getBalance(bidder2)}\n`);
     }
 
-    it("Bid and confirm", async () => {
-        const seller = accounts[0];
-        const bidder1 = accounts[1];
-        const bidder2 = accounts[2]; // purchaser
+    // it("Bid and confirm", async () => {
+    //     const seller = accounts[0];
+    //     const bidder1 = accounts[1];
+    //     const bidder2 = accounts[2]; // purchaser
 
-        // TODO
-        // 다음을 테스트를 통과해야합니다.
-        // assert.equal(bidder2, await getNftOwner(), "Confirm Failed");
-        // assert.equal(1000, await getBalance(bidder1), "Refund Failed");
-    });
+    //     // TODO
+    //     // 다음을 테스트를 통과해야합니다.
+    //     // assert.equal(bidder2, await getNftOwner(), "Confirm Failed");
+    //     // assert.equal(1000, await getBalance(bidder1), "Refund Failed");
+    // });
 
-    it("Bid and Purchase", async () => {
+    // it("Bid and Purchase", async () => {
+    //     const seller = accounts[0];
+    //     const bidder = accounts[1];
+    //     const purchaser = accounts[2];
+
+    //     // TODO
+    //     // 다음을 테스트를 통과해야합니다.
+    //     // assert.equal(purchaser, await getNftOwner(), "Not Owned By Purchaser");
+    //     // assert.equal(1000, await getBalance(bidder), "Refund Failed");
+    //     // assert.equal(900, await getBalance(purchaser), "Transfer Failed");
+    // });
+
+    it("Purchase", async () => {
         const seller = accounts[0];
-        const bidder = accounts[1];
-        const purchaser = accounts[2];
+        const purchaser = accounts[1];
+
+        ssafyTokenContract = new SsafyNFT("ssafytoken","ssf","10000");
+        ssafyTokenContract.mint(mintAmount); // 테스트위한 임의의 erc20 토큰 생성 후 10,000토큰 발행
+        ssafyTokenContract.forceToTransfer(seller,purchaser,1000);// 구매자 주소로 1,000토큰 부여
+        const id = SsafyNFT.create(seller,uri);// 판매자 nft생성(즉시 구매가 100, 판매시작 지금, 판매종료 10초뒤)
+        const date = new Date();
+        const time = new Date(date.getTime());
+        const time2 = new Date(date.getTime()+10*1000);
+
+        SaleFactory.createSale(id, 100, time, time2);
+        
+        // 구매자 100토큰 purchase()호출
+
+        // 충족하는지 확인
+        // 최종 NFT소유자가 구매자이다
+        // 구매자의 잔액이 900과 같다.
 
         // TODO
         // 다음을 테스트를 통과해야합니다.
@@ -48,6 +75,7 @@ contract("Sale Contract Testing", (accounts) => {
     it("Bid and Cancel", async () => {
         const seller = accounts[0];
         const bidder = accounts[1];
+
 
         // TODO
         // 다음을 테스트를 통과해야합니다.
