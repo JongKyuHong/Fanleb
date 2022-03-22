@@ -15,22 +15,16 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class ContentsRegisterReq {
     @NotNull
-    MultipartFile image;
+    private MultipartFile image;
 
     @NotNull
-    String content_title;
+    private String content_title;
 
-    String content_description;
+    private String content_description;
 
-    String collection;
+    private String collection;
 
-    @NotNull
-    String owner_address;
-
-    //    public Contents toContents(String imgUrl, String contentHash) {
-//        return Contents.builder().imgUrl(imgUrl).contentTitle(content_title).contentDescription(content_description).collection(collection).contentHash(contentHash).ownerAddress(owner_address).build();
-//    }
     public Contents toContents(String imgUrl) {
-        return Contents.builder().imgUrl(imgUrl).contentTitle(content_title).contentDescription(content_description).collection(collection).ownerAddress(owner_address).build();
+        return Contents.builder().imgUrl(imgUrl).contentTitle(content_title).contentDescription(content_description).collection(collection).build();
     }
 }

@@ -6,6 +6,6 @@ import lombok.*;
 @Builder
 @ToString
 public class ContentsRegisterRes {
-    Integer contentId;
-    String imgUrl;
+    private Integer contentId;
+    private String imgUrl;
 }
