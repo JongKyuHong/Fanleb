@@ -21,10 +21,10 @@ contract SaleFactory is Ownable {
         uint256 _workId
     );
 
-    constructor(address _SsafyNFTAddresss) {
+    constructor() {
         admin = msg.sender;
-        SsafyNFTAddresss = SsafyNFT(_SsafyNFTAddresss);
-        test = _SsafyNFTAddresss;
+        // SsafyNFTAddresss = SsafyNFT(_SsafyNFTAddresss);
+        // test = _SsafyNFTAddresss;
     }
 
     /**
@@ -34,18 +34,16 @@ contract SaleFactory is Ownable {
         uint256 itemId,
         // uint256 minPrice,
         uint256 purchasePrice,
-        uint256 startTime,
-        uint256 endTime,
+        // uint256 startTime,
+        // uint256 endTime,
         address currencyAddress,
         address nftAddress
     ) public returns (address) {
         // TODO
-        currencyAddress = 0x6C927304104cdaa5a8b3691E0ADE8a3ded41a333;
-        nftAddress = test;
-        Sale newContract = new Sale(admin,admin,itemId,purchasePrice,startTime,endTime,currencyAddress,nftAddress);
+        Sale newContract = new Sale(admin,admin,itemId,purchasePrice,currencyAddress,nftAddress);
         emit NewSale(newContract.nftAddress(), newContract.seller(), newContract.tokenId());
         return newContract.nftAddress();
-        // return 
+        // return
     }
 
     function allSales() public view returns (address[] memory) {
@@ -61,8 +59,8 @@ contract Sale {
     address public seller;
     address public buyer;
     address admin;
-    uint256 public saleStartTime;
-    uint256 public saleEndTime;
+    // uint256 public saleStartTime;
+    // uint256 public saleEndTime;
     //uint256 public minPrice;
     uint256 public purchasePrice;
     uint256 public tokenId;
@@ -86,8 +84,8 @@ contract Sale {
         uint256 _tokenId,
         //uint256 _minPrice,
         uint256 _purchasePrice,
-        uint256 startTime,
-        uint256 endTime,
+        // uint256 startTime,
+        // uint256 endTime,
         address _currencyAddress,
         address _nftAddress
     ) {
@@ -97,8 +95,8 @@ contract Sale {
         purchasePrice = _purchasePrice;
         seller = _seller;
         admin = _admin;
-        saleStartTime = startTime;
-        saleEndTime = endTime;
+        // saleStartTime = startTime;
+        // saleEndTime = endTime;
         currencyAddress = _currencyAddress;
         nftAddress = _nftAddress;
         ended = false;
@@ -106,17 +104,17 @@ contract Sale {
         erc721Constract = IERC721(_nftAddress);
     }
 
-    function bid(uint256 bid_amount) public onlySeller onlyAfterStart{
+    function bid(uint256 bid_amount) public onlySeller { //onlyAfterStart
         // TODO
-        int256 success = getTimeLeft();
-        require(success > 0);
+        // int256 success = getTimeLeft();
+        // require(success > 0);
         require(erc20Contract.approve(buyer, bid_amount));
     }
 
-    function purchase() public onlySeller onlyAfterStart{
+    function purchase() public onlySeller{ // onlyAfterStart
         // TODO 
-        int256 success = getTimeLeft();
-        require(success > 0);
+        // int256 success = getTimeLeft();
+        // require(success > 0);
         require(erc20Contract.approve(buyer, purchasePrice));
 
         erc20Contract.transfer(buyer,purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
@@ -129,8 +127,8 @@ contract Sale {
 
     function confirmItem() public {
         // TODO 
-        int256 success = getTimeLeft();
-        require(success < 0);
+        // int256 success = getTimeLeft();
+        // require(success < 0);
         require(msg.sender == highestBidder);
         
         erc20Contract.transfer(msg.sender,purchasePrice);
@@ -140,8 +138,8 @@ contract Sale {
     
     function cancelSales() public view{
         // TODO
-        int256 success = getTimeLeft();
-        require(success > 0);
+        // int256 success = getTimeLeft();
+        // require(success > 0);
         require(msg.sender == admin);
         require(msg.sender == seller);
 
@@ -151,16 +149,16 @@ contract Sale {
 
     }
 
-    function getTimeLeft() public view returns (int256) {
-        return (int256)(saleEndTime - block.timestamp);
-    }
+    // function getTimeLeft() public view returns (int256) {
+    //     return (int256)(saleEndTime - block.timestamp);
+    // }
 
     function getSaleInfo()
         public
         view
         returns (
-            uint256,
-            uint256,
+            // uint256,
+            // uint256,
             //uint256,
             uint256,
             uint256,
@@ -171,8 +169,8 @@ contract Sale {
         )
     {
         return (
-            saleStartTime,
-            saleEndTime,
+            // saleStartTime,
+            // saleEndTime,
             //minPrice,
             purchasePrice,
             tokenId,
@@ -202,11 +200,11 @@ contract Sale {
         _;
     }
 
-    modifier onlyAfterStart() {
-        require(
-            block.timestamp >= saleStartTime,
-            "Sale: This sale is not started."
-        );
-        _;
-    }
+    // modifier onlyAfterStart() {
+    //     require(
+    //         block.timestamp >= saleStartTime,
+    //         "Sale: This sale is not started."
+    //     );
+    //     _;
+    // }
 }
