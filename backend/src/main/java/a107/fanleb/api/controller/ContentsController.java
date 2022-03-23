@@ -1,8 +1,8 @@
 package a107.fanleb.api.controller;
 
-import a107.fanleb.api.request.ContentsEditReq;
-import a107.fanleb.api.request.ContentsRegisterReq;
-import a107.fanleb.api.request.ContentsUpdateReq;
+import a107.fanleb.api.request.contents.ContentsEditReq;
+import a107.fanleb.api.request.contents.ContentsRegisterReq;
+import a107.fanleb.api.request.contents.ContentsUpdateReq;
 import a107.fanleb.api.service.ContentsService;
 import a107.fanleb.common.model.response.AdvancedResponseBody;
 import a107.fanleb.common.model.response.BaseResponseBody;

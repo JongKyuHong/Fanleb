@@ -46,6 +46,7 @@ public class Contents {
     @JoinColumn(name = "collection_id")
     private Collections collection;
 
+
     @Column(unique = true, nullable = false)
     private String imgUrl;
 
@@ -63,4 +64,5 @@ public class Contents {
     public void setCollection(Collections collection){
         this.collection=collection;
     }
+
 }

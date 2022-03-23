@@ -1,9 +1,9 @@
 package a107.fanleb.api.service;
 
-import a107.fanleb.api.request.ContentsEditReq;
-import a107.fanleb.api.request.ContentsRegisterReq;
-import a107.fanleb.api.request.ContentsUpdateReq;
-import a107.fanleb.api.response.ContentsRegisterRes;
+import a107.fanleb.api.request.contents.ContentsEditReq;
+import a107.fanleb.api.request.contents.ContentsRegisterReq;
+import a107.fanleb.api.request.contents.ContentsUpdateReq;
+import a107.fanleb.api.response.contents.ContentsRegisterRes;
 import a107.fanleb.config.aws.S3Util;
 import a107.fanleb.domain.collections.Collections;
 import a107.fanleb.domain.collections.CollectionsRepository;
@@ -37,12 +37,10 @@ public class ContentsService {
         //s3 업로드
         String imgUrl = s3util.upload(contentsRegisterReq.getImage(), "contents");
 
-        //TODO : 콜렉션 정보랑 매핑하기
-
         //DB 저장
         Contents content = contentsRepository.save(contentsRegisterReq.toContents(imgUrl));
 
-        return ContentsRegisterRes.builder().contentId(content.getId()).imgUrl(content.getImgUrl()).build();
+        return ContentsRegisterRes.builder().id(content.getId()).imgUrl(content.getImgUrl()).build();
     }
 
     @Transactional
@@ -62,25 +60,30 @@ public class ContentsService {
     public Contents edit(int tokenId, ContentsEditReq contentsEditReq) {
         Optional<Contents> content = contentsRepository.findByTokenId(tokenId);
 
-        content.ifPresent(c -> {
-            if (contentsEditReq.getContentTitle() != null) {
-                c.setContentTitle(contentsEditReq.getContentTitle());
-            }
+        content.ifPresent(
+                c -> {
+                    c.setContentTitle(contentsEditReq.getContentTitle());
 
-            String collectionReq = contentsEditReq.getCollection();
+                    c.setContentDescription(contentsEditReq.getContentDescription());
 
-            if (collectionReq == null || collectionReq.isBlank()) {
-                c.setCollection(null);
-            } else {
+                    String collectionReq = contentsEditReq.getCollection();
 
-                String ownerAddress = contentsEditReq.getOwnerAddress();
+                    if (collectionReq == null || collectionReq.isBlank()) {
+                        c.setCollection(null);
+                    } else {
+                        if (collectionReq == null || collectionReq.isBlank()) {
+                            c.setCollection(null);
+                        } else {
 
-                Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
+                            String ownerAddress = contentsEditReq.getOwnerAddress();
 
-                c.setCollection(collectionEntity.get());
-            }
-            contentsRepository.save(c);
-        });
+                            Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
+
+                            c.setCollection(collectionEntity.get());
+                        }
+                    }
+                    contentsRepository.save(c);
+                });
 
         return content.get();
 

@@ -1,4 +1,4 @@
-package a107.fanleb.api.request;
+package a107.fanleb.api.request.contents;
 
 import lombok.*;
 
