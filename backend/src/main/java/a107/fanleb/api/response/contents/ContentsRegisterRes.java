@@ -1,4 +1,4 @@
-package a107.fanleb.api.response;
+package a107.fanleb.api.response.contents;
 
 import lombok.*;
 
@@ -6,6 +6,6 @@ import lombok.*;
 @Builder
 @ToString
 public class ContentsRegisterRes {
-    private Integer contentId;
+    private Integer id;
     private String imgUrl;
 }

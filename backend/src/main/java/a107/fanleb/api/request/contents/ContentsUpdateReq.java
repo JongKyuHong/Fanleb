@@ -1,4 +1,4 @@
-package a107.fanleb.api.request;
+package a107.fanleb.api.request.contents;
 
 import lombok.*;
 
@@ -15,4 +15,6 @@ public class ContentsUpdateReq {
     private int tokenId;
     @NotNull
     private String ownerAddress;
+
+    private String collection;
 }

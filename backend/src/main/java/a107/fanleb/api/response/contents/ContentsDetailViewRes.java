@@ -1,4 +1,4 @@
-package a107.fanleb.api.response;
+package a107.fanleb.api.response.contents;
 
 import a107.fanleb.domain.Status;
 import lombok.Builder;
@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @ToString
-public class ContentsGetRes {
-    private Integer contentId;
+public class ContentsDetailViewRes {
+    private Integer id;
     private Integer tokenId;
 
     private String contentTitle;

@@ -1,6 +1,7 @@
 package a107.fanleb.domain.contents;
 
 import a107.fanleb.domain.Status;
+import a107.fanleb.domain.collection.Collection;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -41,7 +42,9 @@ public class Contents {
     @Enumerated(EnumType.STRING)
     private Status onSaleYn;
 
-    private String collection;
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "collection_id")
+    private Collection collection;
 
     @Column(unique = true, nullable = false)
     private String imgUrl;
@@ -57,7 +60,8 @@ public class Contents {
         this.contentDescription=contentDescription;
     }
 
-    public void setCollection(String collection){
+    public void setCollection(Collection collection){
         this.collection=collection;
     }
+
 }

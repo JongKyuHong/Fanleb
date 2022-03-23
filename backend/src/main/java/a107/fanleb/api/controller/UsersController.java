@@ -1,11 +1,7 @@
 package a107.fanleb.api.controller;
 
 import a107.fanleb.api.service.UserService;
-import a107.fanleb.common.model.response.AdvancedResponseBody;
-import a107.fanleb.common.model.response.BaseResponseBody;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,19 +13,21 @@ public class UsersController {
     private final UserService userService;
 
     //지갑주소로 식별
-    @PostMapping("/signup")
-    public ResponseEntity<? extends BaseResponseBody> register() {
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("", ""));
-    }
-
-    @PostMapping("/signup")
-    public ResponseEntity<? extends BaseResponseBody> editView() {
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("", ""));
-    }
-
-    @PostMapping("/signup")
-    public ResponseEntity<? extends BaseResponseBody> edit() {
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("", ""));
-    }
+//    @PostMapping
+//    public ResponseEntity<? extends BaseResponseBody> register(String userAddress) {
+//        userService.register(userAddress);
+//        return ResponseEntity.status(200).body(BaseResponseBody.of(""));
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity<? extends BaseResponseBody> editView(String userAddress) {
+//        userService.editView(userAddress);
+//        return ResponseEntity.status(200).body(AdvancedResponseBody.of("", ""));
+//    }
+//
+//    @PatchMapping
+//    public ResponseEntity<? extends BaseResponseBody> edit(@RequestBody UsersEditReq usersEditReq) {
+//        return ResponseEntity.status(200).body(AdvancedResponseBody.of("", ""));
+//    }
 
 }

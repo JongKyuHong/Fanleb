@@ -1,4 +1,4 @@
-package a107.fanleb.api.request;
+package a107.fanleb.api.request.contents;
 
 import a107.fanleb.domain.contents.Contents;
 import lombok.Getter;
@@ -22,9 +22,8 @@ public class ContentsRegisterReq {
 
     private String content_description;
 
-    private String collection;
-
     public Contents toContents(String imgUrl) {
-        return Contents.builder().imgUrl(imgUrl).contentTitle(content_title).contentDescription(content_description).collection(collection).build();
+//        return Contents.builder().imgUrl(imgUrl).contentTitle(content_title).contentDescription(content_description).collection(collection).build();
+        return Contents.builder().imgUrl(imgUrl).contentTitle(content_title).contentDescription(content_description).build();
     }
 }

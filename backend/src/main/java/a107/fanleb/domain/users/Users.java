@@ -24,7 +24,7 @@ public class Users {
 
     private String userDescription;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(nullable = false, name = "user_category_id")
     private UsersCategory usersCategory;
 

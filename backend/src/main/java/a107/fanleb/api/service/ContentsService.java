@@ -1,10 +1,12 @@
 package a107.fanleb.api.service;
 
-import a107.fanleb.api.request.ContentsEditReq;
-import a107.fanleb.api.request.ContentsRegisterReq;
-import a107.fanleb.api.request.ContentsUpdateReq;
-import a107.fanleb.api.response.ContentsRegisterRes;
+import a107.fanleb.api.request.contents.ContentsEditReq;
+import a107.fanleb.api.request.contents.ContentsRegisterReq;
+import a107.fanleb.api.request.contents.ContentsUpdateReq;
+import a107.fanleb.api.response.contents.ContentsRegisterRes;
 import a107.fanleb.config.aws.S3Util;
+import a107.fanleb.domain.collection.Collection;
+import a107.fanleb.domain.collection.CollectionRepository;
 import a107.fanleb.domain.contents.Contents;
 import a107.fanleb.domain.contents.ContentsRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class ContentsService {
 
     private final S3Util s3util;
     private final ContentsRepository contentsRepository;
+    private final CollectionRepository collectionRepository;
 
     @Transactional
     public Contents showDetail(int tokenId) {
@@ -34,37 +37,49 @@ public class ContentsService {
         //s3 업로드
         String imgUrl = s3util.upload(contentsRegisterReq.getImage(), "contents");
 
-        //TODO : 콜렉션 정보랑 매핑하기
-
         //DB 저장
         Contents content = contentsRepository.save(contentsRegisterReq.toContents(imgUrl));
 
-        return ContentsRegisterRes.builder().contentId(content.getId()).imgUrl(content.getImgUrl()).build();
+        return ContentsRegisterRes.builder().id(content.getId()).imgUrl(content.getImgUrl()).build();
     }
 
     @Transactional
     public void update(int contentId, ContentsUpdateReq contentsUpdateReq) {
-        contentsRepository.update(contentsUpdateReq.getTokenId(), contentsUpdateReq.getOwnerAddress(), contentId);
+        String collectionReq = contentsUpdateReq.getCollection();
+        String ownerAddress = contentsUpdateReq.getOwnerAddress();
+
+        if (collectionReq == null || collectionReq.isBlank()) {
+            contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, null);
+        } else {
+            Optional<Collection> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
+            contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collectionEntity.get().getId());
+        }
+
     }
 
     @Transactional
     public Contents edit(int tokenId, ContentsEditReq contentsEditReq) {
         Optional<Contents> content = contentsRepository.findByTokenId(tokenId);
 
-        content.ifPresent(c -> {
-            if (contentsEditReq.getContentTitle() != null) {
-                c.setContentTitle(contentsEditReq.getContentTitle());
-            }
+        content.ifPresent(
+                c -> {
+                    c.setContentTitle(contentsEditReq.getContentTitle());
 
-            if (contentsEditReq.getContentDescription() != null) {
-                c.setContentDescription(contentsEditReq.getContentDescription());
-            }
+                    c.setContentDescription(contentsEditReq.getContentDescription());
 
-            if (contentsEditReq.getCollection() != null) {
-                c.setCollection(contentsEditReq.getCollection());
-            }
-            contentsRepository.save(c);
-        });
+                    String collectionReq = contentsEditReq.getCollection();
+
+                    if (collectionReq == null || collectionReq.isBlank()) {
+                        c.setCollection(null);
+                    } else {
+
+                        String ownerAddress = contentsEditReq.getOwnerAddress();
+
+                        Optional<Collection> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
+
+                        c.setCollection(collectionEntity.get());
+                    }
+                });
 
         return content.get();
 
