@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface ContentsRepository extends JpaRepository<Contents, Integer> {
     @Modifying
-    @Query("UPDATE Contents c SET c.tokenId=:tokenId, c.ownerAddress=:ownerAddress WHERE c.id=:contentId")
-    void update(@Param("tokenId") int tokenId, @Param("ownerAddress") String ownerAddress, @Param("contentId") int contentId);
+    @Query(value = "UPDATE Contents c SET c.token_id=:tokenId, c.owner_address=:ownerAddress, c.collection_id=:collectionId WHERE c.content_id=:contentId", nativeQuery = true)
+    void update(@Param("tokenId") int tokenId, @Param("ownerAddress") String ownerAddress, @Param("contentId") int contentId, @Param("collectionId") Integer collectionId);
 
     Optional<Contents> findByTokenId(int tokenId);
 

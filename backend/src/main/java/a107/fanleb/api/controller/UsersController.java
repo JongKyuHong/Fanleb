@@ -5,9 +5,7 @@ import a107.fanleb.common.model.response.AdvancedResponseBody;
 import a107.fanleb.common.model.response.BaseResponseBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,6 +28,11 @@ public class UsersController {
     @PostMapping("/signup")
     public ResponseEntity<? extends BaseResponseBody> edit() {
         return ResponseEntity.status(200).body(AdvancedResponseBody.of("", ""));
+    }
+
+    @GetMapping()
+    public ResponseEntity<? extends BaseResponseBody> showList(@RequestParam(value = "page", defaultValue = "1") int page) {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", userService.showList(page)));
     }
 
 }

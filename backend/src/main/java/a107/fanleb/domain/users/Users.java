@@ -2,7 +2,6 @@ package a107.fanleb.domain.users;
 
 import a107.fanleb.domain.usersCategory.UsersCategory;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -30,10 +29,9 @@ public class Users {
 
     private String imgUrl;
 
-    @ColumnDefault("0")
-    private int subscriberCnt;
-
     @Column(unique = true, nullable = false)
     private String userAddress;
+
+
 
 }

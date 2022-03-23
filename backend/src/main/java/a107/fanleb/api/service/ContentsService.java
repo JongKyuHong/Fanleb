@@ -5,6 +5,8 @@ import a107.fanleb.api.request.ContentsRegisterReq;
 import a107.fanleb.api.request.ContentsUpdateReq;
 import a107.fanleb.api.response.ContentsRegisterRes;
 import a107.fanleb.config.aws.S3Util;
+import a107.fanleb.domain.collections.Collections;
+import a107.fanleb.domain.collections.CollectionsRepository;
 import a107.fanleb.domain.contents.Contents;
 import a107.fanleb.domain.contents.ContentsRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class ContentsService {
 
     private final S3Util s3util;
     private final ContentsRepository contentsRepository;
+    private final CollectionsRepository collectionRepository;
 
     @Transactional
     public Contents showDetail(int tokenId) {
@@ -44,7 +47,15 @@ public class ContentsService {
 
     @Transactional
     public void update(int contentId, ContentsUpdateReq contentsUpdateReq) {
-        contentsRepository.update(contentsUpdateReq.getTokenId(), contentsUpdateReq.getOwnerAddress(), contentId);
+        String collectionReq = contentsUpdateReq.getCollection();
+        String ownerAddress = contentsUpdateReq.getOwnerAddress();
+
+        if (collectionReq == null || collectionReq.isBlank()) {
+            contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, null);
+        } else {
+            Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
+            contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collectionEntity.get().getId());
+        }
     }
 
     @Transactional
@@ -56,12 +67,17 @@ public class ContentsService {
                 c.setContentTitle(contentsEditReq.getContentTitle());
             }
 
-            if (contentsEditReq.getContentDescription() != null) {
-                c.setContentDescription(contentsEditReq.getContentDescription());
-            }
+            String collectionReq = contentsEditReq.getCollection();
 
-            if (contentsEditReq.getCollection() != null) {
-                c.setCollection(contentsEditReq.getCollection());
+            if (collectionReq == null || collectionReq.isBlank()) {
+                c.setCollection(null);
+            } else {
+
+                String ownerAddress = contentsEditReq.getOwnerAddress();
+
+                Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
+
+                c.setCollection(collectionEntity.get());
             }
             contentsRepository.save(c);
         });

@@ -15,4 +15,5 @@ public class ContentsUpdateReq {
     private int tokenId;
     @NotNull
     private String ownerAddress;
+    private String collection;
 }
