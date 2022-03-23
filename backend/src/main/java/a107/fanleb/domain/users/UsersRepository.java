@@ -1,10 +1,10 @@
 package a107.fanleb.domain.users;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UsersRepository extends JpaRepository<Users, Integer> {
+import java.util.Optional;
 
-    Page<Users> findAll(Pageable pageable);
+public interface UsersRepository extends JpaRepository<Users, Integer> {
+    Optional<Users> findByUserAddress(String userAddress);
+    void deleteByUserAddress(String userAddress);
 }

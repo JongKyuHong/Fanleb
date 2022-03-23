@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Entity
 @DynamicInsert
+@Entity
 public class Contents {
 
     @Id

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -12,8 +13,8 @@ import lombok.ToString;
 public class UsersEditReq {
 
     private String nickname;
-    private String userDescription;
-    private String userCategory;
-    private String img;
+    private String user_description;
+    private String user_category;
+    private MultipartFile img;
     private String user_address;
 }

@@ -2,6 +2,7 @@ package a107.fanleb.domain.users;
 
 import a107.fanleb.domain.usersCategory.UsersCategory;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@DynamicInsert
 @Entity
 public class Users {
 
@@ -33,5 +35,19 @@ public class Users {
     private String userAddress;
 
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
+    public void setUserDescription(String userDescription) {
+        this.userDescription = userDescription;
+    }
+
+    public void setUsersCategory(UsersCategory usersCategory) {
+        this.usersCategory = usersCategory;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 }

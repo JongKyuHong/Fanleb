@@ -1,43 +1,55 @@
 package a107.fanleb.api.controller;
 
-import a107.fanleb.api.service.UserService;
+import a107.fanleb.api.request.users.UsersEditReq;
+import a107.fanleb.api.service.UsersService;
 import a107.fanleb.common.model.response.AdvancedResponseBody;
 import a107.fanleb.common.model.response.BaseResponseBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
 public class UsersController {
 
-    private final UserService userService;
+    private final UsersService usersService;
 
     //지갑주소로 식별
-//    @PostMapping
-//    public ResponseEntity<? extends BaseResponseBody> register(String userAddress) {
-//        userService.register(userAddress);
-//        return ResponseEntity.status(200).body(BaseResponseBody.of(""));
-//    }
-//
-//    @GetMapping
-//    public ResponseEntity<? extends BaseResponseBody> editView(String userAddress) {
-//        userService.editView(userAddress);
-//        return ResponseEntity.status(200).body(AdvancedResponseBody.of("", ""));
-//    }
-//
-//    @PatchMapping
-//    public ResponseEntity<? extends BaseResponseBody> edit(@RequestBody UsersEditReq usersEditReq) {
-//        return ResponseEntity.status(200).body(AdvancedResponseBody.of("", ""));
-//    }
+    @PostMapping("/register")
+    public ResponseEntity<? extends BaseResponseBody> register(@RequestBody Map<String, Object> body) {
+        usersService.register((String)body.get("user_address"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
+    }
 
-    @GetMapping()
+    @GetMapping("/edit")
+    public ResponseEntity<? extends BaseResponseBody> editView(@RequestBody Map<String, Object> body) {
+
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.editView((String)body.get("user_address"))));
+    }
+
+    @PatchMapping("/edit")
+    public ResponseEntity<? extends BaseResponseBody> edit(@ModelAttribute UsersEditReq usersEditReq){
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.edit(usersEditReq)));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<? extends BaseResponseBody> delete(@RequestBody Map<String, Object> body) {
+        usersService.delete((String)body.get("user_address"));
+        return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<? extends BaseResponseBody> showCategory() {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.showCategory()));
+    }
+
+    //todo
+    @GetMapping
     public ResponseEntity<? extends BaseResponseBody> showList(@RequestParam(value = "page", defaultValue = "1") int page) {
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", userService.showList(page)));
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.showList(page)));
     }
 
 }
