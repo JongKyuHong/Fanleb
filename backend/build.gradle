@@ -81,11 +81,3 @@ configurations {
     }
     querydsl.extendsFrom compileClasspath
 }
-
-/**
- *  compileQuerydsl.doFirst 추가
- */
-compileQuerydsl.doFirst {
-    if ( file(querydslDirectory).exists )
-        delete(file(querydslDirectory))
-}
