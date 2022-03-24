@@ -24,11 +24,11 @@ const Footer = () => {
         <div className="footer-links_div">
           <h4>Fanleb</h4>
           <p>사이트소개</p>
-          <p>서비스정책</p>
-          <p>고객센터</p>
+          <p>서비스정책</p>          
         </div>
         <div className="footer-links_div">
-          <h4></h4>
+          <h4>Support</h4>
+          <p>고객센터</p>
           <p>이용약관</p>
           <p>개인정보처리방침</p>
           {/* <h4>Support</h4>
