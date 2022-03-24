@@ -15,6 +15,7 @@ import IconButton from '../../theme/overrides/IconButton';
 import './navbar.css';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 import { Link } from "react-router-dom";
+import { updateSuccess } from '../../redux/userSlice';
 
 const Menu = () => (
   <>
@@ -49,7 +50,7 @@ const DashboardNavbar = () => {
   const { userInfo, pending, error } = useSelector(state => state.user);
 
   const [toggleMenu,setToggleMenu] = useState(false)
-   const [user,setUser] = useState(false)
+  //  const [user, setUser] = useState(false)
 
   const handleLogout = () => {
     setUser(false);
@@ -57,6 +58,17 @@ const DashboardNavbar = () => {
   const handleLogin = () => {
     setUser(true);
   }
+  // 지갑 주소 가져오기
+  let accounts;
+  const enableEth = async () => {
+    if (userInfo.account) return;
+    accounts = await window.ethereum.request({ method: 'eth_requestAccounts'}).catch((err) => {
+      console.log(err.code);
+    })
+    dispatch(updateSuccess(accounts[0]));
+    console.log(accounts)
+  }
+  // SSAFY 네트워크 chainId: 79f5
   return (
     <RootStyle>
       <div className='navbar' style={{background: '#24252d'}}>
@@ -69,26 +81,34 @@ const DashboardNavbar = () => {
           <div className="navbar-links_container">
             <input type="text" placeholder='검색' autoFocus={true} />
           <Menu />
-          {user && <Link to="/"><p onClick={handleLogout}>Logout</p></Link> }
+          {/* {userInfo.account && <Link to="/"><p onClick={handleLogout}>Logout</p></Link> } */}
           
           </div>
         </div>
         <div className="navbar-sign">
-        {user ? (
+        {userInfo?.account ? (
           <>
           <Link to="/create"> 
             <button type='button' className='primary-btn' >등록하기</button>
           </Link>
-          <button type='button' className='secondary-btn'>지갑 연결</button>          
+          <button type='button' className='secondary-btn'>지갑 변경</button>
+          {/* <button type='button' className='secondary-btn' onClick={enableEth} >지갑 연결</button> */}
+          {!pending ?          
+            !error ? <Avatar onClick={() => updateUser(dispatch)} size="large" src={userInfo.url} sx={{ width: 56, height: 56 }} /> 
+              : <Avatar onClick={() => updateUser(dispatch)} size="large" src={""} sx={{ width: 56, height: 56 }} />
+            :
+            <CircularProgress />
+          }
           </>
         ): (
           <>
-          <Link to="/login"> 
+          <button type='button' className='secondary-btn' onClick={enableEth} >지갑 연결</button>
+          {/* <Link to="/login"> 
           <button type='button' className='primary-btn' onClick={handleLogin} >Sign In</button>
           </Link>
           <Link to="/register"> 
             <button type='button' className='secondary-btn'>Sign Up</button>
-          </Link>
+          </Link> */}
           </>
         )}
         
@@ -105,7 +125,7 @@ const DashboardNavbar = () => {
               <Menu />
               </div>
               <div className="navbar-menu_container-links-sign">
-              {user ? (
+              {userInfo.account ? (
                 <>
                 <Link to="/create"> 
                   <button type='button' className='primary-btn' >Create</button>
@@ -127,12 +147,12 @@ const DashboardNavbar = () => {
               </div>
             )}
           </div>
-          {!pending ?          
+          {/* {!pending ?          
             !error ? <Avatar onClick={() => updateUser(dispatch)} size="large" src={userInfo.url} sx={{ width: 56, height: 56 }} /> 
               : <Avatar onClick={() => updateUser(dispatch)} size="large" src={""} sx={{ width: 56, height: 56 }} />
             :
             <CircularProgress />
-          }
+          } */}
       </div>
     </RootStyle>
 
