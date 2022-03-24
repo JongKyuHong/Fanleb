@@ -107,6 +107,9 @@ const ItemRegistration = () => {
    */
   const addItem = async () => {
     // TODO
+    getAddressFrom(privKey)
+    setLoading(true);
+    setIsComplete(true);
   };
 
   return (
