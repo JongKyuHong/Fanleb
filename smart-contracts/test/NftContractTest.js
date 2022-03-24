@@ -15,7 +15,8 @@
          // assert.equal(tokenURI, tokenURIFetched, "Wrong Token Id or URI.")
          return NftCreator.deployed()
              .then(instance =>{
-                 instance.create(owner, "")
+                 instance.create(owner, "") // api로 tokenuri받아서 여기다가 넣으면 될듯!
+                 
                  instance.transferFrom(owner, sender, instance.current())
              })
      });

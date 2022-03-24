@@ -2,7 +2,6 @@
 const SsafyToken = artifacts.require("SsafyToken");
 const SsafyNFT = artifacts.require("SsafyNFT");
 const SaleFactory = artifacts.require("SaleFactory");
-
 /**
  * PJT Ⅰ/Ⅲ - 시나리오 테스트
  * @dev 

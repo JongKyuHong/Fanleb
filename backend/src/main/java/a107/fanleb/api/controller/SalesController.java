@@ -1,5 +1,6 @@
 package a107.fanleb.api.controller;
 
+import a107.fanleb.common.model.response.AdvancedResponseBody;
 import a107.fanleb.common.model.response.BaseResponseBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class SalesController {
 //    private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<BaseResponseBody> register() {
-        return ResponseEntity.status(200).body(BaseResponseBody.of("", ""));
+    public ResponseEntity<? extends BaseResponseBody> register() {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("", ""));
     }
 }

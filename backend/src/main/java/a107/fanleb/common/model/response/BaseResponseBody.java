@@ -9,14 +9,13 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseResponseBody<T> {
-    String message = null;
-    T data;
+public class BaseResponseBody {
+    String result = null;
 
-    public static <T> BaseResponseBody of(String message, T data) {
+    public static BaseResponseBody of(String result) {
         BaseResponseBody body = new BaseResponseBody();
-        body.message = message;
-        body.data = data;
+        body.result = result;
         return body;
     }
 }
+
