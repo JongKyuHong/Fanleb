@@ -12,14 +12,19 @@ export default function GlobalStyles() {
           padding: 0,
           boxSizing: 'border-box'
         },
+        '*:focus': {
+          outline: 'none'
+        },
         html: {
           width: '100%',
           height: '100%',
-          WebkitOverflowScrolling: 'touch'
+          WebkitOverflowScrolling: 'touch',
+          scrollBehavior: 'smooth'
         },
         body: {
           width: '100%',
-          height: '100%'
+          height: '100%',
+          backgroundColor: '#FAFAFA',
         },
         '#root': {
           width: '100%',
