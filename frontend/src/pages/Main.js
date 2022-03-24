@@ -63,7 +63,7 @@ const Main = () => {
 
   return (
     // <Page title="SSAFY NFT" maxWidth="100%" minHeight="100%" alignItems="center" display="flex">
-    <Page title="SSAFY NFT" sx={{paddingTop: '100px'}}>
+    <Page title="FANLEB" sx={{}}>
       <Header />
       <Posts />
       {/* <Container>        
