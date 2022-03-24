@@ -30,7 +30,7 @@
   width: 17%;
 }
 .header-slider{
-  margin-top: 5rem;
+  margin-top: 3rem;
   /* background: wheat; */
   color: #FFFFFF;
   width: 100%;
@@ -49,8 +49,7 @@
   font-size: 28px;
   line-height: 42px;
   color: #FFFFFF;
-  margin-bottom: 1rem;
-
+  margin-bottom: 2rem;
 }
 
 .slider .slider-card{
