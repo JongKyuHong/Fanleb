@@ -1,3 +1,2 @@
-smart-contracts/test/.placeholder
-smart-contracts/build
-node_modules
+node_modules/
+build/
