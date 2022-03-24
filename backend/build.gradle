@@ -76,11 +76,16 @@ compileQuerydsl {
 }
 
 configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
     querydsl.extendsFrom compileClasspath
 }
 
-/** * comileQuerydsl.doFirst 추가 */
+/**
+ *  compileQuerydsl.doFirst 추가
+ */
 compileQuerydsl.doFirst {
-	if (file(querydslDir).exists())
-		delete(file(querydslDir))
+    if ( file(querydslDirectory).exists )
+        delete(file(querydslDirectory))
 }
