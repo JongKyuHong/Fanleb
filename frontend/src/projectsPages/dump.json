@@ -1,0 +1,98 @@
+[
+    {
+    "key":1,
+    "title":"제목일걸",
+    "likes":55,
+    "text":"업로드햇어용",
+    "date":"2022-03-11",
+    "img":"https://edu.ssafy.com/asset/images/logo.png"
+    },
+    {
+    "key":2,
+    "title":"두번째입니다",
+    "likes":15,
+    "text":"usermaintainnus",
+    "date":"2022-03-11",
+    "img":"https://edu.ssafy.com/asset/images/logo.png"
+    },
+    {
+    "key":3,
+    "title":"english title",
+    "likes":0,
+    "text":"hihi tanksh용",
+    "date":"2022-03-11",
+    "img":"https://edu.ssafy.com/asset/images/logo.png"
+    },
+    {
+    "key":4,
+    "title":"frouth title",
+    "likes":0,
+    "text":"hihi tanksh용",
+    "date":"2022-03-11",
+    "img":"https://edu.ssafy.com/asset/images/logo.png"
+    },
+    {
+    "key":5,
+    "title":"frouth title",
+    "likes":0,
+    "text":"hihi tanksh용",
+    "date":"2022-03-11",
+    "img":"https://edu.ssafy.com/asset/images/logo.png"
+    },
+    {
+    "key":6,
+    "title":"frouth title",
+    "likes":0,
+    "text":"hihi tanksh용",
+    "date":"2022-03-11",
+    "img":"https://edu.ssafy.com/asset/images/logo.png"
+    },
+    {
+    "key":7,
+    "title":"frouth title",
+    "likes":0,
+    "text":"hihi tanksh용",
+    "date":"2022-03-11",
+    "img":"https://edu.ssafy.com/asset/images/logo.png"
+    },
+    {
+    "key":8,
+    "title":"frouth title",
+    "likes":0,
+    "text":"hihi tanksh용",
+    "date":"2022-03-11",
+    "img":"https://edu.ssafy.com/asset/images/logo.png"
+    },
+    {
+    "key":9,
+    "title":"frouth title",
+    "likes":0,
+    "text":"hihi tanksh용",
+    "date":"2022-03-11",
+    "img":"https://edu.ssafy.com/asset/images/logo.png"
+    },
+    {
+    "key":10,
+    "title":"frouth title",
+    "likes":0,
+    "text":"hihi tanksh용",
+    "date":"2022-03-11",
+    "img":"https://edu.ssafy.com/asset/images/logo.png"
+    },
+    {
+    "key":4,
+    "title":"frouth title",
+    "likes":0,
+    "text":"hihi tanksh용",
+    "date":"2022-03-11",
+    "img":"https://edu.ssafy.com/asset/images/logo.png"
+    },
+    {
+    "key":11,
+    "title":"frouth title",
+    "likes":0,
+    "text":"hihi tanksh용",
+    "date":"2022-03-11",
+    "img":"https://edu.ssafy.com/asset/images/logo.png"
+    }
+]
