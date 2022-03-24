@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "ganache-cli": "^6.12.2",
-    "web3": "^1.7.1",
-    "body-parser": "^1.19.2"
-  }
-}
