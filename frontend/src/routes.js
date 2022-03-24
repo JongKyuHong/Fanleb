@@ -8,7 +8,7 @@ import ItemRegistration from './pages/ItemRegistration';
 import SaleRegistration from './pages/SaleRegistration';
 import WhosArt from './pages/WhosArt';
 import ItemPurchase from './pages/ItemPurchase';
-
+import CreateNFT from './pages/CreateNFT';
 // 화면 라우팅 테이블
 export default function Router() {
   return useRoutes([
@@ -36,6 +36,14 @@ export default function Router() {
         { element: <Navigate to="/items" replace /> },
         { path: '', element: <Items /> },
         { path: 'buy/:tokenId', element: <ItemPurchase /> }
+      ]
+    },
+    {
+      path: '/create',
+      element: <MainLayout />,
+      children: [
+        { element: <Navigate to="/register" replace /> },
+        { path: '', element: <CreateNFT /> },        
       ]
     },
     {
