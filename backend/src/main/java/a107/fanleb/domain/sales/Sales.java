@@ -2,6 +2,7 @@ package a107.fanleb.domain.sales;
 
 import a107.fanleb.domain.Status;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@DynamicInsert
 @Entity
 public class Sales {
 

@@ -2,7 +2,7 @@ package a107.fanleb.domain.users;
 
 import a107.fanleb.domain.usersCategory.UsersCategory;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
@@ -11,6 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@DynamicInsert
 @Entity
 public class Users {
 
@@ -24,16 +25,29 @@ public class Users {
 
     private String userDescription;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(nullable = false, name = "user_category_id")
     private UsersCategory usersCategory;
 
     private String imgUrl;
 
-    @ColumnDefault("0")
-    private int subscriberCnt;
-
     @Column(unique = true, nullable = false)
     private String userAddress;
 
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setUserDescription(String userDescription) {
+        this.userDescription = userDescription;
+    }
+
+    public void setUsersCategory(UsersCategory usersCategory) {
+        this.usersCategory = usersCategory;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 }

@@ -183,6 +183,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
        require(from == ownerOf(tokenId));
        require(to != address(0));
        require(_isApprovedOrOwner(msg.sender, tokenId), "ERC721: transfer caller is not owner nor approved");
+       _transfer(from, to, tokenId);
     }
 
     /**
@@ -209,8 +210,18 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
        // TODO
        require(_checkOnERC721Received(from, to, tokenId, _data), "ERC721: transfer to non ERC721Receiver implementer");
        transferFrom(from, to, tokenId);
+       _safeTransfer(from, to, tokenId, _data);
     }
 
+    function _safeTransfer(
+        address from,
+        address to,
+        uint256 tokenId,
+        bytes memory _data
+    ) internal virtual {
+        _transfer(from, to, tokenId);
+        require(_checkOnERC721Received(from, to, tokenId, _data), "ERC721: transfer to non ERC721Receiver implementer");
+    }
 
     /**
      * @dev Mints `tokenId` and transfers it to `to`.
@@ -229,10 +240,12 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
         require(to != address(0), "ERC721: mint to the zero address");
         require(!_exists(tokenId), "ERC721: token already minted");
 
+        _beforeTokenTransfer(address(0), to, tokenId);
         _owners[tokenId] = to;
         _balances[to] += 1;
 
         emit Transfer(address(0), to, tokenId);
+        _afterTokenTransfer(address(0), to, tokenId);
     }
 
     /**
@@ -248,13 +261,17 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     function _burn(uint256 tokenId) internal virtual {
         // TODO
         address owner = _owners[tokenId];
-        
+        _beforeTokenTransfer(owner, address(0), tokenId);
+
+        // Clear approvals
+        _approve(address(0), tokenId);
+
         _balances[owner] -= 1;
         delete _owners[tokenId];
-        _approve(address(0), tokenId);
-        
 
         emit Transfer(owner, address(0), tokenId);
+
+        _afterTokenTransfer(owner, address(0), tokenId);
     }
 
     function _approve(address to, uint256 tokenId) internal virtual {
@@ -262,4 +279,37 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
         emit Approval(ERC721.ownerOf(tokenId), to, tokenId);
     }
 
+    function _afterTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual {}
+
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual {}
+
+    function _transfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual {
+        require(ERC721.ownerOf(tokenId) == from, "ERC721: transfer from incorrect owner");
+        require(to != address(0), "ERC721: transfer to the zero address");
+
+        _beforeTokenTransfer(from, to, tokenId);
+
+        // Clear approvals from the previous owner
+        _approve(address(0), tokenId);
+
+        _balances[from] -= 1;
+        _balances[to] += 1;
+        _owners[tokenId] = to;
+
+        emit Transfer(from, to, tokenId);
+
+        _afterTokenTransfer(from, to, tokenId);
+    }
 }

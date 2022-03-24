@@ -9,6 +9,8 @@ import SaleRegistration from './pages/SaleRegistration';
 import WhosArt from './pages/WhosArt';
 import ItemPurchase from './pages/ItemPurchase';
 import CreateNFT from './pages/CreateNFT';
+import Content from './projectsPages/Content'
+
 // 화면 라우팅 테이블
 export default function Router() {
   return useRoutes([
@@ -18,6 +20,14 @@ export default function Router() {
       children: [
         { element: <Navigate to="/main" replace /> },
         { path: '', element: <Main /> }
+      ]
+    },
+    {
+      path: '/content',
+      element: <MainLayout />,
+      children: [
+        { element: <Navigate to="/content" replace /> },
+        { path: '', element: <Content /> }
       ]
     },
     {
