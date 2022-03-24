@@ -47,7 +47,7 @@ public class UsersService {
             //카테고리
             String userCategoryReq = usersEditReq.getUser_category();
             UsersCategory userCategory = null;
-            if (userCategoryReq != null || userCategoryReq.isBlank()) {
+            if (!userCategoryReq.isEmpty()) {
                 userCategory = usersCategoryRepository.findByUserCategoryName(userCategoryReq);
             }
             u.setUsersCategory(userCategory);
