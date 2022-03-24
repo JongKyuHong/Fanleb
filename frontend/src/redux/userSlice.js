@@ -5,7 +5,8 @@ export const userSlice = createSlice({
   name: "user",
   initialState: {
     userInfo: {
-      url: "https://cdn2.thecatapi.com/images/civ.jpg"
+      url: "https://cdn2.thecatapi.com/images/civ.jpg",
+      account: ""
     },
     pending: false,
     error: false,
@@ -18,6 +19,7 @@ export const userSlice = createSlice({
     updateSuccess: (state, action) => {
       state.pending = false;
       state.userInfo.url = action.payload;
+      state.userInfo.account = action.payload;
     },
     updateFailure: (state) => {
       state.pending = false;
