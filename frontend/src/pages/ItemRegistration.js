@@ -121,10 +121,11 @@ const ItemRegistration = () => {
         });
         setTokenId(response.data.id); // 3
         const token_id = NftRegistration(owner_address, response.data.img_url);
-        //5 token_id와 owner_address 백엔드 업데이트 요청하면 된다.
+        //5 token_id와 owner_address 백엔드 업데이트 요청하면 된다. (추가)
       } catch (error) {
         console.log(error);
       }
+      toggleApprove;
     }
     
   };
