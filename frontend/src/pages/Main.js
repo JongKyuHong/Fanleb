@@ -10,6 +10,8 @@ import COMMON_HEADER from '../common/HeaderType';
 import COMMON_CONTRACT from '../common/SaleInfoGetter';
 import { onResponse } from '../common/ErrorMessage';
 import Page from '../components/Page';
+import Posts from '../components/post/Posts';
+import Header from '../components/Header/Header';
 
 // 이미지 스타일
 const ImgStyle = styled('img')({
@@ -31,7 +33,6 @@ const Main = () => {
   const symbol = 'SSF';
   const [tokenId, setTokenId] = useState('');
   const [isCollection, setIsCollection] = useState(false);
-
   // Web3
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
 
@@ -61,8 +62,11 @@ const Main = () => {
   };
 
   return (
-    <Page title="SSAFY NFT" maxWidth="100%" minHeight="100%" alignItems="center" display="flex">
-      <Container>
+    // <Page title="SSAFY NFT" maxWidth="100%" minHeight="100%" alignItems="center" display="flex">
+    <Page title="FANLEB" sx={{}}>
+      <Header />
+      <Posts />
+      {/* <Container>        
         <Stack direction="row" justifyContent="center">
           <Box width="60%" sx={{ mt: 10, mr: 20 }}>
             <Typography variant="h2" sx={{ pb: 10 }}>
@@ -121,8 +125,8 @@ const Main = () => {
               </Typography>
             </Stack>
           </Box>
-        </Stack>
-      </Container>
+        </Stack>      
+      </Container> */}
     </Page>
   );
 };
