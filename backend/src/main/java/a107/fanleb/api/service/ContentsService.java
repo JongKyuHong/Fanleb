@@ -52,7 +52,13 @@ public class ContentsService {
             contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, null);
         } else {
             Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
-            contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collectionEntity.get().getId());
+
+            if (collectionEntity.isPresent()) {
+                contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collectionEntity.get().getId());
+            } else {
+                Collections collection = collectionRepository.save(Collections.builder().collectionName(collectionReq).userAddress(ownerAddress).build());
+                contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collection.getId());
+            }
         }
     }
 
@@ -75,7 +81,13 @@ public class ContentsService {
 
                         Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
 
-                        c.setCollection(collectionEntity.get());
+                        if (collectionEntity.isPresent()) {
+                            c.setCollection(collectionEntity.get());
+                        } else {
+                            Collections collection = collectionRepository.save(Collections.builder().collectionName(collectionReq).userAddress(ownerAddress).build());
+                            c.setCollection(collection);
+                        }
+
                     }
                     contentsRepository.save(c);
                 });
