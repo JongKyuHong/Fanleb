@@ -12,7 +12,7 @@ const web3 = new Web3(ssafyProvider);
 // 3. 실행할 메소드 정보 (contractMethod)
 //
 
-// 1. 사피 지갑 정보
+// 1. 사피 지갑 정보`
 // const walletAddress = "[사피 지갑주소: 0x1234...]"; 
 // const privateKey = '[사피 지갑개인키: 0x1234...]';
 const walletAddress = "0x316Cccdc7D62Ca20cC45496c83F12A4a9EC27a21";
