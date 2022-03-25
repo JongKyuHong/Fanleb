@@ -85,8 +85,7 @@ public class UsersService {
     @Transactional(readOnly = true)
     public Page<Users> showList(int page) {
         PageRequest pageable = PageRequest.of(page - 1, 12);
-
-        return null;
+        return usersRepository.findAll(pageable);
     }
 
 }
