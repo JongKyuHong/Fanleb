@@ -125,7 +125,7 @@ const ItemRegistration = () => {
       } catch (error) {
         console.log(error);
       }
-      toggleApprove;
+      toggleApprove();
     }
     
   };
