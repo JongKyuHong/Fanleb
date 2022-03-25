@@ -35,7 +35,7 @@ const web3 = new Web3(ssafyProvider);
 //
 
 // 1. 사피 지갑 정보`
-// const walletAddress = "[사피 지갑주소: 0x1234...]"; 
+// const walletAddress = "[사피 지갑주소: 0x1234...]";
 // const privateKey = '[사피 지갑개인키: 0x1234...]';
 
 //const walletAddress = "0x316Cccdc7D62Ca20cC45496c83F12A4a9EC27a21";
@@ -49,7 +49,8 @@ const web3 = new Web3(ssafyProvider);
 
 // const contractAddr = "0x7d544ddD5CA5D6f9E613eD3AB22f7683Bd726A81";
 
-const { abi: contractABI } = JSON.parse(fs.readFileSync('./build/contracts/SsafyNFT.json'));
+// const { abi: contractABI } = JSON.parse(fs.readFileSync('./build/contracts/SsafyNFT.json'));
+const { abi: contractABI } = {};
 
 //const contractInstance = new web3.eth.Contract(contractABI, contractAddr);
 
