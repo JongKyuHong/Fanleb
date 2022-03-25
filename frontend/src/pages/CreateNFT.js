@@ -18,7 +18,6 @@ const CreateNFT = () => {
               <p>마우스로 파일을 끌어서 놓으세요.</p>
           </div>
           <form className='writeForm' autoComplete='off'>
-            
             <div className="formGroup">
               <label>업로드</label>
               <input type="file" className='custom-file-input'

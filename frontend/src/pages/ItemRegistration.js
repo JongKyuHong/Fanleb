@@ -22,6 +22,7 @@ import COMMON_ABI from '../common/ABI';
 import COMMON_HEADER from '../common/HeaderType';
 import { onResponse, onContractCall } from '../common/ErrorMessage';
 import getAddressFrom from '../utils/AddressExtractor';
+import NftRegistration from '../utils/NFT';
 import sendTransaction from '../utils/TxSender';
 import Page from '../components/Page';
 
@@ -92,6 +93,7 @@ const ItemRegistration = () => {
     setPrivKey(e.target.value);
   };
 
+  const SERVER_BASE_URL = process.env.REACT_APP_BACKEND_HOST_URL;
   /**
    * PJT Ⅱ - 과제 1: 작품 등록 및 NFT 생성 
    * Req.1-F1 작품 등록 화면 및 등록 요청 
@@ -107,9 +109,24 @@ const ItemRegistration = () => {
    */
   const addItem = async () => {
     // TODO
-    getAddressFrom(privKey)
-    setLoading(true);
-    setIsComplete(true);
+    const owner_address = getAddressFrom(privKey);
+    if (owner_address) {
+      setLoading(true);
+      setIsComplete(true);
+      try{
+        const response = await axios.post(`${SERVER_BASE_URL}/api/contents`, {
+          image: item,
+          content_title: title,
+          content_description: description,
+        });
+        setTokenId(response.data.id); // 3
+        const token_id = NftRegistration(owner_address, response.data.img_url);
+        //5 token_id와 owner_address 백엔드 업데이트 요청하면 된다.
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    
   };
 
   return (
