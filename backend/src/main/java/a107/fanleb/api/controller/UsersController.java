@@ -46,9 +46,9 @@ public class UsersController {
         return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.showCategory()));
     }
 
-//    @GetMapping("/list")
-//    public ResponseEntity<? extends BaseResponseBody> showList(@RequestParam(value = "page", defaultValue = "1") int page) {
-//        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.showList(page)));
-//    }
+    @GetMapping("/list")
+    public ResponseEntity<? extends BaseResponseBody> showList(@RequestParam(value = "page", defaultValue = "1") int page) {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.showList(page)));
+    }
 
 }
