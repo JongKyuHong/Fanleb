@@ -1,20 +1,22 @@
-import * as Yup from 'yup';
-import { Box, Container, Stack, TextField, Typography } from '@mui/material';
-import { Form, FormikProvider, useFormik } from 'formik';
-import { LoadingButton } from '@mui/lab';
-import { useEffect, useState } from 'react';
-import { MotionContainer, varBounceIn } from '../components/animate';
-import { motion } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
-import ItemList from '../layouts/whosart/ItemList';
-import COMMON_HEADER from '../common/HeaderType';
-import COMMON_ABI from '../common/ABI';
-import COMMON_CONTRACT from '../common/SaleInfoGetter';
-import { onResponse, onInvalidAddress } from '../common/ErrorMessage';
-import moment from 'moment';
-import axios from 'axios';
-import Web3 from 'web3';
-import Page from '../components/Page';
+import * as Yup from "yup";
+import { Box, Container, Stack, TextField, Typography } from "@mui/material";
+import { Form, FormikProvider, useFormik } from "formik";
+import { LoadingButton } from "@mui/lab";
+import { useEffect, useState } from "react";
+import { MotionContainer, varBounceIn } from "../components/animate";
+import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
+import ItemList from "../layouts/whosart/ItemList";
+import COMMON_HEADER from "../common/HeaderType";
+import COMMON_ABI from "../common/ABI";
+import COMMON_CONTRACT from "../common/SaleInfoGetter";
+import { onResponse, onInvalidAddress } from "../common/ErrorMessage";
+import moment from "moment";
+import axios from "axios";
+import Web3 from "web3";
+import Page from "../components/Page";
+import Button from "@mui/material/Button";
+import LocalAtmTwoToneIcon from "@mui/icons-material/LocalAtmTwoTone";
 
 /**
  * [후즈컬렉션]를 위한 UI와 기능
@@ -27,38 +29,49 @@ const WhosArt = () => {
   const [item, setItem] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isCollection, setIsCollection] = useState(false);
+  const [account, setAccount] = useState("");
+  const [newErc721addr, setNewErc721addr] = useState();
+  const [pressStart, setPressStart] = useState(false);
   const currentTime = parseInt((moment() / 1000).toFixed(0));
 
   // Web3
-  const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
+  const web3 = new Web3(
+    new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL)
+  );
 
   /**
    * [초기 데이터 설정]
-   * 화면 첫 렌더링시 판매되고 있는 작품 리스트를 조회합니다. 
-   * 만약 구매하기 - 상세 작품 화면 - 컬렉션 보기로 진입한 경우 판매자 주소가 넘어오며, 
+   * 화면 첫 렌더링시 판매되고 있는 작품 리스트를 조회합니다.
+   * 만약 구매하기 - 상세 작품 화면 - 컬렉션 보기로 진입한 경우 판매자 주소가 넘어오며,
    * 해당 주소를 조회하여 판매하고 있는 아이템을 확인합니다.
-  */
+   */
   useEffect(() => {
-    if (prevAddress !== 'app') searchItem(prevAddress);
+    if (prevAddress !== "app") searchItem(prevAddress);
     else showItems();
   }, []);
 
   // 타이핑 헬퍼
   const typeSchema = Yup.object().shape({
-    address: Yup.string().required()
+    address: Yup.string().required(),
   });
 
   // 입력 데이터 처리
   const formik = useFormik({
     initialValues: {
-      address: ''
+      address: "",
     },
     validationSchema: typeSchema,
     onSubmit: (value) => {
       checkAddress(value.address);
-    }
+    },
   });
-  const { isSubmitting, setSubmitting, handleSubmit, handleReset, getFieldProps } = formik;
+  const {
+    isSubmitting,
+    setSubmitting,
+    handleSubmit,
+    handleReset,
+    getFieldProps,
+  } = formik;
 
   // 카드 화면 생성을 위한 데이터 전달
   const products = [...Array(item.length)].map((_, index) => {
@@ -68,15 +81,15 @@ const WhosArt = () => {
       onSale: item[index].onSale,
       tokenId: item[index].id,
       hash: item[index].hash,
-      ended: item[index].ended
+      ended: item[index].ended,
     };
   });
 
   /**
    * [주소 정합성 확인]
-   * 지갑 주소 창에 입력한 주소가 유효한 주소인 경우에 아이템을 조회하며, 
+   * 지갑 주소 창에 입력한 주소가 유효한 주소인 경우에 아이템을 조회하며,
    * 지갑 주소 형태가 아닌 경우에는 유효한 주소를 입력해달라는 경고창을 출력합니다.
-   * @param {*} addr 
+   * @param {*} addr
    */
   const checkAddress = (addr) => {
     const targetAddress = web3.utils.isAddress(addr);
@@ -88,21 +101,28 @@ const WhosArt = () => {
     }
   };
 
+  const connectWallet = async () => {
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    setAccount(accounts[0]);
+  };
+
   /**
    * PJT Ⅱ - 과제 2: 작품 조회
-   * Req.2-F1 작품 목록 조회  
-   * 
-   * PJT Ⅲ - 과제 2: 거래 진행  
+   * Req.2-F1 작품 목록 조회
+   *
+   * PJT Ⅲ - 과제 2: 거래 진행
    * Req.4-F2 후즈컬렉션 화면 - 판매 상태에 따라 호출할 수 있는 기능이 달라집니다.
-   * 
+   *
    * 구현 예)
    * 지갑 주소가 입력되어 있지 않은 경우 현재 판매중인 모든 아이템을 화면 상에 보여줍니다.
    * 1. 판매 작품 조회 API 호출 후 반환 받은 데이터를 가지고 카드 화면을 생성합니다.
    * 요청 응답 데이터: Token ID, Sale 컨트랙트 주소, 아이템 Hash(카드 화면의 고유 구별 Key), 제목, 판매중 여부
-   * 2. NFT 컨트랙트의 tokenURI() 함수를 호출해 이미지를 화면에 표시할 수 있어야 합니다. 
+   * 2. NFT 컨트랙트의 tokenURI() 함수를 호출해 이미지를 화면에 표시할 수 있어야 합니다.
    * 3. 빈 응답인 경우 결과 없음 화면이 출력됩니다.
    * ------
-   * 
+   *
    * PJT Ⅲ에 아래 로직이 추가됩니다.
    * Sale 컨트랙트의 상태와 버튼을 조회하여 종료 여부를 카드 요소에 전달합니다.
    */
@@ -114,19 +134,19 @@ const WhosArt = () => {
 
   /**
    * PJT Ⅱ - 과제 2: 작품 조회
-   * Req.2-F2 특정 주소의 보유 작품 목록 조회  
-   * 
-   * PJT Ⅲ - 과제 2: 거래 진행  
+   * Req.2-F2 특정 주소의 보유 작품 목록 조회
+   *
+   * PJT Ⅲ - 과제 2: 거래 진행
    * Req.4-F2 후즈컬렉션 화면 - 판매 상태에 따라 호출할 수 있는 기능이 달라집니다.
-   * 
+   *
    * 구현 예)
    * 지갑 주소 입력 시 해당 주소가 보융한 작품 목록을 보여줍니다.
    * 1. 판매 작품 조회 API 호출(with additional query data) 후 반환 받은 데이터를 가지고 카드 화면을 생성합니다.
    * 요청 응답 데이터: Token ID, Sale 컨트랙트 주소, 아이템 Hash(카드 화면의 고유 구별 Key), 제목, 판매중 여부
-   * 2. NFT 컨트랙트의 tokenURI() 함수를 호출해 이미지를 화면에 표시할 수 있어야 합니다. 
+   * 2. NFT 컨트랙트의 tokenURI() 함수를 호출해 이미지를 화면에 표시할 수 있어야 합니다.
    * 3. 빈 응답인 경우 결과 없음 화면이 출력됩니다.
    * ------
-   * 
+   *
    * PJT Ⅲ에 아래 로직이 추가됩니다.
    * Sale 컨트랙트의 상태와 버튼을 조회하여 종료 여부를 카드 요소에 전달합니다.
    */
@@ -134,19 +154,56 @@ const WhosArt = () => {
     // TODO
     setIsCollection(false);
     setLoading(false);
+    const tokenContract = await new web3.eth.Contract(
+      COMMON_ABI,
+      newErc721addr
+    ); // 컨트랙트의 ABI와 주소로 *컨트랙트 객체 생성*
+    console.log(tokenContract);
+    console.log(COMMON_ABI);
+
+    const name = await tokenContract.methods.name().call();
+    const symbol = await tokenContract.methods.symbol().call();
+    const totalSupply = await tokenContract.methods.totalSupply().call();
+
+    let arr = [];
+    for (let i = 1; i <= totalSupply; i++) {
+      arr.push(i);
+    }
+
+    for (let tokenId of arr) {
+      const tokenOwner = await tokenContract.methods.ownerOf(tokenId).call();
+
+      if (String(tokenOwner).toLowerCase() === account) {
+        const tokenURI = await tokenContract.methods.tokenURI(tokenId).call();
+        setItem((prev) => {
+          return [...prev, { name, symbol, tokenId, tokenURI }];
+        });
+      }
+    }
+    setLoading(false);
   };
 
   return (
     <Page title="SSAFY NFT" maxWidth="100%" minHeight="100%">
       <Container maxWidth="xl">
         <FormikProvider value={formik}>
-          <Form autoComplete="off" noValidate onSubmit={handleSubmit} onReset={handleReset}>
-            <Stack direction="row" sx={{ mt: 2 }} justifyContent="center" alignItems="center">
+          <Form
+            autoComplete="off"
+            noValidate
+            onSubmit={handleSubmit}
+            onReset={handleReset}
+          >
+            <Stack
+              direction="row"
+              sx={{ mt: 2 }}
+              justifyContent="center"
+              alignItems="center"
+            >
               <TextField
-                sx={{ width: '40%' }}
+                sx={{ width: "40%" }}
                 type="text"
                 label="지갑 주소"
-                {...getFieldProps('address')}
+                {...getFieldProps("address")}
               />
               <LoadingButton
                 sx={{ ml: 5, fontSize: 18 }}
@@ -157,6 +214,36 @@ const WhosArt = () => {
               >
                 확인
               </LoadingButton>
+              <Button
+                color="primary"
+                fullWidth
+                variant="outlined"
+                sx={{ mt: 3, mb: 2 }}
+                startIcon={<LocalAtmTwoToneIcon />}
+                onClick={() => {
+                  connectWallet();
+                  setPressStart(true);
+                }}
+              >
+                {pressStart ? account : "Connect Wallet"}
+              </Button>
+              <TextField
+                fullWidth
+                required
+                id="Contract Address"
+                label="Contract Address"
+                onChange={(event) => {
+                  setNewErc721addr(event.target.value);
+                }}
+              />
+              <LoadingButton
+                loading={loading}
+                variant="contained"
+                sx={{ mt: 2, mb: 4 }}
+                onClick={searchItem}
+              >
+                add new ERC721
+              </LoadingButton>
             </Stack>
           </Form>
         </FormikProvider>
@@ -164,13 +251,13 @@ const WhosArt = () => {
         {loading === true ? (
           <Container>
             <MotionContainer initial="initial" sx={{ mt: 10 }} open>
-              <Box sx={{ maxWidth: 480, margin: 'auto', textAlign: 'center' }}>
+              <Box sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}>
                 <motion.div variants={varBounceIn}>
                   <Typography variant="h3" paragraph>
                     아이템 로딩중...
                   </Typography>
                 </motion.div>
-                <Typography sx={{ color: 'text.secondary' }}>
+                <Typography sx={{ color: "text.secondary" }}>
                   아이템을 검색하고 있습니다.
                 </Typography>
 
@@ -178,7 +265,7 @@ const WhosArt = () => {
                   <Box
                     component="img"
                     src="/static/illustrations/illustration_register.png"
-                    sx={{ height: 260, mx: 'auto', my: { xs: 5, sm: 10 } }}
+                    sx={{ height: 260, mx: "auto", my: { xs: 5, sm: 10 } }}
                   />
                 </motion.div>
               </Box>
@@ -191,13 +278,15 @@ const WhosArt = () => {
             ) : (
               <Container>
                 <MotionContainer initial="initial" sx={{ mt: 10 }} open>
-                  <Box sx={{ maxWidth: 480, margin: 'auto', textAlign: 'center' }}>
+                  <Box
+                    sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}
+                  >
                     <motion.div variants={varBounceIn}>
                       <Typography variant="h3" paragraph>
                         검색 결과 없음
                       </Typography>
                     </motion.div>
-                    <Typography sx={{ color: 'text.secondary' }}>
+                    <Typography sx={{ color: "text.secondary" }}>
                       보유하고 있는 컬렉션이 없습니다.
                     </Typography>
 
@@ -205,7 +294,7 @@ const WhosArt = () => {
                       <Box
                         component="img"
                         src="/static/illustrations/illustration_register.png"
-                        sx={{ height: 260, mx: 'auto', my: { xs: 5, sm: 10 } }}
+                        sx={{ height: 260, mx: "auto", my: { xs: 5, sm: 10 } }}
                       />
                     </motion.div>
                   </Box>
