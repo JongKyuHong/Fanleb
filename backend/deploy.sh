@@ -1,6 +1,6 @@
 echo "PID Check..." 
 
-CURRENT_PID=$(ps -ef | grep java | grep app* | awk '{print $2}') 
+CURRENT_PID=$(ps -ef | grep java | grep spring* | awk '{print $2}')
 
 echo "Running PID: {$CURRENT_PID}" 
 
@@ -12,7 +12,7 @@ else
 fi 
 
 echo "Deploy Project...." 
-nohup java -jar ~/app.jar >> ~/app.log & 
+nohup java -jar /home/ubuntu/spring.jar >> /home/ubuntu/spring.log &
 
 echo $(pgrep -f app*)
 echo "Done"
