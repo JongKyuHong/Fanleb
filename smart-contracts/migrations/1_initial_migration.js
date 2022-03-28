@@ -1,4 +1,4 @@
-//const Migrations = artifacts.require("Migrations");
+// const Migrations = artifacts.require("Migrations");
 const SsafyToken = artifacts.require("SsafyToken");
 const SsafyNFT = artifacts.require("SsafyNFT");
 const SaleFactory = artifacts.require("SaleFactory");
@@ -10,8 +10,8 @@ const SaleFactory = artifacts.require("SaleFactory");
  * PJT Ⅲ - SsafyNFT, SsafyToken, SaleFactory
  * 가 배포되어야 합니다. 
  */
-module.exports = function (deployer) {
-  deployer.deploy(SsafyNFT); 
+module.exports = async function (deployer) {
+  deployer.deploy(SsafyNFT);
   deployer.deploy(SsafyToken, "SSAFY", "SSF", 0);
   deployer.deploy(SaleFactory);
 };
