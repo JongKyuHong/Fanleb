@@ -1,10 +1,13 @@
 package a107.fanleb.domain.contents;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ContentsRepository extends JpaRepository<Contents, Integer> {
@@ -17,4 +20,6 @@ public interface ContentsRepository extends JpaRepository<Contents, Integer> {
     @Modifying
     @Query("DELETE FROM Contents WHERE tokenId=:tokenId")
     void deleteByTokenId(@Param("tokenId") int tokenId);
+
+    Page<Contents> findByOwnerAddress(Pageable pageable, String ownerAddress);
 }

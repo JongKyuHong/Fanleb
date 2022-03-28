@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,20 +31,25 @@ public class ContentsController {
     }
 
     @PostMapping("/{contentId}")
-    public ResponseEntity<? extends BaseResponseBody> update(@PathVariable int contentId, @RequestBody ContentsUpdateReq contentsUpdateReq){
+    public ResponseEntity<? extends BaseResponseBody> update(@PathVariable int contentId, @RequestBody ContentsUpdateReq contentsUpdateReq) {
         contentsService.update(contentId, contentsUpdateReq);
         return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
     }
 
     @PatchMapping("/{tokenId}")
-    public ResponseEntity<BaseResponseBody> edit(@PathVariable int tokenId, @RequestBody ContentsEditReq contentsEditReq){
+    public ResponseEntity<BaseResponseBody> edit(@PathVariable int tokenId, @RequestBody ContentsEditReq contentsEditReq) {
         return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", contentsService.edit(tokenId, contentsEditReq)));
     }
 
     @DeleteMapping("/{tokenId}")
-    public ResponseEntity<BaseResponseBody> delete(@PathVariable int tokenId){
+    public ResponseEntity<BaseResponseBody> delete(@PathVariable int tokenId) {
         contentsService.delete(tokenId);
         return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
+    }
+
+    @GetMapping("/address")
+    public ResponseEntity<? extends BaseResponseBody> showByAddress(@RequestBody Map<String, Object> body, @RequestParam(value = "page", defaultValue = "1") int page) throws IOException {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", contentsService.showByAddress(page, (String) body.get("owner_address"))));
     }
 
 }
