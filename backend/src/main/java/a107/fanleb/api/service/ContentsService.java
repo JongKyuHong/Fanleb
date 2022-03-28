@@ -10,10 +10,14 @@ import a107.fanleb.domain.collections.CollectionsRepository;
 import a107.fanleb.domain.contents.Contents;
 import a107.fanleb.domain.contents.ContentsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -46,19 +50,18 @@ public class ContentsService {
     @Transactional
     public void update(int contentId, ContentsUpdateReq contentsUpdateReq) {
         String collectionReq = contentsUpdateReq.getCollection();
+
+        if (collectionReq == null || collectionReq.isEmpty())
+            collectionReq = null;
         String ownerAddress = contentsUpdateReq.getOwnerAddress();
 
-        if (collectionReq == null || collectionReq.isEmpty()) {
-            contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, null);
-        } else {
-            Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
+        Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
 
-            if (collectionEntity.isPresent()) {
-                contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collectionEntity.get().getId());
-            } else {
-                Collections collection = collectionRepository.save(Collections.builder().collectionName(collectionReq).userAddress(ownerAddress).build());
-                contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collection.getId());
-            }
+        if (collectionEntity.isPresent()) {
+            contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collectionEntity.get().getId());
+        } else {
+            Collections collection = collectionRepository.save(Collections.builder().collectionName(collectionReq).userAddress(ownerAddress).build());
+            contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collection.getId());
         }
     }
 
@@ -74,21 +77,20 @@ public class ContentsService {
 
                     String collectionReq = contentsEditReq.getCollection();
 
-                    if (collectionReq == null || collectionReq.isEmpty()) {
-                        c.setCollection(null);
+                    if (collectionReq == null || collectionReq.isEmpty())
+                        collectionReq = null;
+
+                    String ownerAddress = contentsEditReq.getOwnerAddress();
+
+                    Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
+
+                    if (collectionEntity.isPresent()) {
+                        c.setCollection(collectionEntity.get());
                     } else {
-                        String ownerAddress = contentsEditReq.getOwnerAddress();
-
-                        Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
-
-                        if (collectionEntity.isPresent()) {
-                            c.setCollection(collectionEntity.get());
-                        } else {
-                            Collections collection = collectionRepository.save(Collections.builder().collectionName(collectionReq).userAddress(ownerAddress).build());
-                            c.setCollection(collection);
-                        }
-
+                        Collections collection = collectionRepository.save(Collections.builder().collectionName(collectionReq).userAddress(ownerAddress).build());
+                        c.setCollection(collection);
                     }
+
                     contentsRepository.save(c);
                 });
 
@@ -99,6 +101,13 @@ public class ContentsService {
     @Transactional
     public void delete(int tokenId) {
         contentsRepository.deleteByTokenId(tokenId);
+    }
+
+    @Transactional
+    public Page<Contents> showByAddress(int page, String address){
+        PageRequest pageable = PageRequest.of(page - 1, 10, Sort.by("id").descending());
+
+        return contentsRepository.findByOwnerAddress(pageable, address);
     }
 
 }
