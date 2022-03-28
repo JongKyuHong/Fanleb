@@ -47,7 +47,7 @@ const ItemRegistration = () => {
 
   // 새로만든 
   const [nfttoken, setnfttoken] = useState('')
-  const [itemId, setItemId] = useState('')
+  const [contentId, setcontentId] = useState('')
 
   // Web3
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
@@ -125,15 +125,27 @@ const ItemRegistration = () => {
           content_title: title,
           content_description: description,
         });
-        setItemId(response.data.id); // 3
-        const token_id = NftRegistration(owner_address, response.data.img_url);
-        setnfttoken(token_id)
-        //5 token_id와 owner_address 백엔드 업데이트 요청하면 된다. (추가)
+        setcontentId(response.data.id);
+        const nft_id = NftRegistration(owner_address, response.data.img_url);
+        setnfttoken(nft_id);
+        callapi();
       } catch (error) {
         console.log(error);
       }
     }
   };
+
+  const callapi = async () => {
+    try{
+      const response = await axios.post(`${SERVER_BASE_URL}/api/contents${contentId}`,{
+        token_id : nfttoken,//5 token_id와 owner_address 백엔드 업데이트 요청하면 된다. (추가)
+        owner_addres : owner_address,
+        collection : null,
+      });
+    } catch(error){
+      console.log(error);
+    }
+  }
 
   return (
     <Page title="SSAFY NFT" maxWidth="100%" minHeight="100%">
