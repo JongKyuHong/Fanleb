@@ -16,6 +16,7 @@ import './navbar.css';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 import { Link } from "react-router-dom";
 import { updateSuccess } from '../../redux/userSlice';
+import Web3 from 'web3';
 
 const Menu = () => (
   <>

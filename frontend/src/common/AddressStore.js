@@ -1,8 +1,9 @@
 const AddressStore = {
   CONTRACT_ADDR: {
-    SsafyNFT : [0xe9acb6E7f54Dc08906e48a0005b98c5F05dD5861],
-    SsafyToken : [0x7E2877eD8024317220560BdA98E596090e57Ebd3],
-    SaleFactory : [0x0384152C6C0ECE3d843eae81B121C14050a6caA0]
+    // 문자열로 바꿔줘야 인식이 됩니다. SsafyNFT만 작동 확인했습니다.
+    SsafyNFT: ['0xF09FA70fF48466cF7BCd9AAA159491e8F52F89d1'],
+    SsafyToken : ['0x29546cf5F9bE6C50De2af841050B42a259605506'],
+    SaleFactory : ['0x2bA010CDE3a668C60F0e0363478750A13f634E89']
   }
 }
 

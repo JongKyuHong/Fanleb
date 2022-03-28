@@ -38,7 +38,7 @@ const ItemRegistration = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [tokenId, setTokenId] = useState('');
-
+  const [bufferData, setBufferData] = useState(null);
   // [변수] 등록 승인 모달 (모달, 개인키, 등록 로딩, 완료 여부)
   const [approveModal, setApproveModal] = useState(false);
   const [privKey, setPrivKey] = useState('');
@@ -81,6 +81,15 @@ const ItemRegistration = () => {
 
     if (value !== '') setItemName(value.name);
     else setItemName('');
+    if (value) {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(value);
+      reader.onloadend = () => {
+        setBufferData(Buffer(reader.result))        
+      }
+    }
+
+    
   };
 
   // 모달 핸들링 (등록 승인)
@@ -109,27 +118,39 @@ const ItemRegistration = () => {
    */
   const addItem = async () => {
     // TODO
+    setLoading(true)
     const owner_address = getAddressFrom(privKey);
     if (owner_address) {
-      setLoading(true);
-      setIsComplete(true);
-      try{
-        const response = await axios.post(`${SERVER_BASE_URL}/api/contents`, {
-          image: item,
-          content_title: title,
-          content_description: description,
-        });
-        setTokenId(response.data.id); // 3
-        const token_id = NftRegistration(owner_address, response.data.img_url);
-        //5 token_id와 owner_address 백엔드 업데이트 요청하면 된다. (추가)
-      } catch (error) {
-        console.log(error);
+      // setLoading(true);
+      // setIsComplete(true);
+      // try{
+      //   const response = await axios.post(`${SERVER_BASE_URL}/api/contents`, {
+      //     image: item,
+      //     content_title: title,
+      //     content_description: description,
+      //   });
+      //   setTokenId(response.data.id); // 3
+      //   const token_id = NftRegistration(owner_address, response.data.img_url);
+      //   console.log(response, token_id)
+      //   //5 token_id와 owner_address 백엔드 업데이트 요청하면 된다. (추가)
+      // } catch (error) {
+      //   console.log(error);
+      // }
+      const data = {
+        author,
+        title,
+        description,
+        imageUrl: 'https://ipfs.infura.io/ipfs/'
       }
+      const token_id = await NftRegistration(owner_address, privKey, data, bufferData);
+      console.log(token_id)
+      setLoading(false)
+      setIsComplete(true)
       toggleApprove();
     }
     
   };
-
+  console
   return (
     <Page title="SSAFY NFT" maxWidth="100%" minHeight="100%">
       {isComplete === false ? (
