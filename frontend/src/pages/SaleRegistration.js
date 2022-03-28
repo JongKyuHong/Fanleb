@@ -151,6 +151,7 @@ const SaleRegistration = () => {
   const checkInfo = async () => {
     // TODO
     setIsSale(false);
+ 
   };
 
   /**
@@ -161,12 +162,21 @@ const SaleRegistration = () => {
    * 2. 공개키가 유효한 경우 Sale Factory 컨트랙트의 createSale() 함수를 호출하여 새로운 Sale 컨트랙트를 생성합니다.
    * 3. 컨트랙트 정상 호출 후 새로운 Sale 컨트랙트의 주소를 반환 받습니다.
    * 4. 생성된 Sale 컨트랙트가 판매자를 대신하여 NFT 소유권을 이전할 수 있도록 Sale에게 NFT를 전송합니다 (transferFrom())
-   * 5. 위 과정이 모두 정상 수행되었다면 API를 호출하여 판매 정보를 등록합니다. 
+   * 5. 위 과정이 모두 정상 수행되었다면 API를 호출하여 판매 정보를 등록합니다.
    * 
    */
+
   const createSaleContract = async () => {
-    // TODO     
-    setLoading(false);
+    // TODO
+    
+    const owner_address = getAddressFrom(privKey);
+    if (owner_address){
+      setLoading(false); 
+      // 백에 업데이트된
+      const contract_addr = Create_Sale(tokenId,price,AddressStore.CONTRACT_ADDR.SsafyToken,nftAddrss);
+      transferFrom(owner_address, contract_addr, nfttoken) // to : sale에게 nft전송
+      // api 호출해서 판매정보 등록
+    } 
   };
 
   /**

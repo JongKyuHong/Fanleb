@@ -45,6 +45,10 @@ const ItemRegistration = () => {
   const [loading, setLoading] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
+  // 새로만든 
+  const [nfttoken, setnfttoken] = useState('')
+  const [itemId, setItemId] = useState('')
+
   // Web3
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
 
@@ -105,8 +109,10 @@ const ItemRegistration = () => {
    * 3. 만들어진 formData는 아이템 등록 API를 통해 전달되고, 정상적으로 반영된 경우 이미지의 링크와 item ID를 반환 받습니다.
    * 4. 이후 공개키와 생성된 item ID, 이미지 링크를 이용해 NFT 생성을 위한 함수를 호출합니다.
    * 정상적으로 트랜잭션이 완결된 후 token Id가 반환됩니다.
-   * 5. 정상 동작 시 token Id와 owner_address를 백엔드에 업데이트 요청합니다.  
+   * 5. 정상 동작 시 token Id와 owner_address를 백엔드에 업데이트 요청합니다.
    */
+
+  
   const addItem = async () => {
     // TODO
     const owner_address = getAddressFrom(privKey);
@@ -119,15 +125,14 @@ const ItemRegistration = () => {
           content_title: title,
           content_description: description,
         });
-        setTokenId(response.data.id); // 3
+        setItemId(response.data.id); // 3
         const token_id = NftRegistration(owner_address, response.data.img_url);
+        setnfttoken(token_id)
         //5 token_id와 owner_address 백엔드 업데이트 요청하면 된다. (추가)
       } catch (error) {
         console.log(error);
       }
-      toggleApprove();
     }
-    
   };
 
   return (
