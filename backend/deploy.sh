@@ -1,9 +1,18 @@
-PROC=`ps aux | grep app`
-if [[ $PROC == *"app"* ]]; then
-    echo "Process is running."
-    sudo kill -15 `ps -ef | grep app | grep -v grep | awk '{print $2}'`
-else
-    echo "Process is not running."
-fi
+echo "PID Check..." 
 
-sudo nohup java -jar -Du=app ~/app.jar &
+CURRENT_PID=$(ps -ef | grep java | grep app* | awk '{print $2}') 
+
+echo "Running PID: {$CURRENT_PID}" 
+
+if [ -z $CURRENT_PID ] ; then 
+   echo "Project is not running"
+else
+   kill -9 $CURRENT_PID 
+   sleep 10 
+fi 
+
+echo "Deploy Project...." 
+nohup java -jar ~/app.jar >> ~/app.log & 
+
+echo $(pgrep -f app*)
+echo "Done"
