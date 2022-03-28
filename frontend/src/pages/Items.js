@@ -10,6 +10,7 @@ import getSaleByTokenId from '../common/SaleInfoGetter';
 import { onResponse } from '../common/ErrorMessage';
 import Page from '../components/Page';
 import ItemsList from '../layouts/items/ItemsList';
+import getNFTList from '../utils/getNFTList';
 
 /**
  * [구매하기] 화면
@@ -42,21 +43,25 @@ const Items = () => {
    * 3. token id로 NFT 컨트랙트로부터 직접 tokenURI를 조회하여 화면에 표시합니다. 
    */
   const getItem = async () => {
-    // TODO 
-    setLoading(true);
-    
-    const resultList = [];
-    const resultItem = {
-      id: 1,
-      image: "https://edu.ssafy.com/asset/images/logo.png",
-      hash: "fake hash",
-      price: "fake price",
-      title: "fake title"
-    };
-    resultList.push(resultItem);
-    setItem(resultList);
-    setLoading(false);
-    setIsCollection(true);
+    // TODO     
+    setLoading(true);    
+    const res = await getNFTList();
+    if (res.length > 0) {      
+      setItem(res);      
+      setIsCollection(true)
+    } else {
+      setIsCollection(false)
+    }    
+    setLoading(false)
+    // const resultList = [];
+    // const resultItem = {
+    //   id: id,
+    //   image: res.data.imageUrl,
+    //   hash: res.data.imageUrl,
+    //   price: "fake price",
+    //   title: res.data.title
+    // };    
+    // resultList.push(resultItem);
   };
 
   // 카드 화면 생성을 위한 데이터 전달
