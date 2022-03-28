@@ -120,46 +120,48 @@ const ItemRegistration = () => {
    * 정상적으로 트랜잭션이 완결된 후 token Id가 반환됩니다.
    * 5. 정상 동작 시 token Id와 owner_address를 백엔드에 업데이트 요청합니다.
    */
-
+  axios.defaults.withCredentials = true;
   
   const addItem = async () => {
     // TODO
     setLoading(true)
     const owner_address = getAddressFrom(privKey);
     if (owner_address) {
-      // setLoading(true);
-      // setIsComplete(true);
-      // try{
-      //   const response = await axios.post(`${SERVER_BASE_URL}/api/contents`, {
-      //     image: item,
-      //     content_title: title,
-      //     content_description: description,
-      //   });
-      //   setTokenId(response.data.id); // 3
-      //   const token_id = NftRegistration(owner_address, response.data.img_url);
-      //   console.log(response, token_id)
-      //   //5 token_id와 owner_address 백엔드 업데이트 요청하면 된다. (추가)
-      // } catch (error) {
-      //   console.log(error);
+      setLoading(true);
+      setIsComplete(true);
+      try{
+        const response = await axios.post(`${SERVER_BASE_URL}/api/contents`,{
+          image: item,
+          content_title: title,
+          content_description: description
+        });
+        setcontentId(response.data.id); // 3
+        const token_id = NftRegistration(owner_address, response.data.img_url);
+        console.log(response, token_id)
+        setTokenId(token_id);
+        callapi(token_id,owner_address);//5 token_id와 owner_address 백엔드 업데이트 요청하면 된다. (추가)
+      } catch (error) {
+        console.log(error);
+      } 
+      //------------
+      // const data = {
+      //   author,
+      //   title,
+      //   description,
+      //   imageUrl: 'https://ipfs.infura.io/ipfs/'
       // }
-      const data = {
-        author,
-        title,
-        description,
-        imageUrl: 'https://ipfs.infura.io/ipfs/'
-      }
-      const token_id = await NftRegistration(owner_address, privKey, data, bufferData);
-      console.log(token_id)
+      // const token_id = await NftRegistration(owner_address, privKey, data, bufferData);
+      //--------------
       setLoading(false)
       setIsComplete(true)
     }
   };
 
-  const callapi = async () => {
+  const callapi = async (tokenId, owner_address) => { // 5
     try{
-      const response = await axios.post(`${SERVER_BASE_URL}/api/contents${contentId}`,{
-        token_id : nfttoken,//5 token_id와 owner_address 백엔드 업데이트 요청하면 된다. (추가)
-        owner_addres : owner_address,
+      const response = await axios.post(`${SERVER_BASE_URL}/api/contents${tokenId}`,{
+        token_id : tokenId,
+        owner_address : owner_address,
         collection : null,
       });
     } catch(error){

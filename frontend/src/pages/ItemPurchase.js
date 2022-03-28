@@ -175,7 +175,9 @@ const ItemPurchase = () => {
    * 3. 정상 호출 후 buyer 정보를 백엔드에 업데이트합니다.
    */
   const tryPurchase = async () => {
-    // TODO 
+    // TODO
+    const abi = ABI.CONTRACT_ABI.SALE_ABI;
+    const sale_contract = new web3.eth.Contract(abi, );
     setLoading(false);
   };
 
