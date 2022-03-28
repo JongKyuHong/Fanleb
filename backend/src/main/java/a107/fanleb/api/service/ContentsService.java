@@ -46,19 +46,18 @@ public class ContentsService {
     @Transactional
     public void update(int contentId, ContentsUpdateReq contentsUpdateReq) {
         String collectionReq = contentsUpdateReq.getCollection();
+
+        if (collectionReq == null || collectionReq.isEmpty())
+            collectionReq = null;
         String ownerAddress = contentsUpdateReq.getOwnerAddress();
 
-        if (collectionReq == null || collectionReq.isEmpty()) {
-            contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, null);
-        } else {
-            Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
+        Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
 
-            if (collectionEntity.isPresent()) {
-                contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collectionEntity.get().getId());
-            } else {
-                Collections collection = collectionRepository.save(Collections.builder().collectionName(collectionReq).userAddress(ownerAddress).build());
-                contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collection.getId());
-            }
+        if (collectionEntity.isPresent()) {
+            contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collectionEntity.get().getId());
+        } else {
+            Collections collection = collectionRepository.save(Collections.builder().collectionName(collectionReq).userAddress(ownerAddress).build());
+            contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collection.getId());
         }
     }
 
