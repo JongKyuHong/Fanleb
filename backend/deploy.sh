@@ -4,7 +4,7 @@ CURRENT_PID=$(ps -ef | grep java | grep spring* | awk '{print $2}')
 
 echo "Running PID: {$CURRENT_PID}" 
 
-if [ -z $CURRENT_PID ] ; then 
+if [[ -z $CURRENT_PID ]] ; then
    echo "Project is not running"
 else
    echo "Project is running"
