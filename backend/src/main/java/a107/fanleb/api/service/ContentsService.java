@@ -73,21 +73,20 @@ public class ContentsService {
 
                     String collectionReq = contentsEditReq.getCollection();
 
-                    if (collectionReq == null || collectionReq.isEmpty()) {
-                        c.setCollection(null);
+                    if (collectionReq == null || collectionReq.isEmpty())
+                        collectionReq = null;
+
+                    String ownerAddress = contentsEditReq.getOwnerAddress();
+
+                    Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
+
+                    if (collectionEntity.isPresent()) {
+                        c.setCollection(collectionEntity.get());
                     } else {
-                        String ownerAddress = contentsEditReq.getOwnerAddress();
-
-                        Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
-
-                        if (collectionEntity.isPresent()) {
-                            c.setCollection(collectionEntity.get());
-                        } else {
-                            Collections collection = collectionRepository.save(Collections.builder().collectionName(collectionReq).userAddress(ownerAddress).build());
-                            c.setCollection(collection);
-                        }
-
+                        Collections collection = collectionRepository.save(Collections.builder().collectionName(collectionReq).userAddress(ownerAddress).build());
+                        c.setCollection(collection);
                     }
+
                     contentsRepository.save(c);
                 });
 
