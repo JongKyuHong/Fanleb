@@ -10,7 +10,6 @@ contract SsafyNFT is ERC721{
 
     uint256 private _tokenIds; 
     mapping(uint256 => string) tokenURIs;
-    
 
     constructor() ERC721("_name","_symbol"){
         // TODO   
@@ -27,11 +26,6 @@ contract SsafyNFT is ERC721{
 
     function create(address to, string memory _tokenURI) public returns (uint256) {
         // TODO
-        // tokenuri = _tokenURI;
-        // uint256 new_ids = current();
-        // _mint(to,new_ids);
-        // return new_ids;
-
         uint256 new_ids = current()+1;
         _mint(to,new_ids);
         tokenURIs[new_ids] = _tokenURI;
