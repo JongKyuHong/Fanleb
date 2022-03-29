@@ -125,6 +125,7 @@ const ItemRegistration = () => {
   const addItem = async () => {
     // TODO
     setLoading(true)
+    console.log(item)
     const owner_address = getAddressFrom(privKey);
     if (owner_address) {
       setLoading(true);
