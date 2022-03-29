@@ -103,11 +103,22 @@ public class ContentsService {
         contentsRepository.deleteByTokenId(tokenId);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<Contents> showByAddress(int page, String address){
         PageRequest pageable = PageRequest.of(page - 1, 10, Sort.by("id").descending());
 
         return contentsRepository.findByOwnerAddress(pageable, address);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Contents> show(int page, String address) {
+        PageRequest pageable = PageRequest.of(page - 1, 12, Sort.by("id").descending());
+        return contentsRepository.findByOwnerAddress(pageable, address);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Contents> showThumbnail(String address) {
+        return contentsRepository.findByOwnerAddress(address);
     }
 
 }

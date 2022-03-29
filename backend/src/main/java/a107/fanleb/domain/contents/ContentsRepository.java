@@ -1,5 +1,6 @@
 package a107.fanleb.domain.contents;
 
+import a107.fanleb.domain.collections.Collections;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +23,9 @@ public interface ContentsRepository extends JpaRepository<Contents, Integer> {
     void deleteByTokenId(@Param("tokenId") int tokenId);
 
     Page<Contents> findByOwnerAddress(Pageable pageable, String ownerAddress);
+
+    List<Contents> findByOwnerAddress(String ownerAddress);
+
+    Page<Contents> findByOwnerAddressAndCollection(Pageable pageable, String ownerAddress, Collections collection);
+
 }

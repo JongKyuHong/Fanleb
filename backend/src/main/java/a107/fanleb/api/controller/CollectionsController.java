@@ -24,8 +24,8 @@ public class CollectionsController {
     }
 
     @GetMapping
-    public ResponseEntity<? extends BaseResponseBody> show(@RequestBody Map<String, Object> body) {
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", collectionsService.show((String)body.get("user_address"))));
+    public ResponseEntity<? extends BaseResponseBody> show(@RequestParam(value = "page", defaultValue = "1") int page, @RequestBody Map<String, Object> body) {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", collectionsService.show(page, (String)body.get("user_address"))));
     }
 
     @GetMapping("/list")
@@ -34,5 +34,10 @@ public class CollectionsController {
                                                                @RequestParam(required = false, name="search[sortBy]") String sortedBy,
                                                                @RequestParam(value = "page", defaultValue = "1") int page) {
         return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", collectionsService.showList(page, query, isAscending, sortedBy)));
+    }
+
+    @GetMapping("/{collectionId}/contents")
+    public ResponseEntity<? extends BaseResponseBody> showContentsInCollection(@RequestParam(value = "page", defaultValue = "1") int page, @RequestBody Map<String, Object> body, @PathVariable int collectionId) {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", collectionsService.showContentsInCollection(page, (String)body.get("user_address"), collectionId)));
     }
 }
