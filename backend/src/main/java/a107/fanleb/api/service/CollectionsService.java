@@ -34,11 +34,9 @@ public class CollectionsService {
         return collectionsRepository.findByUserAddress(pageable, userAddress);
     }
 
-    //todo
     @Transactional
     public Page<CollectionsListViewRes> showList(int page, String query, String isAscending, String sortedBy) {
-        PageRequest pageable = PageRequest.of(page - 1, 12, Sort.by("id").descending());
-        //paging
+        PageRequest pageable = PageRequest.of(page - 1, 12);
 
         return collectionsRepositorySupport.findBySortedBy(pageable, query, sortedBy);
     }
