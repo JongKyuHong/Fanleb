@@ -30,7 +30,9 @@ import COMMON_ABI from '../common/ABI';
 import { onResponse, onContractCall } from '../common/ErrorMessage';
 import moment from 'moment';
 import Page from '../components/Page';
-
+import Create_Sale from '../utils/SaleFactory';
+import ABI from '../common/ABI';
+import AddressStore from '../common/AddressStore';
 // 이미지 스타일
 const ImgStyle = styled('img')({
   top: 0,
@@ -154,19 +156,30 @@ const SaleRegistration = () => {
   };
 
   /**
-   * PJT Ⅲ - 과제 2: 작품 판매 등록 
+   * PJT Ⅲ - 과제 2: 작품 판매 등록
    * Req. 2-F2 Sale 컨트랙트 생성 
    * 
    * 1. 판매 등록 승인 모달창에 개인키를 입력하면 getAddressFrom() 함수를 이용해 공개키를 반환 받습니다.
    * 2. 공개키가 유효한 경우 Sale Factory 컨트랙트의 createSale() 함수를 호출하여 새로운 Sale 컨트랙트를 생성합니다.
    * 3. 컨트랙트 정상 호출 후 새로운 Sale 컨트랙트의 주소를 반환 받습니다.
    * 4. 생성된 Sale 컨트랙트가 판매자를 대신하여 NFT 소유권을 이전할 수 있도록 Sale에게 NFT를 전송합니다 (transferFrom())
-   * 5. 위 과정이 모두 정상 수행되었다면 API를 호출하여 판매 정보를 등록합니다. 
+   * 5. 위 과정이 모두 정상 수행되었다면 API를 호출하여 판매 정보를 등록합니다.
    * 
    */
+
   const createSaleContract = async () => {
-    // TODO     
-    setLoading(false);
+    // TODO
+    const owner_address = getAddressFrom(privKey);
+    if (owner_address){
+      setLoading(false); 
+      // 백에 업데이트된
+      const contract_addr = Create_Sale(tokenId,price,AddressStore.CONTRACT_ADDR.SsafyToken,AddressStore.CONTRACT_ADDR.SsafyNFT);
+      const abi = ABI.CONTRACT_ABI.NFT_ABI;
+      const addr = AddressStore.CONTRACT_ADDR.SsafyNFT;
+      const tff = new web3.eth.Contract(abi, addr);
+      tff.methods.transferFrom(owner_address, contract_addr, tokenId); // to : sale에게 nft전송
+      registerSaleInfo(privKey, contract_addr);// api 호출해서 판매정보 등록
+    } 
   };
 
   /**

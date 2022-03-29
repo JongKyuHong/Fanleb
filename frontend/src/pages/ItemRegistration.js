@@ -38,12 +38,16 @@ const ItemRegistration = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [tokenId, setTokenId] = useState('');
-
+  const [bufferData, setBufferData] = useState(null);
   // [변수] 등록 승인 모달 (모달, 개인키, 등록 로딩, 완료 여부)
   const [approveModal, setApproveModal] = useState(false);
   const [privKey, setPrivKey] = useState('');
   const [loading, setLoading] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+
+  // 새로만든 
+  const [nfttoken, setnfttoken] = useState('')
+  const [contentId, setcontentId] = useState('')
 
   // Web3
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
@@ -81,6 +85,15 @@ const ItemRegistration = () => {
 
     if (value !== '') setItemName(value.name);
     else setItemName('');
+    if (value) {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(value);
+      reader.onloadend = () => {
+        setBufferData(Buffer(reader.result))        
+      }
+    }
+
+    
   };
 
   // 모달 핸들링 (등록 승인)
@@ -105,30 +118,56 @@ const ItemRegistration = () => {
    * 3. 만들어진 formData는 아이템 등록 API를 통해 전달되고, 정상적으로 반영된 경우 이미지의 링크와 item ID를 반환 받습니다.
    * 4. 이후 공개키와 생성된 item ID, 이미지 링크를 이용해 NFT 생성을 위한 함수를 호출합니다.
    * 정상적으로 트랜잭션이 완결된 후 token Id가 반환됩니다.
-   * 5. 정상 동작 시 token Id와 owner_address를 백엔드에 업데이트 요청합니다.  
+   * 5. 정상 동작 시 token Id와 owner_address를 백엔드에 업데이트 요청합니다.
    */
+  axios.defaults.withCredentials = true;
+  
   const addItem = async () => {
     // TODO
+    setLoading(true)
     const owner_address = getAddressFrom(privKey);
     if (owner_address) {
       setLoading(true);
       setIsComplete(true);
       try{
-        const response = await axios.post(`${SERVER_BASE_URL}/api/contents`, {
+        const response = await axios.post(`${SERVER_BASE_URL}/api/contents`,{
           image: item,
           content_title: title,
-          content_description: description,
+          content_description: description
         });
-        setTokenId(response.data.id); // 3
+        setcontentId(response.data.id); // 3
         const token_id = NftRegistration(owner_address, response.data.img_url);
-        //5 token_id와 owner_address 백엔드 업데이트 요청하면 된다. (추가)
+        console.log(response, token_id)
+        setTokenId(token_id);
+        callapi(token_id,owner_address);//5 token_id와 owner_address 백엔드 업데이트 요청하면 된다. (추가)
       } catch (error) {
         console.log(error);
-      }
-      toggleApprove();
+      } 
+      //------------
+      // const data = {
+      //   author,
+      //   title,
+      //   description,
+      //   imageUrl: 'https://ipfs.infura.io/ipfs/'
+      // }
+      // const token_id = await NftRegistration(owner_address, privKey, data, bufferData);
+      //--------------
+      setLoading(false)
+      setIsComplete(true)
     }
-    
   };
+
+  const callapi = async (tokenId, owner_address) => { // 5
+    try{
+      const response = await axios.post(`${SERVER_BASE_URL}/api/contents${tokenId}`,{
+        token_id : tokenId,
+        owner_address : owner_address,
+        collection : null,
+      });
+    } catch(error){
+      console.log(error);
+    }
+  }
 
   return (
     <Page title="SSAFY NFT" maxWidth="100%" minHeight="100%">

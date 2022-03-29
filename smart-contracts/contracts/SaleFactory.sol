@@ -13,8 +13,8 @@ import "./SsafyNFT.sol";
 contract SaleFactory is Ownable {
     address public admin;
     address[] public sales;
-    SsafyNFT public SsafyNFTAddresss;
     address public test;
+
     event NewSale(
         address indexed _saleContract,
         address indexed _owner,
@@ -23,8 +23,6 @@ contract SaleFactory is Ownable {
 
     constructor() {
         admin = msg.sender;
-        // SsafyNFTAddresss = SsafyNFT(_SsafyNFTAddresss);
-        // test = _SsafyNFTAddresss;
     }
 
     /**
@@ -39,10 +37,11 @@ contract SaleFactory is Ownable {
         address currencyAddress,
         address nftAddress
     ) public returns (address) {
-        // TODO
+        // TODO 
+
         Sale newContract = new Sale(admin,admin,itemId,purchasePrice,currencyAddress,nftAddress);
-        emit NewSale(newContract.nftAddress(), newContract.seller(), newContract.tokenId());
-        return newContract.nftAddress();
+        emit NewSale(newContract.getAddress(), newContract.seller(), newContract.tokenId());
+        return newContract.getAddress();
         // return
     }
 
@@ -119,10 +118,9 @@ contract Sale {
 
         erc20Contract.transfer(buyer,purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
         erc20Contract.approve(buyer,purchasePrice);
-        //erc721Constract // NFT소유권을 구매자에게 이전
+        
+        erc721Constract.transferFrom(seller, buyer, tokenId);//erc721Constract // NFT소유권을 구매자에게 이전
         // 컨트랙트의 거래 상태와 구매자 정보를 업데이트
-
-
     }
 
     function confirmItem() public {
@@ -148,7 +146,9 @@ contract Sale {
         // 컨트랙트의 거래 상태를 업데이트
 
     }
-
+    function getAddress() public view returns (address){
+        return address(this);
+    }
     // function getTimeLeft() public view returns (int256) {
     //     return (int256)(saleEndTime - block.timestamp);
     // }
@@ -162,8 +162,8 @@ contract Sale {
             //uint256,
             uint256,
             uint256,
-            address,
-            uint256,
+            //address,
+            //uint256,
             address,
             address
         )
@@ -174,16 +174,16 @@ contract Sale {
             //minPrice,
             purchasePrice,
             tokenId,
-            highestBidder,
-            highestBid,
+            //highestBidder,
+            //highestBid,
             currencyAddress,
             nftAddress
         );
     }
 
-    function getHighestBid() public view returns(uint256){
-        return highestBid;
-    }
+    // function getHighestBid() public view returns(uint256){
+    //     return highestBid;
+    // }
 
     // internal 혹은 private 함수 선언시 아래와 같이 _로 시작하도록 네이밍합니다.
     function _end() internal {

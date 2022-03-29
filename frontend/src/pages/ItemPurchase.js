@@ -159,7 +159,7 @@ const ItemPurchase = () => {
   * 
   * 1. bid 컨트랙트 함수 호출 파라메터를 지정합니다.
   * 2. Sale 컨트랙트가 구매자의 SSAFY 토큰을 상대방에게 전송할 수 있는 권한을 부여합니다. (approveERC20Token() 호출)
-  * 2. 정상 호출 후, Sale 컨트랙트의 purchase() 함수를 호출합니다. 
+  * 2. 정상 호출 후, Sale 컨트랙트의 purchase() 함수를 호출합니다.
   */
   const tryBid = () => {
     // TODO
@@ -175,7 +175,9 @@ const ItemPurchase = () => {
    * 3. 정상 호출 후 buyer 정보를 백엔드에 업데이트합니다.
    */
   const tryPurchase = async () => {
-    // TODO 
+    // TODO
+    const abi = ABI.CONTRACT_ABI.SALE_ABI;
+    const sale_contract = new web3.eth.Contract(abi, );
     setLoading(false);
   };
 
@@ -246,7 +248,7 @@ const ItemPurchase = () => {
                           </Link>
                         ) : null}
                       </Stack>
-                      {saleYn === true ? (
+                      {saleYn === true ? ( // 판매중인지
                         <>
                           <Stack direction="row" sx={{ mt: 3 }}>
                             <Typography sx={{ fontSize: 18 }}>전시 종료 : </Typography>

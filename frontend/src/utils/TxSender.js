@@ -50,7 +50,7 @@ const web3 = new Web3(ssafyProvider);
 // const contractAddr = "0x7d544ddD5CA5D6f9E613eD3AB22f7683Bd726A81";
 
 // const { abi: contractABI } = JSON.parse(fs.readFileSync('./build/contracts/SsafyNFT.json'));
-const { abi: contractABI } = {};
+const { abi: contractABI } = {}
 
 //const contractInstance = new web3.eth.Contract(contractABI, contractAddr);
 
