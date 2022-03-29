@@ -1,8 +1,10 @@
 package a107.fanleb.api.service;
 
 import a107.fanleb.api.request.collections.CollectionsRegisterReq;
+import a107.fanleb.api.response.collections.CollectionsListViewRes;
 import a107.fanleb.domain.collections.Collections;
 import a107.fanleb.domain.collections.CollectionsRepository;
+import a107.fanleb.domain.collections.CollectionsRepositorySupport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,7 @@ import java.util.List;
 public class CollectionsService {
 
     private final CollectionsRepository collectionsRepository;
+    private final CollectionsRepositorySupport collectionsRepositorySupport;
 
     @Transactional
     public void save(CollectionsRegisterReq collectionsRegisterReq) {
@@ -28,14 +31,12 @@ public class CollectionsService {
         return collectionsRepository.findByUserAddress(userAddress);
     }
 
+    //todo
     @Transactional
-    public Page<Collections> showList(int page, String query, String isAscending, String sortedBy) {
-        System.out.println(page);
+    public Page<CollectionsListViewRes> showList(int page, String query, String isAscending, String sortedBy) {
         PageRequest pageable = PageRequest.of(page - 1, 12, Sort.by("id").descending());
-        if(query==null || query.isEmpty()){
-            return collectionsRepository.findAll(pageable);
-        }else{
-            return collectionsRepository.findByCollectionNameContaining(pageable, query);
-        }
+        //paging
+
+        return collectionsRepositorySupport.findBySortedBy(pageable, query, sortedBy);
     }
 }
