@@ -24,10 +24,10 @@ public class UsersController {
         return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
     }
 
-    @GetMapping("/edit")
-    public ResponseEntity<? extends BaseResponseBody> editView(@RequestBody Map<String, Object> body) {
+    @GetMapping("/address")
+    public ResponseEntity<? extends BaseResponseBody> view(@RequestBody Map<String, Object> body) {
 
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.editView((String)body.get("user_address"))));
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.view((String)body.get("user_address"))));
     }
 
     @PatchMapping("/edit")
