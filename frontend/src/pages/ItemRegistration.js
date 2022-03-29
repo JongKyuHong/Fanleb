@@ -106,7 +106,7 @@ const ItemRegistration = () => {
     setPrivKey(e.target.value);
   };
 
-  const SERVER_BASE_URL = process.env.REACT_APP_BACKEND_HOST_URL;
+  //const SERVER_BASE_URL = process.env.REACT_APP_BACKEND_HOST_URL;
   /**
    * PJT Ⅱ - 과제 1: 작품 등록 및 NFT 생성 
    * Req.1-F1 작품 등록 화면 및 등록 요청 
@@ -130,7 +130,7 @@ const ItemRegistration = () => {
       setLoading(true);
       setIsComplete(true);
       try{
-        const response = await axios.post(`${SERVER_BASE_URL}/api/contents`,{
+        const response = await axios.post('http://j6a107.p.ssafy.io/api/contents',{
           image: item,
           content_title: title,
           content_description: description
@@ -159,7 +159,7 @@ const ItemRegistration = () => {
 
   const callapi = async (tokenId, owner_address) => { // 5
     try{
-      const response = await axios.post(`${SERVER_BASE_URL}/api/contents${tokenId}`,{
+      const response = await axios.post(`http://j6a107.p.ssafy.io/api/contents${tokenId}`,{
         token_id : tokenId,
         owner_address : owner_address,
         collection : null,
