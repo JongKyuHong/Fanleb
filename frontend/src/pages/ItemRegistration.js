@@ -132,7 +132,7 @@ const ItemRegistration = () => {
       setIsComplete(true);
       try{
         const response = await axios.post('http://j6a107.p.ssafy.io/api/contents',{
-          image: item.name,
+          image: itemName,
           content_title: title,
           content_description: description
         });
