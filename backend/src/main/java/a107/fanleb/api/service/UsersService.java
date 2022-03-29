@@ -81,11 +81,17 @@ public class UsersService {
         return usersCategoryRepository.findAll();
     }
 
-    //구독자순
     @Transactional(readOnly = true)
-    public Page<Users> showList(int page) {
+    public Page<Users> showList(int page, String query) {
         PageRequest pageable = PageRequest.of(page - 1, 12);
-        return usersRepository.findAll(pageable);
+        
+        //TODO : 구독자 순
+
+        if(query==null || query.isEmpty()){
+            return usersRepository.findAll(pageable);
+        }else{
+            return usersRepository.findByNicknameContaining(pageable, query);
+        }
     }
 
 }

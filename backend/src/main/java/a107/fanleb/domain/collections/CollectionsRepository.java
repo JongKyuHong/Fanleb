@@ -11,4 +11,5 @@ public interface CollectionsRepository extends JpaRepository<Collections, Intege
     Optional<Collections> findByCollectionNameAndUserAddress(String collectionName, String userAddress);
     List<Collections> findByUserAddress(String userAddress);
     Page<Collections> findAll(Pageable page);
+    Page<Collections> findByCollectionNameContaining(Pageable page, String collectionName);
 }

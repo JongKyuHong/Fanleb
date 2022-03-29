@@ -32,6 +32,10 @@ public class CollectionsService {
     public Page<Collections> showList(int page, String query, String isAscending, String sortedBy) {
         System.out.println(page);
         PageRequest pageable = PageRequest.of(page - 1, 12, Sort.by("id").descending());
-        return collectionsRepository.findAll(pageable);
+        if(query==null || query.isEmpty()){
+            return collectionsRepository.findAll(pageable);
+        }else{
+            return collectionsRepository.findByCollectionNameContaining(pageable, query);
+        }
     }
 }
