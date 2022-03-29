@@ -106,7 +106,7 @@ const ItemRegistration = () => {
     setPrivKey(e.target.value);
   };
 
-  const SERVER_BASE_URL = process.env.REACT_APP_BACKEND_HOST_URL;
+  const SERVER_BASE_URL = process.env.REACT_APP_ETHEREUM_RPC_URL;
   /**
    * PJT Ⅱ - 과제 1: 작품 등록 및 NFT 생성 
    * Req.1-F1 작품 등록 화면 및 등록 요청 
