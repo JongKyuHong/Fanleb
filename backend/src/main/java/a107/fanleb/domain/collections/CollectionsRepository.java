@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface CollectionsRepository extends JpaRepository<Collections, Integer> {
     Optional<Collections> findByCollectionNameAndUserAddress(String collectionName, String userAddress);
-    List<Collections> findByUserAddress(String userAddress);
+    Page<Collections> findByUserAddress(Pageable page, String userAddress);
     Page<Collections> findAll(Pageable page);
 }

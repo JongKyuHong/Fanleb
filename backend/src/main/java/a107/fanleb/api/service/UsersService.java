@@ -31,7 +31,7 @@ public class UsersService {
     }
 
     @Transactional(readOnly = true)
-    public Users editView(String userAddress) {
+    public Users view(String userAddress) {
         return usersRepository.findByUserAddress(userAddress).get();
     }
 
