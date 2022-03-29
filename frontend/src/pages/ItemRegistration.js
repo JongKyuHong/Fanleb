@@ -125,16 +125,18 @@ const ItemRegistration = () => {
   const addItem = async () => {
     // TODO
     setLoading(true)
-    console.log(item)
+    console.log(item.name)
     const owner_address = getAddressFrom(privKey);
     if (owner_address) {
       setLoading(true);
       setIsComplete(true);
       try{
         const response = await axios.post('http://j6a107.p.ssafy.io/api/contents',{
-          image: itemName,
-          content_title: title,
-          content_description: description
+          form : {
+            image: itemName,
+            content_title: title,
+            content_description: description
+          }
         });
         setcontentId(response.data.id); // 3
         const token_id = NftRegistration(owner_address, response.data.img_url);
