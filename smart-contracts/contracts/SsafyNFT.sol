@@ -38,6 +38,15 @@ contract SsafyNFT is ERC721, ERC721Enumerable{
         tokenURIs[new_ids] = _tokenURI;
         return new_ids;
     }
+
+    function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public override
+    {
+        super.transferFrom(from, to, tokenId);
+    }
     
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
         internal
