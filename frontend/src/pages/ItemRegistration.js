@@ -46,8 +46,7 @@ const ItemRegistration = () => {
   const [isComplete, setIsComplete] = useState(false);
 
   // 새로만든 
-  const [nfttoken, setnfttoken] = useState('')
-  const [contentId, setcontentId] = useState('')
+  var FormData = require('form-data');
 
   // Web3
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
@@ -127,26 +126,31 @@ const ItemRegistration = () => {
     setLoading(true)
     const owner_address = getAddressFrom(privKey);
 
-    var formData = new FormData();
-    const formtitle = JSON.stringify(title)
-    const formdescription = JSON.stringify(description)
-    const formauthor = JSON.stringify(description)
-    
-    formData.append('image',item);
-    //formData.append('author',formauthor);
-    formData.append('content_title',formtitle);
-    formData.append('content_description',formdescription);
-    
     if (owner_address) {
       setLoading(true);
       setIsComplete(true);
-      fetch(`http://j6a107.p.ssafy.io/api/contents`,{
-        method: "POST",
-        headers: {
-          "Content-Type": "multipart/form-data",
+
+      var data = new FormData();
+      data.append('image', item);
+      data.append('content_title', '제목');
+      data.append('content_description', '설명');
+      
+      var config = {
+        method: 'post',
+        url: 'http://j6a107.p.ssafy.io/api/contents',
+        headers: { 
+          ...data.getHeaders()
         },
-        body : formData,
-      }).then((response) => console.log(response)) 
+        data : data
+      };
+
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
       //------------
       // const data = {
       //   author,
