@@ -50,9 +50,6 @@ public class Contents {
     @Column(unique = true, nullable = false)
     private String imgUrl;
 
-    @Enumerated(EnumType.STRING)
-    private Status thumbnailYn;
-
     public void setContentTitle(String contentTitle){
         this.contentTitle=contentTitle;
     }

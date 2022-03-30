@@ -10,10 +10,14 @@ import a107.fanleb.domain.collections.CollectionsRepository;
 import a107.fanleb.domain.contents.Contents;
 import a107.fanleb.domain.contents.ContentsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -49,6 +53,7 @@ public class ContentsService {
 
         if (collectionReq == null || collectionReq.isEmpty())
             collectionReq = "";
+
         String ownerAddress = contentsUpdateReq.getOwnerAddress();
 
         Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
@@ -99,6 +104,24 @@ public class ContentsService {
     @Transactional
     public void delete(int tokenId) {
         contentsRepository.deleteByTokenId(tokenId);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Contents> showByAddress(int page, String address){
+        PageRequest pageable = PageRequest.of(page - 1, 10, Sort.by("id").descending());
+
+        return contentsRepository.findByOwnerAddress(pageable, address);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Contents> show(int page, String address) {
+        PageRequest pageable = PageRequest.of(page - 1, 12, Sort.by("id").descending());
+        return contentsRepository.findByOwnerAddress(pageable, address);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Contents> showThumbnail(String address) {
+        return contentsRepository.findByOwnerAddress(address);
     }
 
 }

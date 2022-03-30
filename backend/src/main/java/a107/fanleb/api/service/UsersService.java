@@ -47,7 +47,7 @@ public class UsersService {
             //카테고리
             String userCategoryReq = usersEditReq.getUser_category();
             UsersCategory userCategory = null;
-            if (userCategoryReq != null || userCategoryReq.isBlank()) {
+            if (!userCategoryReq.isEmpty()) {
                 userCategory = usersCategoryRepository.findByUserCategoryName(userCategoryReq);
             }
             u.setUsersCategory(userCategory);
@@ -81,12 +81,17 @@ public class UsersService {
         return usersCategoryRepository.findAll();
     }
 
-    //구독자순
     @Transactional(readOnly = true)
-    public Page<Users> showList(int page) {
+    public Page<Users> showList(int page, String query) {
         PageRequest pageable = PageRequest.of(page - 1, 12);
+        
+        //TODO : 구독자 순
 
-        return null;
+        if(query==null || query.isEmpty()){
+            return usersRepository.findAll(pageable);
+        }else{
+            return usersRepository.findByNicknameContaining(pageable, query);
+        }
     }
 
     @Transactional(readOnly = true)

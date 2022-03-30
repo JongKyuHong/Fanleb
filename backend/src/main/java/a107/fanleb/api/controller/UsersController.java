@@ -20,7 +20,7 @@ public class UsersController {
     //지갑주소로 식별
     @PostMapping("/register")
     public ResponseEntity<? extends BaseResponseBody> register(@RequestBody Map<String, Object> body) {
-        usersService.register((String)body.get("user_address"));
+        usersService.register((String) body.get("user_address"));
         return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
     }
 
@@ -31,13 +31,13 @@ public class UsersController {
     }
 
     @PatchMapping("/edit")
-    public ResponseEntity<? extends BaseResponseBody> edit(@ModelAttribute UsersEditReq usersEditReq){
+    public ResponseEntity<? extends BaseResponseBody> edit(@ModelAttribute UsersEditReq usersEditReq) {
         return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.edit(usersEditReq)));
     }
 
     @DeleteMapping
     public ResponseEntity<? extends BaseResponseBody> delete(@RequestBody Map<String, Object> body) {
-        usersService.delete((String)body.get("user_address"));
+        usersService.delete((String) body.get("user_address"));
         return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
     }
 
@@ -46,9 +46,11 @@ public class UsersController {
         return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.showCategory()));
     }
 
-    @GetMapping
-    public ResponseEntity<? extends BaseResponseBody> showList(@RequestParam(value = "page", defaultValue = "1") int page) {
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.showList(page)));
+
+    @GetMapping("/list")
+    public ResponseEntity<? extends BaseResponseBody> showList(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                               @RequestParam(required = false, name = "search[query]") String query) {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.showList(page, query)));
     }
 
     @GetMapping("/first")
