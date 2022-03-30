@@ -126,6 +126,7 @@ const ItemRegistration = () => {
     // TODO
     setLoading(true)
     console.log(item.name)
+    console.log(bufferData)
     const owner_address = getAddressFrom(privKey);
     if (owner_address) {
       setLoading(true);
