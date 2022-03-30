@@ -46,15 +46,21 @@ public class ContentsService {
     @Transactional
     public void update(int contentId, ContentsUpdateReq contentsUpdateReq) {
         String collectionReq = contentsUpdateReq.getCollection();
+
+        if (collectionReq == null || collectionReq.isEmpty())
+            collectionReq = "";
         String ownerAddress = contentsUpdateReq.getOwnerAddress();
 
-        if (collectionReq == null || collectionReq.isBlank()) {
-            contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, null);
-        } else {
-            Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
+        Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
+
+        if (collectionEntity.isPresent()) {
             contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collectionEntity.get().getId());
+        } else {
+            Collections collection = collectionRepository.save(Collections.builder().collectionName(collectionReq).userAddress(ownerAddress).build());
+            contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collection.getId());
         }
     }
+
 
     @Transactional
     public Contents edit(int tokenId, ContentsEditReq contentsEditReq) {
@@ -68,26 +74,27 @@ public class ContentsService {
 
                     String collectionReq = contentsEditReq.getCollection();
 
-                    if (collectionReq == null || collectionReq.isBlank()) {
-                        c.setCollection(null);
+                    if (collectionReq == null || collectionReq.isEmpty())
+                        collectionReq = "";
+
+                    String ownerAddress = contentsEditReq.getOwnerAddress();
+
+                    Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
+
+                    if (collectionEntity.isPresent()) {
+                        c.setCollection(collectionEntity.get());
                     } else {
-                        if (collectionReq == null || collectionReq.isBlank()) {
-                            c.setCollection(null);
-                        } else {
-
-                            String ownerAddress = contentsEditReq.getOwnerAddress();
-
-                            Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
-
-                            c.setCollection(collectionEntity.get());
-                        }
+                        Collections collection = collectionRepository.save(Collections.builder().collectionName(collectionReq).userAddress(ownerAddress).build());
+                        c.setCollection(collection);
                     }
+
                     contentsRepository.save(c);
                 });
 
         return content.get();
 
     }
+
 
     @Transactional
     public void delete(int tokenId) {

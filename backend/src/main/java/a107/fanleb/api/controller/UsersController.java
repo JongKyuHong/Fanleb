@@ -46,10 +46,15 @@ public class UsersController {
         return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.showCategory()));
     }
 
-    //todo
     @GetMapping
     public ResponseEntity<? extends BaseResponseBody> showList(@RequestParam(value = "page", defaultValue = "1") int page) {
         return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.showList(page)));
+    }
+
+    @GetMapping("/first")
+    public ResponseEntity<? extends BaseResponseBody> isFirst(@RequestBody Map<String, Object> body) {
+
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.isFirst((String)body.get("user_address"))));
     }
 
 }
