@@ -99,9 +99,9 @@ public class UsersService {
         Optional<Users> user = usersRepository.findByUserAddress(userAddress);
 
         if(user.isPresent())
-            return true;
-        else
             return false;
+        else
+            return true;
     }
 
 }
