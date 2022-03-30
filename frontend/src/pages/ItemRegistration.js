@@ -143,7 +143,7 @@ const ItemRegistration = () => {
       fetch(`http://j6a107.p.ssafy.io/api/contents`,{
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
         body : formData,
       }).then((response) => console.log(response)) 
