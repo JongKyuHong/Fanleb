@@ -15,8 +15,7 @@ import IconButton from '../../theme/overrides/IconButton';
 import './navbar.css';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 import { Link } from "react-router-dom";
-import { updateSuccess } from '../../redux/userSlice';
-import Web3 from 'web3';
+import { openModal, updateSuccess } from '../../redux/userSlice';
 
 const Menu = () => (
   <>
@@ -49,7 +48,6 @@ const DashboardNavbar = () => {
   const dispatch = useDispatch();
   const navigator = useNavigate();
   const { userInfo, pending, error } = useSelector(state => state.user);
-
   const [toggleMenu,setToggleMenu] = useState(false)
   //  const [user, setUser] = useState(false)
 
@@ -62,12 +60,12 @@ const DashboardNavbar = () => {
   // 지갑 주소 가져오기
   let accounts;
   const enableEth = async () => {
-    if (userInfo.account) return;
+    if (userInfo?.userAddress.length > 0) return;
     accounts = await window.ethereum.request({ method: 'eth_requestAccounts'}).catch((err) => {
       console.log(err.code);
     })
-    dispatch(updateSuccess(accounts[0]));
-    console.log(accounts)
+    dispatch(updateSuccess(accounts[0]));    
+    console.log(accounts)    
   }
   // SSAFY 네트워크 chainId: 79f5
   return (
@@ -87,19 +85,16 @@ const DashboardNavbar = () => {
           </div>
         </div>
         <div className="navbar-sign">
-        {userInfo?.account ? (
+        {userInfo?.userAddress.length > 0 ? (
           <>
           <Link to="/create"> 
             <button type='button' className='primary-btn' >등록하기</button>
           </Link>
           <button type='button' className='secondary-btn'>지갑 변경</button>
           {/* <button type='button' className='secondary-btn' onClick={enableEth} >지갑 연결</button> */}
-          {!pending ?          
-            !error ? <Avatar onClick={() => updateUser(dispatch)} size="large" src={userInfo.url} sx={{ width: 56, height: 56 }} /> 
-              : <Avatar onClick={() => updateUser(dispatch)} size="large" src={""} sx={{ width: 56, height: 56 }} />
-            :
-            <CircularProgress />
-          }
+          <Avatar onClick={() => dispatch(openModal())} src={userInfo?.imageUrl} size="large" sx={{ width: 56, height: 56, cursor: 'pointer' }} />
+            
+          
           </>
         ): (
           <>
