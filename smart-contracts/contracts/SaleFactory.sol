@@ -13,7 +13,6 @@ import "./SsafyNFT.sol";
 contract SaleFactory is Ownable {
     address public admin;
     address[] public sales;
-    address public test;
 
     event NewSale(
         address indexed _saleContract,
@@ -30,19 +29,17 @@ contract SaleFactory is Ownable {
      */
     function createSale(
         uint256 itemId,
-        // uint256 minPrice,
         uint256 purchasePrice,
+        // uint256 minPrice,
         // uint256 startTime,
         // uint256 endTime,
         address currencyAddress,
         address nftAddress
     ) public returns (address) {
-        // TODO 
-
-        Sale newContract = new Sale(admin,admin,itemId,purchasePrice,currencyAddress,nftAddress);
-        emit NewSale(newContract.getAddress(), newContract.seller(), newContract.tokenId());
+        // TODO
+        Sale newContract = new Sale(admin, admin, itemId, purchasePrice, currencyAddress, nftAddress);
+        emit NewSale(newContract.getAddress(), newContract.getSeller(), newContract.gettokenId());
         return newContract.getAddress();
-        // return
     }
 
     function allSales() public view returns (address[] memory) {
@@ -60,7 +57,7 @@ contract Sale {
     address admin;
     // uint256 public saleStartTime;
     // uint256 public saleEndTime;
-    //uint256 public minPrice;
+    // uint256 public minPrice;
     uint256 public purchasePrice;
     uint256 public tokenId;
     address public currencyAddress;
@@ -114,12 +111,12 @@ contract Sale {
         // TODO 
         // int256 success = getTimeLeft();
         // require(success > 0);
-        require(erc20Contract.approve(buyer, purchasePrice));
+        require(erc20Contract.approve(msg.sender, purchasePrice));
 
-        erc20Contract.transfer(buyer,purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
-        erc20Contract.approve(buyer,purchasePrice);
+        erc20Contract.transfer(msg.sender, purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
+        erc20Contract.approve(msg.sender, purchasePrice);
         
-        erc721Constract.transferFrom(seller, buyer, tokenId);//erc721Constract // NFT소유권을 구매자에게 이전
+        erc721Constract.transferFrom(seller, msg.sender, tokenId); //erc721Constract // NFT소유권을 구매자에게 이전
         // 컨트랙트의 거래 상태와 구매자 정보를 업데이트
     }
 
@@ -144,11 +141,20 @@ contract Sale {
         //_burn // 환불진행
         // NFT소유권 돌려줌
         // 컨트랙트의 거래 상태를 업데이트
-
     }
+
     function getAddress() public view returns (address){
         return address(this);
     }
+
+    function getSeller() public view returns (address){
+        return seller;
+    }
+
+    function gettokenId() public view returns (uint256){
+        return tokenId;
+    }
+
     // function getTimeLeft() public view returns (int256) {
     //     return (int256)(saleEndTime - block.timestamp);
     // }
@@ -159,7 +165,7 @@ contract Sale {
         returns (
             // uint256,
             // uint256,
-            //uint256,
+            // uint256,
             uint256,
             uint256,
             //address,
@@ -171,7 +177,7 @@ contract Sale {
         return (
             // saleStartTime,
             // saleEndTime,
-            //minPrice,
+            // minPrice,
             purchasePrice,
             tokenId,
             //highestBidder,

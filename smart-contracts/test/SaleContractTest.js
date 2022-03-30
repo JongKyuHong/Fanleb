@@ -1,3 +1,5 @@
+
+
 /**
  *  PJT Ⅲ - Req.1-SC3) 시나리오 테스트
  */
@@ -11,7 +13,7 @@ let itemId = 0;
 contract("Sale Contract Testing", (accounts) => {
     const mintAmount = 10000;
     const uri = "testURI";
-    var id = "";
+
     async function print(title) {
         const seller = accounts[0];
         const bidder1 = accounts[1];
@@ -48,29 +50,55 @@ contract("Sale Contract Testing", (accounts) => {
     it("Purchase1", async () => {
         const seller = accounts[0];
         const purchaser = accounts[1];
-        return SsafyToken.deployed("ssafytoken","ssf","10000")
-            .then(instance =>{
-                instance.mint(mintAmount) // 테스트위한 임의의 erc20 토큰 생성 후 10,000토큰 발행
-                instance.forceToTransfer(seller,purchaser,1000) // 구매자 주소로 1,000토큰 부여
-        })
+
+        const token = await SsafyToken.deployed("ssafytoken","ssf",10000);
+
+        token.mint(mintAmount);
+        token.forceToTransfer(seller,purchaser,1000);
+
+        const nft = await SsafyNFT.deployed();
+        const id = nft.create(seller,uri);
+
+        const sf = await SaleFactory.deployed();
+        const addr = sf.createSale(itemId, 100, token.address, sf.address);
+
+        // seller_balance = await web3.eth.getBalance(seller)
+        // purchaser_balance = await web3.eth.getBalance(purchaser)
+        
+        // sb = await web3.utils.fromWei(seller_balance, "ssf")
+        // pb = await web3.utils.fromWei(purchaser_balance, "ssf")
+
+        // console.log(sb)
+        // console.log(pb)
+
+        // assert.equal(8900, seller_balance, "가능?");
+        // assert.equal(900, purchaser_balance, "갔음?");
+        // return SsafyToken.deployed("ssafytoken","ssf",10000)
+        //     .then(instance =>{
+        //         instance.mint(mintAmount) // 테스트위한 임의의 erc20 토큰 생성 후 10,000토큰 발행
+        //         instance.forceToTransfer(seller,purchaser,1000) // 구매자 주소로 1,000토큰 부여
+        // })
     });
-    it("Purchase2", async() =>{
-        const seller = accounts[0];
-        const purchaser = accounts[1];
-        return SsafyNFT.deployed()
-            .then(instance =>{
-                id = instance.create(seller,uri)
-            })
-    });
-    it("Purchase3", async() =>{
-        const seller = accounts[0];
-        const purchaser = accounts[1];
-        return SaleFactory.deployed()
-            .then(instance=>{
-                const add = instance.createSale(id, 100,0x6C927304104cdaa5a8b3691E0ADE8a3ded41a333,0x077A32620d00a1257E82D542969567Ac6e13f7cB) //0x6C927304104cdaa5a8b3691E0ADE8a3ded41a333 0x077A32620d00a1257E82D542969567Ac6e13f7cB
+
+    // it("Purchase2", async() =>{
+    //     const seller = accounts[0];
+    //     const purchaser = accounts[1];
+        
+    //     return SsafyNFT.deployed()
+    //         .then(instance =>{
+    //             id = instance.create(seller,uri)
+    //         })
+    // });
+
+    // it("Purchase3", async() =>{
+    //     const seller = accounts[0];
+    //     const purchaser = accounts[1];
+    //     return SaleFactory.deployed()
+    //         .then(instance=>{
+    //             const addr = instance.createSale(id, 100, "0x29546cf5F9bE6C50De2af841050B42a259605506", "0xF09FA70fF48466cF7BCd9AAA159491e8F52F89d1") //0x6C927304104cdaa5a8b3691E0ADE8a3ded41a333 0x077A32620d00a1257E82D542969567Ac6e13f7cB
                 
-            })
-    });
+    //         })
+    // });
     // it("Purchase4", async() =>{
     //     return Sale.deployed()
     //         .then(instance=>{
