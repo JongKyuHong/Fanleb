@@ -139,7 +139,7 @@ const ItemRegistration = () => {
         method: 'post',
         url: 'http://j6a107.p.ssafy.io/api/contents',
         headers: { 
-          ...data.getHeaders()
+          "Content-Type" : "multipart/form-data"
         },
         data : data
       };
