@@ -1,14 +1,20 @@
 import axios from "axios";
 import { updateStart, updateSuccess, updateFailure } from "./userSlice";
 
-// 고양이 사진을 랜덤으로 가져오는 API
-export const updateUser = async (dispatch) => {
+// 유저 정보를 서버에 저장하는 API
+export const updateUser = async (dispatch, userFormData) => {
   dispatch(updateStart());
-  try {
-    const res = await axios.get("https://api.thecatapi.com/v1/images/search");
-    console.log(res.data[0])
-    dispatch(updateSuccess(res.data[0].url));
+  try {    
+    const { data } = await axios({
+      method: "PATCH",
+      url: "api/users/edit",
+      data: userFormData,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    console.log(data.data)
+    dispatch(updateSuccess(data.data));
   } catch (err) {
+    console.log(err)
     dispatch(updateFailure());
   }
 };
