@@ -52,7 +52,8 @@ public class ContentsService {
         String collectionReq = contentsUpdateReq.getCollection();
 
         if (collectionReq == null || collectionReq.isEmpty())
-            collectionReq = null;
+            collectionReq = "";
+
         String ownerAddress = contentsUpdateReq.getOwnerAddress();
 
         Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
@@ -64,6 +65,7 @@ public class ContentsService {
             contentsRepository.update(contentsUpdateReq.getTokenId(), ownerAddress, contentId, collection.getId());
         }
     }
+
 
     @Transactional
     public Contents edit(int tokenId, ContentsEditReq contentsEditReq) {
@@ -78,7 +80,7 @@ public class ContentsService {
                     String collectionReq = contentsEditReq.getCollection();
 
                     if (collectionReq == null || collectionReq.isEmpty())
-                        collectionReq = null;
+                        collectionReq = "";
 
                     String ownerAddress = contentsEditReq.getOwnerAddress();
 
@@ -97,6 +99,7 @@ public class ContentsService {
         return content.get();
 
     }
+
 
     @Transactional
     public void delete(int tokenId) {

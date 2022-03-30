@@ -94,4 +94,14 @@ public class UsersService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public Boolean isFirst(String userAddress) {
+        Optional<Users> user = usersRepository.findByUserAddress(userAddress);
+
+        if(user.isPresent())
+            return false;
+        else
+            return true;
+    }
+
 }
