@@ -22,7 +22,7 @@ public class Sales {
     private Integer id;
 
     @Column(unique = true, nullable = false)
-    private Integer saleContractAddress;
+    private String saleContractAddress;
 
     @Column(nullable = false)
     private Status saleYn;
@@ -35,7 +35,5 @@ public class Sales {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
-
-    private LocalDateTime completedAt;
 
 }
