@@ -125,26 +125,28 @@ const ItemRegistration = () => {
   const addItem = async () => {
     // TODO
     setLoading(true)
-    console.log(item.name)
-    console.log(bufferData)
     const owner_address = getAddressFrom(privKey);
+
+    var formData = new FormData();
+    const formtitle = JSON.stringify(title)
+    const formdescription = JSON.stringify(description)
+    const formauthor = JSON.stringify(description)
+    
+    formData.append('image',item);
+    //formData.append('author',formauthor);
+    formData.append('content_title',formtitle);
+    formData.append('content_description',formdescription);
+    
     if (owner_address) {
       setLoading(true);
       setIsComplete(true);
-      try{
-        const response = await axios.post('http://j6a107.p.ssafy.io/api/contents',{
-            image: itemName,
-            content_title: title,
-            content_description: description
-        });
-        setcontentId(response.data.id); // 3
-        const token_id = NftRegistration(owner_address, response.data.img_url);
-        console.log(response, token_id)
-        setTokenId(token_id);
-        callapi(token_id,owner_address);//5 token_id와 owner_address 백엔드 업데이트 요청하면 된다. (추가)
-      } catch (error) {
-        console.log(error);
-      } 
+      fetch(`http://j6a107.p.ssafy.io/api/contents`,{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body : formData,
+      }).then((response) => console.log(response)) 
       //------------
       // const data = {
       //   author,
@@ -154,8 +156,7 @@ const ItemRegistration = () => {
       // }
       // const token_id = await NftRegistration(owner_address, privKey, data, bufferData);
       //--------------
-      setLoading(false)
-      setIsComplete(true)
+      
     }
   };
 
