@@ -46,8 +46,7 @@ const ItemRegistration = () => {
   const [isComplete, setIsComplete] = useState(false);
 
   // 새로만든 
-  const [nfttoken, setnfttoken] = useState('')
-  const [contentId, setcontentId] = useState('')
+  var FormData = require('form-data');
 
   // Web3
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
@@ -125,25 +124,33 @@ const ItemRegistration = () => {
   const addItem = async () => {
     // TODO
     setLoading(true)
-    console.log(item)
     const owner_address = getAddressFrom(privKey);
+
     if (owner_address) {
       setLoading(true);
       setIsComplete(true);
-      try{
-        const response = await axios.post('http://j6a107.p.ssafy.io/api/contents',{
-          image: item.name,
-          content_title: title,
-          content_description: description
-        });
-        setcontentId(response.data.id); // 3
-        const token_id = NftRegistration(owner_address, response.data.img_url);
-        console.log(response, token_id)
-        setTokenId(token_id);
-        callapi(token_id,owner_address);//5 token_id와 owner_address 백엔드 업데이트 요청하면 된다. (추가)
-      } catch (error) {
+
+      var data = new FormData();
+      data.append('image', item);
+      data.append('content_title', '제목');
+      data.append('content_description', '설명');
+      
+      var config = {
+        method: 'post',
+        url: 'http://j6a107.p.ssafy.io/api/contents',
+        headers: { 
+          "Content-Type" : "multipart/form-data"
+        },
+        data : data
+      };
+
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
         console.log(error);
-      } 
+      });
       //------------
       // const data = {
       //   author,
@@ -153,8 +160,7 @@ const ItemRegistration = () => {
       // }
       // const token_id = await NftRegistration(owner_address, privKey, data, bufferData);
       //--------------
-      setLoading(false)
-      setIsComplete(true)
+      
     }
   };
 
