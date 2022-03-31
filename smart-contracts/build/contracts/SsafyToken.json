@@ -10640,12 +10640,24 @@
   "ast": {
     "absolutePath": "project:/contracts/SsafyToken.sol",
     "exportedSymbols": {
-      "Context": [3043],
-      "ERC20": [1277],
-      "IERC20": [1355],
-      "IERC20Metadata": [1380],
-      "Ownable": [723],
-      "SsafyToken": [618]
+      "Context": [
+        3043
+      ],
+      "ERC20": [
+        1277
+      ],
+      "IERC20": [
+        1355
+      ],
+      "IERC20Metadata": [
+        1380
+      ],
+      "Ownable": [
+        723
+      ],
+      "SsafyToken": [
+        618
+      ]
     },
     "id": 619,
     "license": "MIT",
@@ -10653,7 +10665,12 @@
     "nodes": [
       {
         "id": 554,
-        "literals": ["solidity", "^", "0.8", ".0"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
         "nodeType": "PragmaDirective",
         "src": "33:23:3"
       },
@@ -10720,7 +10737,14 @@
         },
         "fullyImplemented": true,
         "id": 618,
-        "linearizedBaseContracts": [618, 723, 1277, 1380, 1355, 3043],
+        "linearizedBaseContracts": [
+          618,
+          723,
+          1277,
+          1380,
+          1355,
+          3043
+        ],
         "name": "SsafyToken",
         "nameLocation": "278:10:3",
         "nodeType": "ContractDefinition",
@@ -11380,12 +11404,24 @@
   "legacyAST": {
     "absolutePath": "project:/contracts/SsafyToken.sol",
     "exportedSymbols": {
-      "Context": [3043],
-      "ERC20": [1277],
-      "IERC20": [1355],
-      "IERC20Metadata": [1380],
-      "Ownable": [723],
-      "SsafyToken": [618]
+      "Context": [
+        3043
+      ],
+      "ERC20": [
+        1277
+      ],
+      "IERC20": [
+        1355
+      ],
+      "IERC20Metadata": [
+        1380
+      ],
+      "Ownable": [
+        723
+      ],
+      "SsafyToken": [
+        618
+      ]
     },
     "id": 619,
     "license": "MIT",
@@ -11393,7 +11429,12 @@
     "nodes": [
       {
         "id": 554,
-        "literals": ["solidity", "^", "0.8", ".0"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
         "nodeType": "PragmaDirective",
         "src": "33:23:3"
       },
@@ -11460,7 +11501,14 @@
         },
         "fullyImplemented": true,
         "id": 618,
-        "linearizedBaseContracts": [618, 723, 1277, 1380, 1355, 3043],
+        "linearizedBaseContracts": [
+          618,
+          723,
+          1277,
+          1380,
+          1355,
+          3043
+        ],
         "name": "SsafyToken",
         "nameLocation": "278:10:3",
         "nodeType": "ContractDefinition",
@@ -12273,10 +12321,16 @@
       "links": {},
       "address": "0xb3f3B97aeA9B1dBF83e7c2e6B2beA5f4a2fCE05D",
       "transactionHash": "0xec29f7e31d8ae0cb4b90e5bb339b89d84bac3d42ff0406ffe1cf161ed8feeb91"
+    },
+    "1648706940318": {
+      "events": {},
+      "links": {},
+      "address": "0x55815f746a53574523296831B33c2277B2760562",
+      "transactionHash": "0x7a54ad4941928dbcfd4e7298652c52d6ce73fd4a5b97fd018284e75720bcbb64"
     }
   },
-  "schemaVersion": "3.4.5",
-  "updatedAt": "2022-03-31T05:03:30.526Z",
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2022-03-31T07:08:44.326Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

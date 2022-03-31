@@ -14220,19 +14220,45 @@
   "ast": {
     "absolutePath": "project:/contracts/SsafyNFT.sol",
     "exportedSymbols": {
-      "Address": [3021],
-      "Context": [3043],
-      "Counters": [3668],
-      "ERC165": [3270],
-      "ERC721": [2194],
-      "ERC721Enumerable": [2666],
-      "IERC165": [3282],
-      "IERC721": [2310],
-      "IERC721Enumerable": [2697],
-      "IERC721Metadata": [2724],
-      "IERC721Receiver": [2328],
-      "SsafyNFT": [552],
-      "Strings": [3246]
+      "Address": [
+        3021
+      ],
+      "Context": [
+        3043
+      ],
+      "Counters": [
+        3668
+      ],
+      "ERC165": [
+        3270
+      ],
+      "ERC721": [
+        2194
+      ],
+      "ERC721Enumerable": [
+        2666
+      ],
+      "IERC165": [
+        3282
+      ],
+      "IERC721": [
+        2310
+      ],
+      "IERC721Enumerable": [
+        2697
+      ],
+      "IERC721Metadata": [
+        2724
+      ],
+      "IERC721Receiver": [
+        2328
+      ],
+      "SsafyNFT": [
+        552
+      ],
+      "Strings": [
+        3246
+      ]
     },
     "id": 553,
     "license": "MIT",
@@ -14240,7 +14266,12 @@
     "nodes": [
       {
         "id": 421,
-        "literals": ["solidity", "^", "0.8", ".4"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".4"
+        ],
         "nodeType": "PragmaDirective",
         "src": "33:23:2"
       },
@@ -14320,7 +14351,15 @@
         "fullyImplemented": true,
         "id": 552,
         "linearizedBaseContracts": [
-          552, 2666, 2697, 2194, 2724, 2310, 3270, 3282, 3043
+          552,
+          2666,
+          2697,
+          2194,
+          2724,
+          2310,
+          3270,
+          3282,
+          3043
         ],
         "name": "SsafyNFT",
         "nameLocation": "381:8:2",
@@ -14516,7 +14555,9 @@
             "visibility": "public"
           },
           {
-            "baseFunctions": [1593],
+            "baseFunctions": [
+              1593
+            ],
             "body": {
               "id": 460,
               "nodeType": "Block",
@@ -14712,7 +14753,9 @@
                   "src": "1071:21:2"
                 },
                 {
-                  "assignments": [476],
+                  "assignments": [
+                    476
+                  ],
                   "declarations": [
                     {
                       "constant": false,
@@ -15059,7 +15102,9 @@
             "visibility": "public"
           },
           {
-            "baseFunctions": [1867],
+            "baseFunctions": [
+              1867
+            ],
             "body": {
               "id": 513,
               "nodeType": "Block",
@@ -15284,7 +15329,10 @@
             "visibility": "public"
           },
           {
-            "baseFunctions": [2119, 2504],
+            "baseFunctions": [
+              2119,
+              2504
+            ],
             "body": {
               "id": 534,
               "nodeType": "Block",
@@ -15523,7 +15571,10 @@
             "visibility": "internal"
           },
           {
-            "baseFunctions": [1477, 2378],
+            "baseFunctions": [
+              1477,
+              2378
+            ],
             "body": {
               "id": 550,
               "nodeType": "Block",
@@ -15714,19 +15765,45 @@
   "legacyAST": {
     "absolutePath": "project:/contracts/SsafyNFT.sol",
     "exportedSymbols": {
-      "Address": [3021],
-      "Context": [3043],
-      "Counters": [3668],
-      "ERC165": [3270],
-      "ERC721": [2194],
-      "ERC721Enumerable": [2666],
-      "IERC165": [3282],
-      "IERC721": [2310],
-      "IERC721Enumerable": [2697],
-      "IERC721Metadata": [2724],
-      "IERC721Receiver": [2328],
-      "SsafyNFT": [552],
-      "Strings": [3246]
+      "Address": [
+        3021
+      ],
+      "Context": [
+        3043
+      ],
+      "Counters": [
+        3668
+      ],
+      "ERC165": [
+        3270
+      ],
+      "ERC721": [
+        2194
+      ],
+      "ERC721Enumerable": [
+        2666
+      ],
+      "IERC165": [
+        3282
+      ],
+      "IERC721": [
+        2310
+      ],
+      "IERC721Enumerable": [
+        2697
+      ],
+      "IERC721Metadata": [
+        2724
+      ],
+      "IERC721Receiver": [
+        2328
+      ],
+      "SsafyNFT": [
+        552
+      ],
+      "Strings": [
+        3246
+      ]
     },
     "id": 553,
     "license": "MIT",
@@ -15734,7 +15811,12 @@
     "nodes": [
       {
         "id": 421,
-        "literals": ["solidity", "^", "0.8", ".4"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".4"
+        ],
         "nodeType": "PragmaDirective",
         "src": "33:23:2"
       },
@@ -15814,7 +15896,15 @@
         "fullyImplemented": true,
         "id": 552,
         "linearizedBaseContracts": [
-          552, 2666, 2697, 2194, 2724, 2310, 3270, 3282, 3043
+          552,
+          2666,
+          2697,
+          2194,
+          2724,
+          2310,
+          3270,
+          3282,
+          3043
         ],
         "name": "SsafyNFT",
         "nameLocation": "381:8:2",
@@ -16010,7 +16100,9 @@
             "visibility": "public"
           },
           {
-            "baseFunctions": [1593],
+            "baseFunctions": [
+              1593
+            ],
             "body": {
               "id": 460,
               "nodeType": "Block",
@@ -16206,7 +16298,9 @@
                   "src": "1071:21:2"
                 },
                 {
-                  "assignments": [476],
+                  "assignments": [
+                    476
+                  ],
                   "declarations": [
                     {
                       "constant": false,
@@ -16553,7 +16647,9 @@
             "visibility": "public"
           },
           {
-            "baseFunctions": [1867],
+            "baseFunctions": [
+              1867
+            ],
             "body": {
               "id": 513,
               "nodeType": "Block",
@@ -16778,7 +16874,10 @@
             "visibility": "public"
           },
           {
-            "baseFunctions": [2119, 2504],
+            "baseFunctions": [
+              2119,
+              2504
+            ],
             "body": {
               "id": 534,
               "nodeType": "Block",
@@ -17017,7 +17116,10 @@
             "visibility": "internal"
           },
           {
-            "baseFunctions": [1477, 2378],
+            "baseFunctions": [
+              1477,
+              2378
+            ],
             "body": {
               "id": 550,
               "nodeType": "Block",
@@ -17221,10 +17323,16 @@
       "links": {},
       "address": "0xa7f990e19fe9810F19eC5b81d10f0b5204853FBb",
       "transactionHash": "0xe494ac0be9cd2ad428f892d2d6ceaad04b44fb9b9cf21c2b21e42d186125b831"
+    },
+    "1648706940318": {
+      "events": {},
+      "links": {},
+      "address": "0xC8cbDe94d91791d7Fd2282c04C021271449eFc4D",
+      "transactionHash": "0xed4f47389ea11dde2029b2a344bacb1c5aa36b79dd9e9a1598f2bd3aeb18671b"
     }
   },
-  "schemaVersion": "3.4.5",
-  "updatedAt": "2022-03-31T05:03:30.533Z",
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2022-03-31T07:08:44.352Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

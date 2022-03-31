@@ -49,7 +49,9 @@
   "ast": {
     "absolutePath": "project:/contracts/token/ERC721/IERC721Receiver.sol",
     "exportedSymbols": {
-      "IERC721Receiver": [2328]
+      "IERC721Receiver": [
+        2328
+      ]
     },
     "id": 2329,
     "license": "MIT",
@@ -57,7 +59,12 @@
     "nodes": [
       {
         "id": 2312,
-        "literals": ["solidity", "^", "0.8", ".0"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
         "nodeType": "PragmaDirective",
         "src": "104:23:10"
       },
@@ -75,7 +82,9 @@
         },
         "fullyImplemented": false,
         "id": 2328,
-        "linearizedBaseContracts": [2328],
+        "linearizedBaseContracts": [
+          2328
+        ],
         "name": "IERC721Receiver",
         "nameLocation": "299:15:10",
         "nodeType": "ContractDefinition",
@@ -263,7 +272,9 @@
   "legacyAST": {
     "absolutePath": "project:/contracts/token/ERC721/IERC721Receiver.sol",
     "exportedSymbols": {
-      "IERC721Receiver": [2328]
+      "IERC721Receiver": [
+        2328
+      ]
     },
     "id": 2329,
     "license": "MIT",
@@ -271,7 +282,12 @@
     "nodes": [
       {
         "id": 2312,
-        "literals": ["solidity", "^", "0.8", ".0"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
         "nodeType": "PragmaDirective",
         "src": "104:23:10"
       },
@@ -289,7 +305,9 @@
         },
         "fullyImplemented": false,
         "id": 2328,
-        "linearizedBaseContracts": [2328],
+        "linearizedBaseContracts": [
+          2328
+        ],
         "name": "IERC721Receiver",
         "nameLocation": "299:15:10",
         "nodeType": "ContractDefinition",
@@ -479,8 +497,8 @@
     "version": "0.8.10+commit.fc410830.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.4.5",
-  "updatedAt": "2022-03-31T05:03:18.973Z",
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2022-03-31T07:08:37.596Z",
   "devdoc": {
     "details": "Interface for any contract that wants to support safeTransfers from ERC721 asset contracts.",
     "kind": "dev",

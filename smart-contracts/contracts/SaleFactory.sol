@@ -151,6 +151,10 @@ contract Sale {
         return tokenId;
     }
 
+    function getCurrencyAmount() public view returns (uint256) { 
+        return erc20Contract.balanceOf(msg.sender); // 계정이 소유한 토큰의 양을 반환
+    }
+
     // function getTimeLeft() public view returns (int256) {
     //     return (int256)(saleEndTime - block.timestamp);
     // }
