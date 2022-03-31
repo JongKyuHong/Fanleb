@@ -25,9 +25,9 @@ public class UsersController {
     }
 
     @GetMapping("/address")
-    public ResponseEntity<? extends BaseResponseBody> view(@RequestBody Map<String, Object> body) {
+    public ResponseEntity<? extends BaseResponseBody> view(@RequestParam(name = "user_address") String userAddress) {
 
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.view((String)body.get("user_address"))));
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.view(userAddress)));
     }
 
     @PatchMapping("/edit")
