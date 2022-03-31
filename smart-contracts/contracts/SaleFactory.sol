@@ -28,6 +28,7 @@ contract SaleFactory is Ownable {
      * @dev 반드시 구현해야하는 함수입니다. 
      */
     function createSale(
+        address seller,
         uint256 itemId,
         uint256 purchasePrice,
         // uint256 minPrice,
@@ -37,7 +38,7 @@ contract SaleFactory is Ownable {
         address nftAddress
     ) public returns (address) {
         // TODO
-        Sale newContract = new Sale(admin, admin, itemId, purchasePrice, currencyAddress, nftAddress);
+        Sale newContract = new Sale(admin, seller, itemId, purchasePrice, currencyAddress, nftAddress);
         emit NewSale(newContract.getAddress(), newContract.getSeller(), newContract.gettokenId());
         return newContract.getAddress();
     }
@@ -107,14 +108,14 @@ contract Sale {
         require(erc20Contract.approve(buyer, bid_amount));
     }
 
-    function purchase() public onlySeller{ // onlyAfterStart
+    function purchase(address _buyer) public onlySeller{ // onlyAfterStart
         // TODO 
         // int256 success = getTimeLeft();
         // require(success > 0);
-        require(erc20Contract.approve(msg.sender, purchasePrice));
+        require(erc20Contract.approve(_buyer, purchasePrice));
 
-        erc20Contract.transfer(msg.sender, purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
-        erc20Contract.approve(msg.sender, purchasePrice);
+        erc20Contract.transfer(_buyer, purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
+        erc20Contract.approve(_buyer, purchasePrice);
         
         erc721Constract.transferFrom(seller, msg.sender, tokenId); //erc721Constract // NFT소유권을 구매자에게 이전
         // 컨트랙트의 거래 상태와 구매자 정보를 업데이트

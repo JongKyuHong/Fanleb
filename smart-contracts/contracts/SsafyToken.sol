@@ -19,4 +19,8 @@ contract SsafyToken is ERC20, Ownable{
     function forceToTransfer(address from, address to, uint256 amount) public onlyOwner{
         _transfer(from, to, amount);
     }
+
+    function getsupply() public view returns (uint256){
+        return totalSupply();
+    }
 }
