@@ -60,8 +60,8 @@ public class UsersController {
     }
 
     @GetMapping("/valid/nickname")
-    public ResponseEntity<? extends BaseResponseBody> isDuplicateNickname(@RequestParam(name = "user_address") String userAddress) {
-        usersService.isDuplicateNickname(userAddress);
+    public ResponseEntity<? extends BaseResponseBody> isDuplicateNickname(@RequestParam(name = "nickname") String nickname) {
+        usersService.isDuplicateNickname(nickname);
         return ResponseEntity.status(200).body(BaseResponseBody.of("등록된 사용자가 없습니다"));
     }
 }
