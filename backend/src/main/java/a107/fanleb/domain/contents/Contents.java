@@ -4,6 +4,7 @@ import a107.fanleb.domain.Status;
 import a107.fanleb.domain.collections.Collections;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -37,6 +38,7 @@ public class Contents {
     private String ownerAddress;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
@@ -50,16 +52,20 @@ public class Contents {
     @Column(unique = true, nullable = false)
     private String imgUrl;
 
-    public void setContentTitle(String contentTitle){
-        this.contentTitle=contentTitle;
+    public void setContentTitle(String contentTitle) {
+        this.contentTitle = contentTitle;
     }
 
-    public void setContentDescription(String contentDescription){
-        this.contentDescription=contentDescription;
+    public void setContentDescription(String contentDescription) {
+        this.contentDescription = contentDescription;
     }
 
-    public void setCollection(Collections collection){
-        this.collection=collection;
+    public void setCollection(Collections collection) {
+        this.collection = collection;
+    }
+
+    public void setOnSaleYn(Status onSaleYn) {
+        this.onSaleYn = onSaleYn;
     }
 
 }

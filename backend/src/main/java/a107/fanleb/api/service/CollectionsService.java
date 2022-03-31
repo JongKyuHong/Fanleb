@@ -28,20 +28,20 @@ public class CollectionsService {
         collectionsRepository.save(Collections.builder().userAddress(collectionsRegisterReq.getUserAddress()).collectionName(collectionsRegisterReq.getCollection()).build());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<Collections> show(int page, String userAddress) {
         PageRequest pageable = PageRequest.of(page - 1, 12, Sort.by("id").descending());
         return collectionsRepository.findByUserAddress(pageable, userAddress);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<CollectionsListViewRes> showList(int page, String query, String isAscending, String sortedBy) {
         PageRequest pageable = PageRequest.of(page - 1, 12);
 
         return collectionsRepositorySupport.findBySortedBy(pageable, query, sortedBy);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<Contents> showContentsInCollection(int page, String userAddress, int collectionId) {
         PageRequest pageable = PageRequest.of(page - 1, 12, Sort.by("id").descending());
         Collections collection = collectionsRepository.findById(collectionId).get();
