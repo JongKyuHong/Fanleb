@@ -36044,7 +36044,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.5",
-  "updatedAt": "2022-03-31T02:11:42.443Z",
+  "updatedAt": "2022-03-31T05:03:18.957Z",
   "devdoc": {
     "details": "EIP-721을 준수하여 ERC721을 작성합니다.  https://eips.ethereum.org/EIPS/eip-721[ERC721] Non-Fungible Token Standard",
     "kind": "dev",
