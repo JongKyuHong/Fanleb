@@ -36,8 +36,8 @@ public class UsersController {
     }
 
     @DeleteMapping
-    public ResponseEntity<? extends BaseResponseBody> delete(@RequestBody Map<String, Object> body) {
-        usersService.delete((String) body.get("user_address"));
+    public ResponseEntity<? extends BaseResponseBody> delete(@RequestParam(name = "user_address") String userAddress) {
+        usersService.delete(userAddress);
         return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
     }
 
@@ -54,14 +54,14 @@ public class UsersController {
     }
 
     @GetMapping("/valid/first")
-    public ResponseEntity<? extends BaseResponseBody> isDuplicateUseraddress(@RequestBody Map<String, Object> body) {
-        usersService.isDuplicateUseraddress((String)body.get("user_address"));
+    public ResponseEntity<? extends BaseResponseBody> isDuplicateUseraddress(@RequestParam(name = "user_address") String userAddress) {
+        usersService.isDuplicateUseraddress(userAddress);
         return ResponseEntity.status(200).body(BaseResponseBody.of("등록된 사용자가 없습니다"));
     }
 
     @GetMapping("/valid/nickname")
-    public ResponseEntity<? extends BaseResponseBody> isDuplicateNickname(@RequestBody Map<String, Object> body) {
-        usersService.isDuplicateNickname((String)body.get("nickname"));
+    public ResponseEntity<? extends BaseResponseBody> isDuplicateNickname(@RequestParam(name = "user_address") String userAddress) {
+        usersService.isDuplicateNickname(userAddress);
         return ResponseEntity.status(200).body(BaseResponseBody.of("등록된 사용자가 없습니다"));
     }
 }
