@@ -13,7 +13,6 @@ import "./SsafyNFT.sol";
 contract SaleFactory is Ownable {
     address public admin;
     address[] public sales;
-    address public test;
 
     event NewSale(
         address indexed _saleContract,
@@ -29,20 +28,21 @@ contract SaleFactory is Ownable {
      * @dev 반드시 구현해야하는 함수입니다. 
      */
     function createSale(
+        address seller,
+        address buyer,
         uint256 itemId,
-        // uint256 minPrice,
         uint256 purchasePrice,
+        // uint256 minPrice,
         // uint256 startTime,
         // uint256 endTime,
         address currencyAddress,
         address nftAddress
     ) public returns (address) {
-        // TODO 
-
-        Sale newContract = new Sale(admin,admin,itemId,purchasePrice,currencyAddress,nftAddress);
-        emit NewSale(newContract.getAddress(), newContract.seller(), newContract.tokenId());
+        // TODO
+        Sale newContract = new Sale(admin, seller, buyer, itemId, purchasePrice, currencyAddress, nftAddress);
+        emit NewSale(newContract.getAddress(), newContract.getSeller(), newContract.gettokenId());
+        sales.push(newContract.getAddress());
         return newContract.getAddress();
-        // return
     }
 
     function allSales() public view returns (address[] memory) {
@@ -60,7 +60,7 @@ contract Sale {
     address admin;
     // uint256 public saleStartTime;
     // uint256 public saleEndTime;
-    //uint256 public minPrice;
+    // uint256 public minPrice;
     uint256 public purchasePrice;
     uint256 public tokenId;
     address public currencyAddress;
@@ -80,6 +80,7 @@ contract Sale {
     constructor(
         address _admin,
         address _seller,
+        address _buyer,
         uint256 _tokenId,
         //uint256 _minPrice,
         uint256 _purchasePrice,
@@ -93,13 +94,14 @@ contract Sale {
         //minPrice = _minPrice;
         purchasePrice = _purchasePrice;
         seller = _seller;
+        buyer = _buyer;
         admin = _admin;
         // saleStartTime = startTime;
         // saleEndTime = endTime;
         currencyAddress = _currencyAddress;
         nftAddress = _nftAddress;
         ended = false;
-        erc20Contract = IERC20(_currencyAddress);
+        erc20Contract = ERC20(_currencyAddress);
         erc721Constract = IERC721(_nftAddress);
     }
 
@@ -111,44 +113,44 @@ contract Sale {
     }
 
     function purchase() public onlySeller{ // onlyAfterStart
-        // TODO 
-        // int256 success = getTimeLeft();
-        // require(success > 0);
+        // TODO
+        require(seller != msg.sender);
         require(erc20Contract.approve(buyer, purchasePrice));
 
-        erc20Contract.transfer(buyer,purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
-        erc20Contract.approve(buyer,purchasePrice);
+        erc20Contract.transfer(buyer, purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
+        erc20Contract.approve(buyer, purchasePrice);
         
-        erc721Constract.transferFrom(seller, buyer, tokenId);//erc721Constract // NFT소유권을 구매자에게 이전
-        // 컨트랙트의 거래 상태와 구매자 정보를 업데이트
+        erc721Constract.transferFrom(seller, buyer, tokenId); //erc721Constract // NFT소유권을 구매자에게 이전
+        ended = true;// 컨트랙트의 거래 상태와 구매자 정보를 업데이트 구매자 정보 업데이트??
     }
 
     function confirmItem() public {
         // TODO 
-        // int256 success = getTimeLeft();
-        // require(success < 0);
-        require(msg.sender == highestBidder);
-        
-        erc20Contract.transfer(msg.sender,purchasePrice);
-        //erc721Constract // NFT소유권을 구매자에게 이전
-        // 컨트랙트의 거래 상태와 구매자 정보를 업데이트
     }
     
-    function cancelSales() public view{
+    function cancelSales() public{
         // TODO
         // int256 success = getTimeLeft();
         // require(success > 0);
-        require(msg.sender == admin);
-        require(msg.sender == seller);
+        require(msg.sender == admin || msg.sender == seller);
 
-        //_burn // 환불진행
-        // NFT소유권 돌려줌
-        // 컨트랙트의 거래 상태를 업데이트
-
+        erc20Contract.transferFrom(buyer, seller, purchasePrice); // 환불진행
+        erc721Constract.transferFrom(buyer, seller, tokenId);// NFT소유권 돌려줌
+        ended = true;// 컨트랙트의 거래 상태를 업데이트
     }
+
     function getAddress() public view returns (address){
         return address(this);
     }
+
+    function getSeller() public view returns (address){
+        return seller;
+    }
+
+    function gettokenId() public view returns (uint256){
+        return tokenId;
+    }
+
     // function getTimeLeft() public view returns (int256) {
     //     return (int256)(saleEndTime - block.timestamp);
     // }
@@ -159,7 +161,7 @@ contract Sale {
         returns (
             // uint256,
             // uint256,
-            //uint256,
+            // uint256,
             uint256,
             uint256,
             //address,
@@ -171,7 +173,7 @@ contract Sale {
         return (
             // saleStartTime,
             // saleEndTime,
-            //minPrice,
+            // minPrice,
             purchasePrice,
             tokenId,
             //highestBidder,
