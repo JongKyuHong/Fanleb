@@ -9,9 +9,11 @@ import a107.fanleb.domain.usersCategory.UsersCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
@@ -84,14 +86,31 @@ public class UsersService {
     @Transactional(readOnly = true)
     public Page<Users> showList(int page, String query) {
         PageRequest pageable = PageRequest.of(page - 1, 12);
-        
+
         //TODO : 구독자 순
 
-        if(query==null || query.isEmpty()){
+        if (query == null || query.isEmpty()) {
             return usersRepository.findAll(pageable);
-        }else{
+        } else {
             return usersRepository.findByNicknameContaining(pageable, query);
         }
     }
 
+    @Transactional(readOnly = true)
+    public void isDuplicateUseraddress(String userAddress) {
+        Optional<Users> user = usersRepository.findByUserAddress(userAddress);
+
+        user.ifPresent(u -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "등록된 사용자가 있습니다");
+        });
+    }
+
+    @Transactional(readOnly = true)
+    public void isDuplicateNickname(String userAddress) {
+        Optional<Users> user = usersRepository.findByNickname(userAddress);
+
+        user.ifPresent(u -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "등록된 사용자가 있습니다");
+        });
+    }
 }
