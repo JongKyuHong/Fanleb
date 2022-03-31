@@ -198,9 +198,7 @@
   "ast": {
     "absolutePath": "project:/contracts/token/ERC20/IERC20.sol",
     "exportedSymbols": {
-      "IERC20": [
-        1355
-      ]
+      "IERC20": [1355]
     },
     "id": 1356,
     "license": "MIT",
@@ -208,12 +206,7 @@
     "nodes": [
       {
         "id": 1279,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".4"
-        ],
+        "literals": ["solidity", "^", "0.8", ".4"],
         "nodeType": "PragmaDirective",
         "src": "94:23:6"
       },
@@ -231,9 +224,7 @@
         },
         "fullyImplemented": false,
         "id": 1355,
-        "linearizedBaseContracts": [
-          1355
-        ],
+        "linearizedBaseContracts": [1355],
         "name": "IERC20",
         "nameLocation": "205:6:6",
         "nodeType": "ContractDefinition",
@@ -1111,9 +1102,7 @@
   "legacyAST": {
     "absolutePath": "project:/contracts/token/ERC20/IERC20.sol",
     "exportedSymbols": {
-      "IERC20": [
-        1355
-      ]
+      "IERC20": [1355]
     },
     "id": 1356,
     "license": "MIT",
@@ -1121,12 +1110,7 @@
     "nodes": [
       {
         "id": 1279,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".4"
-        ],
+        "literals": ["solidity", "^", "0.8", ".4"],
         "nodeType": "PragmaDirective",
         "src": "94:23:6"
       },
@@ -1144,9 +1128,7 @@
         },
         "fullyImplemented": false,
         "id": 1355,
-        "linearizedBaseContracts": [
-          1355
-        ],
+        "linearizedBaseContracts": [1355],
         "name": "IERC20",
         "nameLocation": "205:6:6",
         "nodeType": "ContractDefinition",
@@ -2026,8 +2008,8 @@
     "version": "0.8.10+commit.fc410830.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.4.3",
-  "updatedAt": "2022-03-31T06:13:16.307Z",
+  "schemaVersion": "3.4.5",
+  "updatedAt": "2022-03-31T05:03:18.928Z",
   "devdoc": {
     "details": "Interface of the ERC20 standard as defined in the EIP.",
     "events": {

@@ -4885,63 +4885,25 @@
   "ast": {
     "absolutePath": "project:/contracts/SaleFactory.sol",
     "exportedSymbols": {
-      "Address": [
-        3021
-      ],
-      "Context": [
-        3043
-      ],
-      "Counters": [
-        3668
-      ],
-      "ERC165": [
-        3270
-      ],
-      "ERC20": [
-        1277
-      ],
-      "ERC721": [
-        2194
-      ],
-      "ERC721Enumerable": [
-        2666
-      ],
-      "IERC165": [
-        3282
-      ],
-      "IERC20": [
-        1355
-      ],
-      "IERC20Metadata": [
-        1380
-      ],
-      "IERC721": [
-        2310
-      ],
-      "IERC721Enumerable": [
-        2697
-      ],
-      "IERC721Metadata": [
-        2724
-      ],
-      "IERC721Receiver": [
-        2328
-      ],
-      "Ownable": [
-        723
-      ],
-      "Sale": [
-        419
-      ],
-      "SaleFactory": [
-        131
-      ],
-      "SsafyNFT": [
-        552
-      ],
-      "Strings": [
-        3246
-      ]
+      "Address": [3021],
+      "Context": [3043],
+      "Counters": [3668],
+      "ERC165": [3270],
+      "ERC20": [1277],
+      "ERC721": [2194],
+      "ERC721Enumerable": [2666],
+      "IERC165": [3282],
+      "IERC20": [1355],
+      "IERC20Metadata": [1380],
+      "IERC721": [2310],
+      "IERC721Enumerable": [2697],
+      "IERC721Metadata": [2724],
+      "IERC721Receiver": [2328],
+      "Ownable": [723],
+      "Sale": [419],
+      "SaleFactory": [131],
+      "SsafyNFT": [552],
+      "Strings": [3246]
     },
     "id": 420,
     "license": "MIT",
@@ -4949,12 +4911,7 @@
     "nodes": [
       {
         "id": 34,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".4"
-        ],
+        "literals": ["solidity", "^", "0.8", ".4"],
         "nodeType": "PragmaDirective",
         "src": "33:23:1"
       },
@@ -5023,9 +4980,7 @@
           }
         ],
         "canonicalName": "SaleFactory",
-        "contractDependencies": [
-          419
-        ],
+        "contractDependencies": [419],
         "contractKind": "contract",
         "documentation": {
           "id": 39,
@@ -5035,11 +4990,7 @@
         },
         "fullyImplemented": true,
         "id": 131,
-        "linearizedBaseContracts": [
-          131,
-          723,
-          3043
-        ],
+        "linearizedBaseContracts": [131, 723, 3043],
         "name": "SaleFactory",
         "nameLocation": "357:11:1",
         "nodeType": "ContractDefinition",
@@ -5309,9 +5260,7 @@
               "src": "1021:326:1",
               "statements": [
                 {
-                  "assignments": [
-                    83
-                  ],
+                  "assignments": [83],
                   "declarations": [
                     {
                       "constant": false,
@@ -6188,9 +6137,7 @@
         },
         "fullyImplemented": true,
         "id": 419,
-        "linearizedBaseContracts": [
-          419
-        ],
+        "linearizedBaseContracts": [419],
         "name": "Sale",
         "nameLocation": "1509:4:1",
         "nodeType": "ContractDefinition",
@@ -6760,10 +6707,7 @@
                       "id": 187,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2527:7:1",
                       "typeDescriptions": {
@@ -7617,10 +7561,7 @@
                       "id": 245,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "3218:7:1",
                       "typeDescriptions": {
@@ -7793,10 +7734,7 @@
                       "id": 259,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "3366:7:1",
                       "typeDescriptions": {
@@ -7916,10 +7854,7 @@
                       "id": 266,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "3406:7:1",
                       "typeDescriptions": {
@@ -8486,10 +8421,7 @@
                       "id": 308,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "4116:7:1",
                       "typeDescriptions": {
@@ -9612,10 +9544,7 @@
                       "id": 408,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "6019:7:1",
                       "typeDescriptions": {
@@ -9674,63 +9603,25 @@
   "legacyAST": {
     "absolutePath": "project:/contracts/SaleFactory.sol",
     "exportedSymbols": {
-      "Address": [
-        3021
-      ],
-      "Context": [
-        3043
-      ],
-      "Counters": [
-        3668
-      ],
-      "ERC165": [
-        3270
-      ],
-      "ERC20": [
-        1277
-      ],
-      "ERC721": [
-        2194
-      ],
-      "ERC721Enumerable": [
-        2666
-      ],
-      "IERC165": [
-        3282
-      ],
-      "IERC20": [
-        1355
-      ],
-      "IERC20Metadata": [
-        1380
-      ],
-      "IERC721": [
-        2310
-      ],
-      "IERC721Enumerable": [
-        2697
-      ],
-      "IERC721Metadata": [
-        2724
-      ],
-      "IERC721Receiver": [
-        2328
-      ],
-      "Ownable": [
-        723
-      ],
-      "Sale": [
-        419
-      ],
-      "SaleFactory": [
-        131
-      ],
-      "SsafyNFT": [
-        552
-      ],
-      "Strings": [
-        3246
-      ]
+      "Address": [3021],
+      "Context": [3043],
+      "Counters": [3668],
+      "ERC165": [3270],
+      "ERC20": [1277],
+      "ERC721": [2194],
+      "ERC721Enumerable": [2666],
+      "IERC165": [3282],
+      "IERC20": [1355],
+      "IERC20Metadata": [1380],
+      "IERC721": [2310],
+      "IERC721Enumerable": [2697],
+      "IERC721Metadata": [2724],
+      "IERC721Receiver": [2328],
+      "Ownable": [723],
+      "Sale": [419],
+      "SaleFactory": [131],
+      "SsafyNFT": [552],
+      "Strings": [3246]
     },
     "id": 420,
     "license": "MIT",
@@ -9738,12 +9629,7 @@
     "nodes": [
       {
         "id": 34,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".4"
-        ],
+        "literals": ["solidity", "^", "0.8", ".4"],
         "nodeType": "PragmaDirective",
         "src": "33:23:1"
       },
@@ -9812,9 +9698,7 @@
           }
         ],
         "canonicalName": "SaleFactory",
-        "contractDependencies": [
-          419
-        ],
+        "contractDependencies": [419],
         "contractKind": "contract",
         "documentation": {
           "id": 39,
@@ -9824,11 +9708,7 @@
         },
         "fullyImplemented": true,
         "id": 131,
-        "linearizedBaseContracts": [
-          131,
-          723,
-          3043
-        ],
+        "linearizedBaseContracts": [131, 723, 3043],
         "name": "SaleFactory",
         "nameLocation": "357:11:1",
         "nodeType": "ContractDefinition",
@@ -10098,9 +9978,7 @@
               "src": "1021:326:1",
               "statements": [
                 {
-                  "assignments": [
-                    83
-                  ],
+                  "assignments": [83],
                   "declarations": [
                     {
                       "constant": false,
@@ -10977,9 +10855,7 @@
         },
         "fullyImplemented": true,
         "id": 419,
-        "linearizedBaseContracts": [
-          419
-        ],
+        "linearizedBaseContracts": [419],
         "name": "Sale",
         "nameLocation": "1509:4:1",
         "nodeType": "ContractDefinition",
@@ -11549,10 +11425,7 @@
                       "id": 187,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2527:7:1",
                       "typeDescriptions": {
@@ -12406,10 +12279,7 @@
                       "id": 245,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "3218:7:1",
                       "typeDescriptions": {
@@ -12582,10 +12452,7 @@
                       "id": 259,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "3366:7:1",
                       "typeDescriptions": {
@@ -12705,10 +12572,7 @@
                       "id": 266,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "3406:7:1",
                       "typeDescriptions": {
@@ -13275,10 +13139,7 @@
                       "id": 308,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "4116:7:1",
                       "typeDescriptions": {
@@ -14401,10 +14262,7 @@
                       "id": 408,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "6019:7:1",
                       "typeDescriptions": {
@@ -14465,8 +14323,8 @@
     "version": "0.8.10+commit.fc410830.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.4.3",
-  "updatedAt": "2022-03-31T06:13:16.131Z",
+  "schemaVersion": "3.4.5",
+  "updatedAt": "2022-03-31T05:03:18.875Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

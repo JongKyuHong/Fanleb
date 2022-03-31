@@ -373,6 +373,14 @@ contract("Sale Contract Testing", (accounts) => {
           ],addr);
         sale_con.methods.purchase();
 
+        // admin_balance = await web3.eth.getBalance(admin);
+        // seller_balance = await web3.eth.getBalance(seller);
+        // purchaser_balance = await web3.eth.getBalance(purchaser);
+
+        // console.log(admin_balance,'admin');
+        // console.log(seller_balance,"seller");
+        // console.log(purchaser_balance,"purchaser_balance");
+
     });
 });
         
