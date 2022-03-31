@@ -41,4 +41,12 @@ public class Sales {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    public void setBuyerAddress(String buyerAddress){
+        this.buyerAddress=buyerAddress;
+    }
+
+    public void setSaleYn(Status saleYn){
+        this.saleYn=saleYn;
+    }
+
 }

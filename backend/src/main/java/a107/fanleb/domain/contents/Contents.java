@@ -52,16 +52,20 @@ public class Contents {
     @Column(unique = true, nullable = false)
     private String imgUrl;
 
-    public void setContentTitle(String contentTitle){
-        this.contentTitle=contentTitle;
+    public void setContentTitle(String contentTitle) {
+        this.contentTitle = contentTitle;
     }
 
-    public void setContentDescription(String contentDescription){
-        this.contentDescription=contentDescription;
+    public void setContentDescription(String contentDescription) {
+        this.contentDescription = contentDescription;
     }
 
-    public void setCollection(Collections collection){
-        this.collection=collection;
+    public void setCollection(Collections collection) {
+        this.collection = collection;
+    }
+
+    public void setOnSaleYn(Status onSaleYn) {
+        this.onSaleYn = onSaleYn;
     }
 
 }
