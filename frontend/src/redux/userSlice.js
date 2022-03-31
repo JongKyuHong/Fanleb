@@ -45,8 +45,27 @@ export const userSlice = createSlice({
       alert('정보 모달창')
       state.modalIsOpen = true
     },
+    closeModal: (state) => {
+      state.modalIsOpen = false
+    },
+    fetchUserInfo: (state) => {
+      
+    },
+    updateLoadSuccess: (state) => {
+      state.pending = false
+      state.error = false
+    }
   },
 });
 
-export const { updateStart, updateSuccess, updateFailure, openModal, updateAddress } = userSlice.actions;
+export const {
+  updateStart,
+  updateSuccess,
+  updateFailure,
+  openModal,
+  closeModal,
+  updateAddress,
+  fetchUserInfo,
+  updateLoadSuccess
+} = userSlice.actions;
 export default userSlice.reducer;

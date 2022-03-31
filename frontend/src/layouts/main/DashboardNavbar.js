@@ -85,7 +85,7 @@ const DashboardNavbar = () => {
           </div>
         </div>
         <div className="navbar-sign">
-        {userInfo?.userAddress.length > 0 ? (
+        {userInfo?.userAddress?.length > 0 ? (
           <>
           <Link to="/create"> 
             <button type='button' className='primary-btn' >등록하기</button>

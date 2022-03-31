@@ -6,28 +6,31 @@ import { UserInfoModal } from './components/UserInfoModal/UserInfoModal';
 import Web3 from 'web3';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateAddress } from './redux/userSlice';
+import axios from 'axios';
+// import { getUser } from './redux/apiCalls';
 
 export default function App() {
   const dispatch = useDispatch();
   const { userInfo } = useSelector(state => state.user)
+  const address = useSelector(state => state.user.userInfo.userAddress);
+
   let account;
   // 배포된 컨트랙트의 address와 ABI를 사용해서 컨트랙트 객체 생성
   // 생성한 컨트랙트 객체에 접근해서 정의된 함수를 호출할 수 있음
   function startApp() {        
-    
     // 현재 연결된 web3 provider(예제에서는 Metamask)에 있는 계정을 조회하고,
     // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
     window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts) => {
       account = accounts[0];          
-      // console.log(account)
+      console.log('주소', accounts[0])
       dispatch(updateAddress(account))
-    
+      getUser(account)
       // 계정이 변경되는 것을 감지하고,
       // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
       window.ethereum.on('accountsChanged', function (accounts) {
         account = accounts[0];
-        // console.log(account)
-        dispatch(updateSuccess(account))
+        console.log('주소', accounts[0])
+        dispatch(updateAddress(account))
       });
     });
     // 이벤트 구독     
@@ -41,8 +44,8 @@ export default function App() {
     if (window.ethereum) {
       // latest
       web3 = new Web3(window.ethereum);
-      window.ethereum.request({ method: 'eth_requestAccounts' });
-      console.log('latest')
+      // window.ethereum.request({ method: 'eth_requestAccounts' });
+      // console.log('latest')
     } else if (window.web3) {
       // old
       web3 = window.web3;
@@ -51,15 +54,32 @@ export default function App() {
       // not found
       const provider = new Web3.providers.HttpProvider('http://20.196.209.2:8545');
       web3 = new Web3(provider);
-      console.log('No web3 instance injected, using local web3.');
+      // console.log('No web3 instance injected, using local web3.');
     }
     startApp();
   });
+  // get
+  const getUser = async (userAdr) => {
+    console.log('유저어드레스', userAdr)
+
+    try {
+      const res = await axios.get({
+        url: 'http://j6a107.p.ssafy.io/api/users/address',
+        data: {'user_address': '0x1c6cadfccc5ca5bbd53d2b9b053fe03caedae92f'},
+        headers: {'Content-Type': 'application/json'}
+      })
+      console.log('결과', res)
+      
+    } catch (err) {
+      console.log(err)
+    }
+
+  }
   return (
     <>
       {/* <InfoModal /> */}
       <ThemeConfig>
-        <UserInfoModal userInfo={userInfo} />
+        <UserInfoModal userInfo={userInfo} address={address} />
         <Router />
         <GlobalStyles />
       </ThemeConfig>

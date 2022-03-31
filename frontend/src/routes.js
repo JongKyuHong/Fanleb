@@ -64,7 +64,7 @@ export default function Router() {
         { element: <Navigate to="/register" replace /> },
         { path: '', element: <CreateNFT /> },        
       ]
-    },
+    },    
     {
       path: '/register',
       element: <MainLayout />,

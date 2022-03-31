@@ -4,11 +4,12 @@ import { Box } from '@mui/system'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../redux/apiCalls';
+import { closeModal } from '../../redux/userSlice';
 import './UserInfoModal.css';
 // import profile from '../../images/profile.jpg';
   
 // 모달도 임시로 만들어놓음, 개인정보수정에 모달을 쓸지, 페이지를 쓸지 의견 있으시면 말씀 부탁드립니다.
-export const UserInfoModal = ({userInfo}) => {  
+export const UserInfoModal = ({userInfo, address}) => {  
   const dispatch = useDispatch();
   // const isOpen = useSelector(state => state.user.userInfo.isOpen);
   // const { userInfo } = useSelector(state => state.user)
@@ -16,7 +17,7 @@ export const UserInfoModal = ({userInfo}) => {
   const [nickname, setNickname] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("일반인");
-  const [address, setAddress] = useState("");
+  // const [address, setAddress] = useState("");
   const { pending, error, modalIsOpen } = useSelector(state => state.user);
   // 프로필 아바타 변경 함수
   const editAvatar = (e) => {    
@@ -58,7 +59,8 @@ export const UserInfoModal = ({userInfo}) => {
     data.append('img', profilePic.file);
     data.append('user_address', address);
     updateUser(dispatch, data)
-    // dispatch(toggleModal())
+    console.log('주소', address, data)
+    // dispatch(toggleModal())    
   }
   const toDataURL = url => fetch(url)
     .then(response => response.blob())
@@ -71,11 +73,13 @@ export const UserInfoModal = ({userInfo}) => {
  
   useEffect(() => {
     window.scrollTo(0, 0)
-    setNickname(userInfo?.userNickname)
-    setDescription(userInfo?.userDescription)
-    setCategory(userInfo?.userCategory)
-    setProfilePic({ file: "", previewURL: userInfo?.imageUrl })
-    setAddress(userInfo?.userAddress)
+    if (userInfo?.userNickname && userInfo?.userDescription && userInfo?.userCategory && userInfo?.imageUrl) {
+      setNickname(userInfo?.userNickname)
+      setDescription(userInfo?.userDescription)
+      setCategory(userInfo?.userCategory)
+      setProfilePic({ file: "", previewURL: userInfo?.imageUrl })
+    }
+    // setAddress(userInfo?.userAddress)
     // toDataURL(userInfo?.imageUrl)
     //   .then(dataUrl => {
     //     setProfilePic({ file: dataUrl, previewURL: userInfo?.imageUrl })       
@@ -129,7 +133,8 @@ export const UserInfoModal = ({userInfo}) => {
                   disabled
                 </LoadingButton>
               }
-              {error && <span style={{ marginLeft: '2vw', color: 'red'}}>Error!</span>}
+              {error && <span style={{ marginLeft: '2vw', color: 'red' }}>Error!</span>}
+              {userInfo && userInfo.userNickname.length > 0 && <button className='login-reg-writeButton' onClick={() => dispatch(closeModal())}>취소</button>}
           </div>
           </form>
         </div>
