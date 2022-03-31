@@ -4,6 +4,7 @@ import a107.fanleb.domain.Status;
 import a107.fanleb.domain.collections.Collections;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -37,6 +38,7 @@ public class Contents {
     private String ownerAddress;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)

@@ -13,8 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,7 +30,7 @@ public class ContentsService {
     private final ContentsRepository contentsRepository;
     private final CollectionsRepository collectionRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Contents showDetail(int tokenId) {
         return contentsRepository.findByTokenId(tokenId).get();
     }
@@ -36,6 +38,8 @@ public class ContentsService {
     @Transactional
     public ContentsRegisterRes save(ContentsRegisterReq contentsRegisterReq) throws IOException {
 
+        if(contentsRegisterReq.getImage().isEmpty())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사진이 없습니다");
         //TODO : 해싱하기
 
         //s3 업로드
