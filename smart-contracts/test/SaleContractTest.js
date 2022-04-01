@@ -39,7 +39,7 @@ contract("Sale Contract Testing", (accounts) => {
         const id = nft.create(seller,uri);
 
         const sf = await SaleFactory.deployed();
-        const addr = sf.createSale(purchaser, itemId, 100, token.address, sf.address);
+        const addr = sf.createSale(itemId, 100, token.address, sf.address);
 
         // const saleCon = await Sale.deployed(admin,seller,itemId,100,token.address,sf.address);
         // saleCon.purchase(purchaser)
