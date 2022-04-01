@@ -1,4 +1,3 @@
-import { Box, Button, Card, Container, Link, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
@@ -41,7 +40,7 @@ const Main = () => {
    * 화면 첫 렌더링시 최근 작품을 조회하는 함수를 호출합니다.
    */
   useEffect(() => {
-    getItem();
+    // getItem();
   }, []);
 
   /**
@@ -61,10 +60,11 @@ const Main = () => {
     setArtPrice("fake price");
   };
 
+  
   return (
     // <Page title="SSAFY NFT" maxWidth="100%" minHeight="100%" alignItems="center" display="flex">
     <Page title="FANLEB" sx={{}}>
-      <Header />
+      <Header />      
       <Posts />
       {/* <Container>        
         <Stack direction="row" justifyContent="center">
