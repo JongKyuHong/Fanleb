@@ -57,7 +57,6 @@ const CreateNFT = () => {
   //     console.log(values)
   //   }
   // })
-
   const addCollection = () => {
     if (newCollection.trim().length > 0) {
       const newData = {      
@@ -65,15 +64,15 @@ const CreateNFT = () => {
         'id': collections.length     
       }
       axios.post(`api/collections`, { "user_address": address, "collection": newCollection })
-        .then(res => console.log(res))
+        .then(res => {
+          setCollections((prev) => [newData, ...prev])
+          alert('새로운 컬렉션을 만들었습니다.')
+        })
         .catch(err => console.log(err))
-      setCollections((prev) => [newData, ...prev])
-      alert('새로운 컬렉션을 만들었습니다.')
       setNewCollection("")
     }
   }
-  const onSubmit = async (e) => {
-    e.preventDefault();
+  const sendData = async () => {
     if (title.trim() == "") {
       alert('제목을 입력해주세요.')
       return
@@ -86,10 +85,11 @@ const CreateNFT = () => {
       alert('내용을 입력해주세요.')
       return
     }
-    if (myCollection.length <= 0) {
+    if (!myCollection || myCollection.length <= 0) {
       alert('컬렉션을 입력해주세요.')
       return
     }
+    
     const newData = {
       title,
       description,
@@ -108,6 +108,7 @@ const CreateNFT = () => {
     formData.append('image', newData.file);
     formData.append('content_title', newData.title);
     formData.append('content_description', newData.description);
+
     try {
       const res = await axios({
         method: "POST",
@@ -149,6 +150,44 @@ const CreateNFT = () => {
     }
     
   }
+
+  // 싸피 체인이 아닌 경우 체인을 바꿔주는 함수
+  async function onSubmit(e) {
+    e.preventDefault();
+    try {
+      await ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x79F5' }],
+      });
+      console.log('추가되어있는 체인으로 교체')
+      sendData()
+    } catch (switchError) {
+      // This error code indicates that the chain has not been added to MetaMask.
+      if (switchError.code === 4902) {
+        try {
+          console.log('체인 추가 시도')
+          await ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: '0x79F5',
+                chainName: 'SSAFY',
+                rpcUrls: ['http://20.196.209.2:8545']
+              },
+            ],
+          });
+          sendData()
+          console.log('새로운 체인 추가')
+        } catch (addError) {
+          // handle "add" error
+          console.log('체인 추가 실패')
+          alert('Metamask에서 SSAFY 네트워크를 추가해주세요.\nchainId: 31221 \nchainName: SSAFY \nrpcUrls: http://20.196.209.2:8545')
+        }
+      }
+      // handle other "switch" errors
+    }    
+  }
+
 //   const filterColors = (inputValue) => {
 //   return collections.filter((i) =>
 //     i.label.toLowerCase().includes(inputValue.toLowerCase())
@@ -167,6 +206,17 @@ const CreateNFT = () => {
         setMyCollection(res.data.data.content[0])
       })
       .catch(err => console.log(err))
+    
+    return () => {
+      setModalOpen("")
+      setTitle("")
+      setDescription("")
+      setMyCollection("")
+      setFile("")
+      setNewCollection("")
+      setFiles("")
+      setVideoSrc("")
+    }
   }, [])
   return (
     <>

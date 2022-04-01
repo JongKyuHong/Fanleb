@@ -85,6 +85,7 @@ export default function App() {
     }
   });
 
+  // 지갑 변경될 시, 유저 정보도 같이 바꿔주는 함수
   async function check (accounts) {
     // 지갑이 인식되면
     if (accounts.length > 0) {
@@ -118,7 +119,7 @@ export default function App() {
   // // 계정이 변경되는 것을 감지하고,
   // // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
   eth.on('accountsChanged', check); 
-
+  
   return (
     <>
       {/* <InfoModal /> */}
