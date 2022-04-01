@@ -11,6 +11,7 @@ import "./access/Ownable.sol";
 contract SsafyToken is ERC20, Ownable{
     
     constructor(string memory name, string memory symbol, uint8 decimal) ERC20(name, symbol, decimal) {}
+    mapping(address => uint256) private _balances;
     
     function mint(uint256 amount) public onlyOwner{
         _mint(_msgSender(), amount);
@@ -22,5 +23,13 @@ contract SsafyToken is ERC20, Ownable{
 
     function getsupply() public view returns (uint256){
         return totalSupply();
+    }
+
+    function getCurrencyAmount() public view returns (uint256) { 
+        return ERC20.balanceOf(msg.sender); // 계정이 소유한 토큰의 양을 반환
+    }
+
+    function balanceOf(address account) public view virtual override returns (uint256) {
+        return _balances[account];
     }
 }

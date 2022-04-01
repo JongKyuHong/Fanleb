@@ -33,6 +33,7 @@ contract("Sale Contract Testing", (accounts) => {
 
     token.mint(mintAmount);
     token.forceToTransfer(admin, purchaser, 1000);
+    token.getsupply();
 
     const nft = await SsafyNFT.deployed();
     const id = nft.create(seller, uri);
@@ -349,6 +350,19 @@ contract("Sale Contract Testing", (accounts) => {
         },
         {
           inputs: [],
+          name: "getCurrencyAmount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
           name: "getSaleInfo",
           outputs: [
             {
@@ -380,14 +394,32 @@ contract("Sale Contract Testing", (accounts) => {
     );
     sale_con.methods.purchase();
 
-    admin_balance = await web3.eth.getBalance(admin);
-    seller_balance = await web3.eth.getBalance(seller);
-    purchaser_balance = await web3.eth.getBalance(purchaser);
+    const aa = sale_con.methods.getCurrencyAmount();
 
-    assert.equal(900, await getBalance(purchaser));
+    const bb = token.balanceOf(purchaser);
 
-    console.log(admin_balance, "admin");
-    console.log(seller_balance, "seller");
-    console.log(purchaser_balance, "purchaser_balance");
+    const cc = token.balanceOf(admin);
+
+    const dd = token.getsupply();
+
+    const sale = await Sale.deployed();
+    const balance = sale._getCurrencyAmount();
+
+    console.log(balance);
+    // assert.equal(900, balance);
+
+    // console.log(cc);
+
+    // console.log(dd);
+
+    // admin_balance = await web3.eth.getBalance(admin);
+    // seller_balance = await web3.eth.getBalance(seller);
+    // purchaser_balance = await web3.eth.getBalance(purchaser);
+
+    // assert.equal(900, await sale_con.methods.getCurrencyAmount());
+
+    // console.log(admin_balance, "admin");
+    // console.log(seller_balance, "seller");
+    // console.log(purchaser_balance, "purchaser_balance");
   });
 });
