@@ -11,6 +11,7 @@ import { getMyCollections } from '../redux/apiCalls';
 import { LoadingButton } from '@mui/lab';
 import AsyncSelect from 'react-select/async';
 import { registerNFTtoBackend } from '../utils/NFT';
+import { useNavigate } from 'react-router-dom';
 
 const CreateNFT = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -23,6 +24,8 @@ const CreateNFT = () => {
   const [newCollection, setNewCollection] = useState("");
   const [selectIpfs, setSelctIpfs] = useState(false);
   const address = useSelector(state => state.user.userInfo.userAddress);
+  const navigator = useNavigate();
+  
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
@@ -133,6 +136,7 @@ const CreateNFT = () => {
         })
         if (data.result === "success") {
           alert('게시물이 정상적으로 등록되었습니다.')
+          navigator('/')
         } else {
           alert('게시물 작성을 실패했습니다.')
         }
