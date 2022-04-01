@@ -11,6 +11,9 @@ import a107.fanleb.domain.contents.ContentsRepository;
 import a107.fanleb.domain.sales.Sales;
 import a107.fanleb.domain.sales.SalesRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,10 +35,10 @@ public class SalesService {
         });
 
         int tokenId = salesSaveReq.getTokenId();
-        Optional<Sales> byTokenId = salesRepository.findByTokenId(tokenId);
-        byTokenId.ifPresent(sales -> {
-            throw new NotUniqueTokenIdException();
-        });
+//        Optional<Sales> byTokenId = salesRepository.findByTokenId(tokenId);
+//        byTokenId.ifPresent(sales -> {
+//            throw new NotUniqueTokenIdException();
+//        });
 
         //else
         salesRepository.save(salesSaveReq.toSales());
@@ -77,7 +80,9 @@ public class SalesService {
 
 
     @Transactional(readOnly = true)
-    public void recent() {
+    public Page<Sales> recent(int page) {
+        PageRequest pageable = PageRequest.of(page - 1, 12, Sort.by("id").descending());
+        return salesRepository.findAll(pageable);
     }
 
     private Sales findSalesByTokenIdOrElseThrow(int tokenId) {
