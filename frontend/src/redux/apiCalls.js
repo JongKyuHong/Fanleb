@@ -4,7 +4,7 @@ import { updateStart, updateSuccess, updateFailure, fetchUserInfo, updateLoadSuc
 // 유저 회원가입 여부 확인
 export const checkUser = async (addr) => {
 
-  console.log('회원 체크 시작', addr)
+  // console.log('회원 체크 시작', addr)
   try {
     const res = await axios(`api/users/valid/first?user_address=${addr}`);
     return true
@@ -32,7 +32,7 @@ export const registerUser = async (addr) => {
 // (기존에 동일한 유저 이름이 존재하면 500에러... )
 // 이외에도 아직 회원 미등록, address가 이미 존재하는 경우 등 서버에서 받지 못하는 경우를 다양하게 생각해보자)
 export const updateUser = async (dispatch, userFormData) => {
-  console.log('업데이트')
+  // console.log('업데이트')
   dispatch(updateStart());
   // for (let i of userFormData) {
   //   console.log(i)
@@ -44,7 +44,7 @@ export const updateUser = async (dispatch, userFormData) => {
       data: userFormData,
       headers: { 'Content-Type': 'multipart/form-data' },
     });
-    console.log('회원 정보 수정', data)
+    // console.log('회원 정보 수정', data)
     dispatch(updateSuccess(data.data));
   } catch (err) {
     console.log(err)
@@ -58,7 +58,7 @@ export const getUser = async (dispatch, userAdr) => {
     const { data } = await axios(
       `api/users/address?user_address=${userAdr}`
     )    
-    console.log(data.data)
+    // console.log(data.data)
     dispatch(fetchUserInfo(data.data));
   } catch (err) {
     console.log(err)

@@ -112,7 +112,7 @@ const Posts = () => {
         url: `api/collections/list?search[sortBy]=${category}&search[query]=`,      
         headers: {}
       })
-    console.log(data.data)
+    // console.log(data.data)
     setPosts(data.data.content)
   }
   useEffect(() => {    

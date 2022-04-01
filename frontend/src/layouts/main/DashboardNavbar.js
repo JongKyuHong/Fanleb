@@ -19,7 +19,7 @@ import { openModal, updateAddress, updateSuccess } from '../../redux/userSlice';
 
 const Menu = () => (
   <>
-     <Link to="/create"><p>등록하기</p> </Link>     
+     {/* <Link to="/create"><p>등록하기</p> </Link>      */}
      <p>순위보기</p>     
     
   </>
@@ -90,29 +90,14 @@ const DashboardNavbar = () => {
       } else {
         console.log('인식된 지갑이 없습니다.')
       }
-      // 계정이 변경되는 것을 감지하고,
-      // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
-      window.ethereum.on('accountsChanged', function (accounts) {
-
-        if (accounts.length > 0) {
-          account = accounts[0];
-          if (checkUser(account)) {
-            console.log('회원가입 되어있습니다. 주소:', accounts[0])
-            // dispatch(updateAddress(account))
-            dispatch(openModal())
-            getUser(dispatch, account)
-          } else {
-            console.log('회원가입이 안되었습니다.')
-          }
-        } else {
-          console.log('인식된 지갑이 없습니다.')
-        }
-      });
     });
     // 이벤트 구독     
     // filter 옵션으로 현재 사용중인 계정의 주소가
     // to 변수에 저장된 이벤트만 필터링     
-  }  
+  }
+  function switchWallet() {
+    window.ethereum.request({ method: 'eth_requestAccounts' }).then(e => console.log(e))
+  }
   // SSAFY 네트워크 chainId: 79f5
   return (
     <RootStyle>
@@ -136,7 +121,7 @@ const DashboardNavbar = () => {
           <Link to="/create"> 
             <button type='button' className='primary-btn' >등록하기</button>
           </Link>
-          <button type='button' className='secondary-btn'>지갑 변경</button>
+          <button type='button' className='secondary-btn' onClick={switchWallet}>지갑 변경</button>
           {/* <button type='button' className='secondary-btn' onClick={enableEth} >지갑 연결</button> */}
           <Avatar onClick={() => dispatch(openModal())} src={userInfo?.imageUrl} size="large" sx={{ width: 56, height: 56, cursor: 'pointer' }} />
             
@@ -144,7 +129,7 @@ const DashboardNavbar = () => {
           </>
         ): (
           <>
-          <button type='button' className='secondary-btn' onClick={enableEth} >지갑 연결</button>
+          <button type='button' className='secondary-btn' onClick={startApp} >지갑 연결</button>
           {/* <Link to="/login"> 
           <button type='button' className='primary-btn' onClick={handleLogin} >Sign In</button>
           </Link>
