@@ -4,13 +4,15 @@ import a107.fanleb.api.request.sales.SalesCompleteReq;
 import a107.fanleb.api.request.sales.SalesSaveReq;
 import a107.fanleb.common.exception.handler.NotExistedTokenIdException;
 import a107.fanleb.common.exception.handler.NotUniqueSalesContractAddressException;
-import a107.fanleb.common.exception.handler.NotUniqueTokenIdException;
 import a107.fanleb.domain.Status;
 import a107.fanleb.domain.contents.Contents;
 import a107.fanleb.domain.contents.ContentsRepository;
 import a107.fanleb.domain.sales.Sales;
 import a107.fanleb.domain.sales.SalesRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,10 +34,10 @@ public class SalesService {
         });
 
         int tokenId = salesSaveReq.getTokenId();
-        Optional<Sales> byTokenId = salesRepository.findByTokenId(tokenId);
-        byTokenId.ifPresent(sales -> {
-            throw new NotUniqueTokenIdException();
-        });
+//        Optional<Sales> byTokenId = salesRepository.findByTokenId(tokenId);
+//        byTokenId.ifPresent(sales -> {
+//            throw new NotUniqueTokenIdException();
+//        });
 
         //else
         salesRepository.save(salesSaveReq.toSales());
@@ -47,7 +49,7 @@ public class SalesService {
 
     @Transactional(readOnly = true)
     public Sales detail(int tokenId) {
-        return findSalesByTokenIdOrElseThrow(tokenId);
+        return findSalesByTokenIdAndSaleYnIsNOrElseThrow(tokenId);
     }
 
     @Transactional
@@ -55,7 +57,7 @@ public class SalesService {
         int tokenId = salesCompleteReq.getTokenId();
         String buyerAddress = salesCompleteReq.getBuyerAddress();
 
-        Sales sales = findSalesByTokenIdOrElseThrow(tokenId);
+        Sales sales = findSalesByTokenIdAndSaleYnIsNOrElseThrow(tokenId);
         sales.setBuyerAddress(buyerAddress);
         sales.setSaleYn(Status.y);
         salesRepository.save(sales);
@@ -67,7 +69,7 @@ public class SalesService {
 
     @Transactional
     public void cancel(int tokenId) {
-        Sales sales = findSalesByTokenIdOrElseThrow(tokenId);
+        Sales sales = findSalesByTokenIdAndSaleYnIsNOrElseThrow(tokenId);
         salesRepository.delete(sales);
 
         Contents content = contentsRepository.findByTokenId(tokenId).get();
@@ -77,11 +79,13 @@ public class SalesService {
 
 
     @Transactional(readOnly = true)
-    public void recent() {
+    public Page<Sales> recent(int page) {
+        PageRequest pageable = PageRequest.of(page - 1, 12, Sort.by("id").descending());
+        return salesRepository.findAll(pageable);
     }
 
-    private Sales findSalesByTokenIdOrElseThrow(int tokenId) {
-        Optional<Sales> byTokenId = salesRepository.findByTokenId(tokenId);
+    private Sales findSalesByTokenIdAndSaleYnIsNOrElseThrow(int tokenId) {
+        Optional<Sales> byTokenId = salesRepository.findByTokenIdAndSaleYn(tokenId, Status.n);
         return byTokenId.orElseThrow(() -> new NotExistedTokenIdException());
     }
 

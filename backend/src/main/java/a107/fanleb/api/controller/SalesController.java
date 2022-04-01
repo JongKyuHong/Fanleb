@@ -39,8 +39,8 @@ public class SalesController {
         return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
     }
 
-//    @PostMapping
-//    public ResponseEntity<? extends BaseResponseBody> recent() {
-//        return ResponseEntity.status(200).body(AdvancedResponseBody.of("", ""));
-//    }
+    @GetMapping("/recent")
+    public ResponseEntity<? extends BaseResponseBody> recent(@RequestParam(value = "page", defaultValue = "1") int page) {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", salesService.recent(page)));
+    }
 }

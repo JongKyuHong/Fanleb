@@ -13,4 +13,7 @@ public interface SubscribeRepository extends JpaRepository<Subscribe, Integer> {
     @Modifying
     @Query(value = "DELETE FROM subscribe WHERE from_user_address=:fromUserAddress AND to_user_address=:toUserAddress", nativeQuery = true)
     void unsubscribe(@Param("fromUserAddress") String fromUserAddress, @Param("toUserAddress") String toUserAddress);
+
+    @Query(value = "SELECT COUNT(*)>0 FROM Subscribe s WHERE from_user_address=:fromUserAddress AND to_user_address=:toUserAddress", nativeQuery = true)
+    int findByFromUserAddressAndToUserAddress(@Param("fromUserAddress") String fromUserAddress, @Param("toUserAddress") String toUserAddress);
 }
