@@ -5,42 +5,55 @@ import './App.css';
 import { UserInfoModal } from './components/UserInfoModal/UserInfoModal';
 import Web3 from 'web3';
 import { useDispatch, useSelector } from 'react-redux';
-import { initialUserInfo, openModal, removeAddress, updateAddress } from './redux/userSlice';
+import { closeModal, initialUserInfo, openModal, removeAddress, updateAddress } from './redux/userSlice';
 import axios from 'axios';
 import { checkUser, getUser, registerUser } from './redux/apiCalls';
+import { useNavigate } from 'react-router-dom';
 
 export default function App() {
   const dispatch = useDispatch();
   const { userInfo } = useSelector(state => state.user)
   const address = useSelector(state => state.user.userInfo.userAddress);
+  const navigator = useNavigate();
   let account;
+  const eth = window.ethereum;
   // 배포된 컨트랙트의 address와 ABI를 사용해서 컨트랙트 객체 생성
   // 생성한 컨트랙트 객체에 접근해서 정의된 함수를 호출할 수 있음
   function startApp() {        
     // 현재 연결된 web3 provider(예제에서는 Metamask)에 있는 계정을 조회하고,
     // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
-    window.ethereum.request({ method: 'eth_requestAccounts' }).then(async (accounts) => {      
+    eth.request({ method: 'eth_requestAccounts' }).then(async (accounts) => {      
       if (accounts.length > 0) {
         account = accounts[0];
         let res = await checkUser(account)
         if (!res) {
-          // dispatch(updateAddress(account))
           dispatch(openModal())
           getUser(dispatch, account)
+          console.log('앱 처음 시작했을 때: 기존 유저일 때')
         } else {          
           registerUser(account)
           dispatch(initialUserInfo())        
           dispatch(openModal())
+          console.log('앱 처음 시작했을 때: 신규 유저일 때')
         }
+        return
       }
       // 계정이 변경되는 것을 감지하고,
       // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
-      window.ethereum.on('accountsChanged', function (accounts) {
+      eth.on('accountsChanged', function (accounts) {
         if (accounts.length > 0) {
           account = accounts[0];
           dispatch(openModal())
           getUser(dispatch, account)
+          console.log('앱 처음 시작하고 지갑 변경되었을 때: 기존 유저일 때')
+        } else {
+          dispatch(initialUserInfo())
+          dispatch(removeAddress())
+          navigator('/')
+          dispatch(closeModal())
+          console.log('앱 처음 시작하고 지갑 변경되었을 때: 신규 유저일 때')
         }
+        return
       });
     });
     // 이벤트 구독     
@@ -71,9 +84,8 @@ export default function App() {
       startApp();
     }
   });
-  // // 계정이 변경되는 것을 감지하고,
-  // // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
-  window.ethereum.on('accountsChanged', async function (accounts) {
+
+  async function check (accounts) {
     // 지갑이 인식되면
     if (accounts.length > 0) {
       account = accounts[0];
@@ -83,24 +95,29 @@ export default function App() {
         // 기존 유저라면        
         dispatch(openModal())
         getUser(dispatch, account)
+        console.log('처음 이후에 지갑 변경되었을 때: 기존 유저일 때')
       } else {
         // 신규 유저라면
         dispatch(initialUserInfo())
         registerUser(account)
         dispatch(openModal())
+        console.log('처음 이후에 지갑 변경되었을 때: 신규 유저일 때')
       }
+      navigator('/')
+  
     } else {
-      console.log('연동할 지갑이 없습니다')
+      console.log('처음 이후에 지갑 변경되었을 떄: 연동할 지갑이 없습니다')
       dispatch(initialUserInfo())
+      dispatch(removeAddress())
+      navigator('/')
+      dispatch(closeModal())
+  
     }
-  });
-  window.ethereum.removeListener('accountsChanged', () => {
-    console.log('이벤트 종료')
-  })
-  window.ethereum.on('disconnect', async function (error) {
-    console.log('지갑 연결 해제')
-    dispatch(removeAddress())
-  }) 
+    eth.removeListener('accountsChanged', check)
+  }
+  // // 계정이 변경되는 것을 감지하고,
+  // // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
+  eth.on('accountsChanged', check); 
 
   return (
     <>
