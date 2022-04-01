@@ -3,15 +3,17 @@ import Post from './Post';
 import MainTabs from '../MainTabs/MainTabs';
 import './bids.css'
 import bids1 from '../../images/bids1.png'
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [value, setValue] = useState(0);
-
+  const dispatch = useDispatch();
   const onItemClicked = () => {
     alert('클릭!')
   };
-
+  
   function getUsers(value) {
     if (value == 1) {      
       setPosts(() => [
@@ -103,9 +105,39 @@ const Posts = () => {
     }
 
     }
-  
-  useEffect(() => {
-    getUsers(value)
+  const getData = async (category) => {
+    const { data } = await axios(
+      {
+        method: "GET",
+        url: `api/collections/list?search[sortBy]=${category}&search[query]=`,      
+        headers: {}
+      })
+    // console.log(data.data)
+    setPosts(data.data.content)
+  }
+  useEffect(() => {    
+    // if (value === 0) {
+    //   getMyCollections(dispatch, 'singer');
+    // } else if (value === 1) {
+    //   getMyCollections(dispatch, 'actor');
+    // } else if (value === 2) {
+    //   getMyCollections(dispatch, 'celeb');
+    // } else if (value === 3) {
+    //   getMyCollections(dispatch, 'general');      
+    // }
+    if (value === 0) {
+      getData('singer')
+    } else if (value === 1) {
+      getData('actor');
+    } else if (value === 2) {
+      getData('celeb');
+    } else if (value === 3) {
+      getData('general');
+    }
+    
+    return () => {
+      setPosts([])
+    }
   }, [value])
 
   return (
