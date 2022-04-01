@@ -34,6 +34,8 @@ public class Users {
     @Column(unique = true, nullable = false)
     private String userAddress;
 
+    private Integer maxSubscribeCnt;
+    private int curSubscribeCnt;
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
@@ -49,5 +51,13 @@ public class Users {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public void setMaxSubscribeCnt(int maxSubscribeCnt) {
+        this.maxSubscribeCnt = maxSubscribeCnt;
+    }
+
+    public void addCurSubscribeCnt() {
+        curSubscribeCnt++;
     }
 }
