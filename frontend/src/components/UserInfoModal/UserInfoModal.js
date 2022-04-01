@@ -67,7 +67,6 @@ export const UserInfoModal = ({userInfo, address}) => {
       alert('지갑 연동을 다시 해주세요.')
       return
     }
-    
     let data = new FormData();
     data.append('nickname', nickname);
     data.append('user_description', description);
