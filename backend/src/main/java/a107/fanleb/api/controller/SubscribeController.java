@@ -1,6 +1,5 @@
 package a107.fanleb.api.controller;
 
-import a107.fanleb.api.request.subscribe.SubscribeEditReq;
 import a107.fanleb.api.service.SubscribeService;
 import a107.fanleb.common.model.response.BaseResponseBody;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +13,15 @@ public class SubscribeController {
 
     private final SubscribeService subscribeService;
 
-    @PostMapping
-    public ResponseEntity<? extends BaseResponseBody> subscribe(@RequestBody SubscribeEditReq subscribeEditReq) {
-        subscribeService.subscribe(subscribeEditReq);
+    @PostMapping("/{fromUserAddress}/{toUserAddress}")
+    public ResponseEntity<? extends BaseResponseBody> subscribe(@PathVariable String fromUserAddress, @PathVariable String toUserAddress) {
+        subscribeService.subscribe(fromUserAddress, toUserAddress);
         return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
     }
 
-    @DeleteMapping
-    public ResponseEntity<? extends BaseResponseBody> unsubscribe(@RequestBody SubscribeEditReq subscribeEditReq) {
-        subscribeService.unsubscribe(subscribeEditReq);
+    @DeleteMapping("/{fromUserAddress}/{toUserAddress}")
+    public ResponseEntity<? extends BaseResponseBody> unsubscribe(@PathVariable String fromUserAddress, @PathVariable String toUserAddress) {
+        subscribeService.unsubscribe(fromUserAddress, toUserAddress);
         return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
     }
 }

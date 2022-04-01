@@ -1,6 +1,5 @@
 package a107.fanleb.api.service;
 
-import a107.fanleb.api.request.subscribe.SubscribeEditReq;
 import a107.fanleb.domain.subscribe.SubscribeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,12 +11,12 @@ public class SubscribeService {
     private final SubscribeRepository subscribeRepository;
 
     @Transactional
-    public void subscribe(SubscribeEditReq subscribeEditReq){
-        subscribeRepository.subscribe(subscribeEditReq.getFromUserAddress(), subscribeEditReq.getToUserAddress());
+    public void subscribe(String fromUserAddress, String toUserAddress){
+        subscribeRepository.subscribe(fromUserAddress, toUserAddress);
     }
 
     @Transactional
-    public void unsubscribe(SubscribeEditReq subscribeEditReq){
-        subscribeRepository.unsubscribe(subscribeEditReq.getFromUserAddress(), subscribeEditReq.getToUserAddress());
+    public void unsubscribe(String fromUserAddress, String toUserAddress){
+        subscribeRepository.unsubscribe(fromUserAddress, toUserAddress);
     }
 }

@@ -26,8 +26,8 @@ public class ContentsController {
     }
 
     @GetMapping
-    public ResponseEntity<? extends BaseResponseBody> show(@RequestParam(value = "page", defaultValue = "1") int page, @RequestBody Map<String, Object> body) throws IOException {
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", contentsService.show(page, (String)body.get("user_address"))));
+    public ResponseEntity<? extends BaseResponseBody> show(@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(name="user_address") String userAddress) {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", contentsService.show(page, userAddress)));
     }
 
     @GetMapping("/{tokenId}")
@@ -53,13 +53,13 @@ public class ContentsController {
     }
 
     @GetMapping("/address")
-    public ResponseEntity<? extends BaseResponseBody> showByAddress(@RequestBody Map<String, Object> body, @RequestParam(value = "page", defaultValue = "1") int page) throws IOException {
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", contentsService.showByAddress(page, (String) body.get("owner_address"))));
+    public ResponseEntity<? extends BaseResponseBody> showByAddress(@RequestParam(name="user_address") String userAddress, @RequestParam(value = "page", defaultValue = "1") int page) throws IOException {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", contentsService.showByAddress(page, userAddress)));
     }
 
     @GetMapping("/thumbnail")
-    public ResponseEntity<? extends BaseResponseBody> showThumbnail(@RequestBody Map<String, Object> body) throws IOException {
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", contentsService.showThumbnail((String) body.get("owner_address"))));
+    public ResponseEntity<? extends BaseResponseBody> showThumbnail(@RequestParam(name="user_address") String userAddress) throws IOException {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", contentsService.showThumbnail((String) userAddress)));
     }
 
 }
