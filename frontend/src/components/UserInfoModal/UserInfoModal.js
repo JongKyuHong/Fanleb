@@ -88,6 +88,10 @@ export const UserInfoModal = ({userInfo, address}) => {
     }))
   // 닉네임 중복 체크
   const checkNickname = async () => {
+    if (nickname.trim() === "") {
+      alert('닉네임을 입력해주세요.')
+      return
+    }
     try {
       const res = await axios(`api/users/valid/nickname?nickname=${nickname}`)
       setIsOverlap({ check: true, status: false})
