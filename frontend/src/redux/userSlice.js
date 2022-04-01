@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    modalIsOpen: true,
+    modalIsOpen: false,
     userInfo: {
       imageUrl: "",
       userAddress: "",
@@ -40,20 +40,34 @@ export const userSlice = createSlice({
     updateAddress: (state, action) => {
       state.userInfo.userAddress = action.payload;
       console.log('지갑주소 업데이트', action.payload)
-    },    
+    },
+    removeAddress: (state) => {
+      console.log('지갑 주소 제거')
+      state.userInfo.userAddress = ""
+    },
     openModal: (state) => {
-      alert('정보 모달창')
+      // alert('정보 모달창')
       state.modalIsOpen = true
     },
     closeModal: (state) => {
       state.modalIsOpen = false
     },
-    fetchUserInfo: (state) => {
-      
+    fetchUserInfo: (state, action) => {
+      state.userInfo.imageUrl = action.payload.img_url;      
+      state.userInfo.userCategory = action.payload.users_category?.user_category_name;
+      state.userInfo.userDescription = action.payload.user_description;
+      state.userInfo.userNickname = action.payload.nickname;
+      state.userInfo.userAddress = action.payload.user_address;
     },
     updateLoadSuccess: (state) => {
       state.pending = false
       state.error = false
+    },
+    initialUserInfo: (state) => {
+      state.userInfo.imageUrl = "";      
+      state.userInfo.userCategory = ""
+      state.userInfo.userDescription = "";
+      state.userInfo.userNickname = "";
     }
   },
 });
@@ -65,7 +79,9 @@ export const {
   openModal,
   closeModal,
   updateAddress,
+  removeAddress,
   fetchUserInfo,
-  updateLoadSuccess
+  updateLoadSuccess,
+  initialUserInfo,
 } = userSlice.actions;
 export default userSlice.reducer;
