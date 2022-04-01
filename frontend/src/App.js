@@ -5,32 +5,42 @@ import './App.css';
 import { UserInfoModal } from './components/UserInfoModal/UserInfoModal';
 import Web3 from 'web3';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateAddress } from './redux/userSlice';
+import { initialUserInfo, openModal, removeAddress, updateAddress } from './redux/userSlice';
 import axios from 'axios';
-// import { getUser } from './redux/apiCalls';
+import { checkUser, getUser, registerUser } from './redux/apiCalls';
 
 export default function App() {
   const dispatch = useDispatch();
   const { userInfo } = useSelector(state => state.user)
   const address = useSelector(state => state.user.userInfo.userAddress);
-
   let account;
   // 배포된 컨트랙트의 address와 ABI를 사용해서 컨트랙트 객체 생성
   // 생성한 컨트랙트 객체에 접근해서 정의된 함수를 호출할 수 있음
   function startApp() {        
     // 현재 연결된 web3 provider(예제에서는 Metamask)에 있는 계정을 조회하고,
     // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
-    window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts) => {
-      account = accounts[0];          
-      console.log('주소', accounts[0])
-      dispatch(updateAddress(account))
-      getUser(account)
+    window.ethereum.request({ method: 'eth_requestAccounts' }).then(async (accounts) => {      
+      if (accounts.length > 0) {
+        account = accounts[0];
+        let res = await checkUser(account)
+        if (!res) {
+          // dispatch(updateAddress(account))
+          dispatch(openModal())
+          getUser(dispatch, account)
+        } else {          
+          registerUser(account)
+          dispatch(initialUserInfo())        
+          dispatch(openModal())
+        }
+      }
       // 계정이 변경되는 것을 감지하고,
       // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
       window.ethereum.on('accountsChanged', function (accounts) {
-        account = accounts[0];
-        console.log('주소', accounts[0])
-        dispatch(updateAddress(account))
+        if (accounts.length > 0) {
+          account = accounts[0];
+          dispatch(openModal())
+          getUser(dispatch, account)
+        }
       });
     });
     // 이벤트 구독     
@@ -41,40 +51,57 @@ export default function App() {
   // 모든 리소스의 로딩이 완료되면 수행
   // 브라우저에 설치된 Web3 provider를 app에 연결
   window.addEventListener('load', function () {
-    if (window.ethereum) {
-      // latest
-      web3 = new Web3(window.ethereum);
-      // window.ethereum.request({ method: 'eth_requestAccounts' });
-      // console.log('latest')
-    } else if (window.web3) {
-      // old
-      web3 = window.web3;
-      console.log('Injected web3 detected.');
+    if (userInfo?.userAddress.length > 0) {
     } else {
-      // not found
-      const provider = new Web3.providers.HttpProvider('http://20.196.209.2:8545');
-      web3 = new Web3(provider);
-      // console.log('No web3 instance injected, using local web3.');
+      if (window.ethereum) {
+        // latest
+        web3 = new Web3(window.ethereum);
+        // window.ethereum.request({ method: 'eth_requestAccounts' });
+        // console.log('latest')
+      } else if (window.web3) {
+        // old
+        web3 = window.web3;
+        console.log('Injected web3 detected.');
+      } else {
+        // not found
+        const provider = new Web3.providers.HttpProvider('http://20.196.209.2:8545');
+        web3 = new Web3(provider);
+        // console.log('No web3 instance injected, using local web3.');
+      }
+      startApp();
     }
-    startApp();
   });
-  // get
-  const getUser = async (userAdr) => {
-    console.log('유저어드레스', userAdr)
-
-    try {
-      const res = await axios.get({
-        url: 'http://j6a107.p.ssafy.io/api/users/address',
-        data: {'user_address': '0x1c6cadfccc5ca5bbd53d2b9b053fe03caedae92f'},
-        headers: {'Content-Type': 'application/json'}
-      })
-      console.log('결과', res)
-      
-    } catch (err) {
-      console.log(err)
+  // // 계정이 변경되는 것을 감지하고,
+  // // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
+  window.ethereum.on('accountsChanged', async function (accounts) {
+    // 지갑이 인식되면
+    if (accounts.length > 0) {
+      account = accounts[0];
+      let res = await checkUser(account)
+      // 신규 유저인지 체크
+      if (!res) {
+        // 기존 유저라면        
+        dispatch(openModal())
+        getUser(dispatch, account)
+      } else {
+        // 신규 유저라면
+        dispatch(initialUserInfo())
+        registerUser(account)
+        dispatch(openModal())
+      }
+    } else {
+      console.log('연동할 지갑이 없습니다')
+      dispatch(initialUserInfo())
     }
+  });
+  window.ethereum.removeListener('accountsChanged', () => {
+    console.log('이벤트 종료')
+  })
+  window.ethereum.on('disconnect', async function (error) {
+    console.log('지갑 연결 해제')
+    dispatch(removeAddress())
+  }) 
 
-  }
   return (
     <>
       {/* <InfoModal /> */}
