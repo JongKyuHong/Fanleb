@@ -153,6 +153,12 @@ line-height: 21px;
 .custom-file-input:active::before {
   background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
 }
+.modal-container {
+  max-width: 700px;
+  margin: auto;
+  padding: 4rem 6rem;
+  margin-top: 20vh
+}
 @media screen and (max-width: 550px){
   .create{
     padding:2rem 1.5rem !important;
@@ -161,6 +167,12 @@ line-height: 21px;
   .create-container h1{
     display: none;
     margin-bottom: 20px;
+  }
+  .modal-container {
+    padding: 0 1rem
+  }
+  .select-box {
+    height: 60px;
   }
 }
 .section__padding{
@@ -179,4 +191,11 @@ line-height: 21px;
   margin: 0 1rem;
   color: var(--primary-color);
   border-radius: 10px;
+}
+.stop-dragging {
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
