@@ -1,6 +1,7 @@
 import { LoadingButton } from '@mui/lab'
 import { Avatar, Button, Card, Divider, Modal, Stack, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
+import axios from 'axios';
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../redux/apiCalls';
@@ -14,7 +15,8 @@ export const UserInfoModal = ({userInfo, address}) => {
   // const isOpen = useSelector(state => state.user.userInfo.isOpen);
   // const { userInfo } = useSelector(state => state.user)
   const [profilePic, setProfilePic] = useState(null);
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState("");  
+  const [isOverlap, setIsOverlap] = useState({check: false, status: false});  
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("일반인");
   // const [address, setAddress] = useState("");
@@ -36,11 +38,15 @@ export const UserInfoModal = ({userInfo, address}) => {
   // 유저 정보 데이터 서버로 보내는 함수
   const onSubmit = (e) => {
     e.preventDefault();    
-    if (nickname.trim().length === 0) {
+    if (nickname.trim().length === 0 || nickname.trim().length === null) {
       alert('닉네임을 입력해주세요')
       return
     }
-    if (description.trim().length === 0) {
+    if (isOverlap.check === false) {
+      alert('닉네임 중복 체크를 해주세요')
+      return
+    }
+    if (description.trim().length === 0 || description.trim().length === null) {
       alert('자기소개를 입력해주세요')
       return
     }
@@ -52,6 +58,16 @@ export const UserInfoModal = ({userInfo, address}) => {
       alert('이미지를 다시 한번 등록해주세요.')
       return
     }
+
+    if (category === null) {
+      alert('카테고리를 선택해주세요')
+      return
+    }
+    if (address.length == 0) {
+      alert('지갑 연동을 다시 해주세요.')
+      return
+    }
+    
     let data = new FormData();
     data.append('nickname', nickname);
     data.append('user_description', description);
@@ -69,22 +85,39 @@ export const UserInfoModal = ({userInfo, address}) => {
     reader.onloadend = () => resolve(reader.result)
     reader.onerror = reject
     reader.readAsDataURL(blob)
-  }))
- 
+    }))
+  // 닉네임 중복 체크
+  const checkNickname = async () => {
+    try {
+      const res = await axios(`api/users/valid/nickname?nickname=${nickname}`)
+      setIsOverlap({ check: true, status: false})
+    } catch (err) {
+      if (nickname === userInfo.userNickname) {
+        setIsOverlap({ check: true, status: false})  
+      } else {
+        setIsOverlap({ check: true, status: true})
+      }
+    }
+  }
   useEffect(() => {
     window.scrollTo(0, 0)
     if (userInfo?.userNickname && userInfo?.userDescription && userInfo?.userCategory && userInfo?.imageUrl) {
       setNickname(userInfo?.userNickname)
       setDescription(userInfo?.userDescription)
-      setCategory(userInfo?.userCategory)
+      setCategory(userInfo?.userCategory !== null ? userInfo?.userCategory : '일반인')
       setProfilePic({ file: "", previewURL: userInfo?.imageUrl })
+    } else {
+      setNickname("")
+      setDescription("")
+      setCategory("일반인")
+      setProfilePic({})
     }
     // setAddress(userInfo?.userAddress)
     // toDataURL(userInfo?.imageUrl)
     //   .then(dataUrl => {
     //     setProfilePic({ file: dataUrl, previewURL: userInfo?.imageUrl })       
     //   })    
-  }, [])
+  }, [userInfo])
   
   return (      
     <Modal open={modalIsOpen} disableScrollLock={true} sx={{ overflow: 'scroll'}}>
@@ -98,9 +131,14 @@ export const UserInfoModal = ({userInfo, address}) => {
             </label>
           </div>          
           <form className='login-writeForm' autoComplete='off' style={{marginTop: '3vh'}} onSubmit={onSubmit}>
-            <div className="login-formGroup">
+            <div className="login-formGroup" style={{display: 'flex'}}>
               <label>닉네임</label>
-              <input value={nickname} onChange={e => setNickname(e.target.value)} type="text" placeholder='닉네임'  />
+              <div style={{display: 'flex'}}>
+                <input value={nickname} onChange={e => setNickname(e.target.value)} type="text" placeholder='닉네임' style={{flexGrow: 1, marginRight: '10px', width: '100%'}}/>
+                <a onClick={checkNickname} className='login-writeButton' style={{ textAlign: 'center', cursor: 'pointer', alignSelf: 'center'}}>검사</a> 
+              </div>
+              {isOverlap.check && isOverlap.status === false && <span style={{color: 'greenyellow'}}>사용할 수 있는 닉네임입니다.</span>}
+              {isOverlap.check && isOverlap.status === true && <span style={{color: 'red'}}>이미 사용하고 있는 닉네임입니다.</span>}
             </div>
             <div className="login-formGroup">
               <label>자기소개</label>
@@ -134,7 +172,7 @@ export const UserInfoModal = ({userInfo, address}) => {
                 </LoadingButton>
               }
               {error && <span style={{ marginLeft: '2vw', color: 'red' }}>Error!</span>}
-              {userInfo && userInfo.userNickname.length > 0 && <button className='login-reg-writeButton' onClick={() => dispatch(closeModal())}>취소</button>}
+              {userInfo && userInfo.userNickname?.length > 0 && <button className='login-reg-writeButton' onClick={() => dispatch(closeModal())}>취소</button>}
           </div>
           </form>
         </div>
