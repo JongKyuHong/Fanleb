@@ -1,5 +1,3 @@
-
-
 /**
  *  PJT Ⅲ - Req.1-SC3) 시나리오 테스트
  */
@@ -41,7 +39,7 @@ contract("Sale Contract Testing", (accounts) => {
         const id = nft.create(seller,uri);
 
         const sf = await SaleFactory.deployed();
-        const addr = sf.createSale(seller, purchaser, itemId, 100, token.address, sf.address);
+        const addr = sf.createSale(purchaser, itemId, 100, token.address, sf.address);
 
         // const saleCon = await Sale.deployed(admin,seller,itemId,100,token.address,sf.address);
         // saleCon.purchase(purchaser)

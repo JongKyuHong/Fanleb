@@ -8,7 +8,7 @@ pragma solidity ^0.8.4;
  */
 interface IERC20 {
     /**
-     * @dev Returns the amount of tokens in existence.
+     * @dev Returns the amount of tokens in existence.approve
      */
     function totalSupply() external view returns (uint256);
 

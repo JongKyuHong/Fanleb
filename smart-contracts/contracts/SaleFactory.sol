@@ -28,14 +28,13 @@ contract SaleFactory is Ownable {
      * @dev 반드시 구현해야하는 함수입니다. 
      */
     function createSale(
-        address seller,
         uint256 itemId,
         uint256 purchasePrice,
         address currencyAddress,
         address nftAddress
     ) public returns (address) {
         // TODO
-        Sale newContract = new Sale(admin, seller, itemId, purchasePrice, currencyAddress, nftAddress);
+        Sale newContract = new Sale(admin, admin, itemId, purchasePrice, currencyAddress, nftAddress);
         emit NewSale(newContract.getAddress(), newContract.getSeller(), newContract.gettokenId());
         sales.push(newContract.getAddress());
         return newContract.getAddress();
