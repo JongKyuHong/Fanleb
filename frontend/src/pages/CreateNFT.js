@@ -181,7 +181,7 @@ const CreateNFT = () => {
         } catch (addError) {
           // handle "add" error
           console.log('체인 추가 실패')
-          alert('Metamask에서 SSAFY 네트워크를 추가해주세요.\nchainId: 0x79F5 \nchainName: SSAFY \nrpcUrls: http://20.196.209.2:8545')
+          alert('Metamask에서 SSAFY 네트워크를 추가해주세요.\nchainId: 31221 \nchainName: SSAFY \nrpcUrls: http://20.196.209.2:8545')
         }
       }
       // handle other "switch" errors
