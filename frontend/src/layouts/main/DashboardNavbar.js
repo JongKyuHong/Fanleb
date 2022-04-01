@@ -4,7 +4,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { updateUser } from '../../redux/apiCalls';
+import { checkUser, getUser, updateUser } from '../../redux/apiCalls';
 import mainLogo from '../../images/main-logo.png';
 // import home from './img/home.PNG';
 // import messenger from './img/messenger.PNG';
@@ -15,7 +15,7 @@ import IconButton from '../../theme/overrides/IconButton';
 import './navbar.css';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 import { Link } from "react-router-dom";
-import { openModal, updateSuccess } from '../../redux/userSlice';
+import { openModal, updateAddress, updateSuccess } from '../../redux/userSlice';
 
 const Menu = () => (
   <>
@@ -58,15 +58,61 @@ const DashboardNavbar = () => {
     setUser(true);
   }
   // 지갑 주소 가져오기
-  let accounts;
+  // let accounts;
+  
   const enableEth = async () => {
-    if (userInfo?.userAddress.length > 0) return;
-    accounts = await window.ethereum.request({ method: 'eth_requestAccounts'}).catch((err) => {
-      console.log(err.code);
-    })
-    dispatch(updateSuccess(accounts[0]));    
-    console.log(accounts)    
+    startApp()
+    // window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts) => {
+    //   if (accounts?.length > 0) {
+    //     dispatch(updateSuccess(accounts[0]));    
+    //   }      
+    // })
+    // .catch ((err) => {
+    //   console.log(err.code);
+    // })
+    // console.log(accounts)    
   }
+  let account
+  function startApp() {
+    // 현재 연결된 web3 provider(예제에서는 Metamask)에 있는 계정을 조회하고,
+    // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
+    window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts) => {
+      if (accounts.length > 0) {
+        account = accounts[0];
+        if (checkUser(account)) {
+          console.log('회원가입 되어있습니다. 주소:', accounts[0])
+          // dispatch(updateAddress(account))
+          dispatch(openModal())
+          getUser(dispatch, account)
+        } else {
+          console.log('회원가입이 안되었습니다.')
+        }
+      } else {
+        console.log('인식된 지갑이 없습니다.')
+      }
+      // 계정이 변경되는 것을 감지하고,
+      // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
+      window.ethereum.on('accountsChanged', function (accounts) {
+
+        if (accounts.length > 0) {
+          account = accounts[0];
+          if (checkUser(account)) {
+            console.log('회원가입 되어있습니다. 주소:', accounts[0])
+            // dispatch(updateAddress(account))
+            dispatch(openModal())
+            getUser(dispatch, account)
+          } else {
+            console.log('회원가입이 안되었습니다.')
+          }
+        } else {
+          console.log('인식된 지갑이 없습니다.')
+        }
+      });
+    });
+    // 이벤트 구독     
+    // filter 옵션으로 현재 사용중인 계정의 주소가
+    // to 변수에 저장된 이벤트만 필터링     
+  }  
   // SSAFY 네트워크 chainId: 79f5
   return (
     <RootStyle>
