@@ -3,7 +3,6 @@ import Post from './Post';
 import MainTabs from '../MainTabs/MainTabs';
 import './bids.css'
 import bids1 from '../../images/bids1.png'
-import { getMyCollections } from '../../redux/apiCalls';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
@@ -137,7 +136,7 @@ const Posts = () => {
     }
     
     return () => {
-
+      setPosts([])
     }
   }, [value])
 

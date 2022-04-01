@@ -23,7 +23,7 @@ const Post = (props) => {
         </div>
         <div className="bids-card-bottom">
           <p>{nickname} <span>{ user_address }</span></p>
-          <p> <AiFillHeart /> 92</p>
+          {/* <p> <AiFillHeart /> 92</p> */}
         </div>
       </div>
     </div>
