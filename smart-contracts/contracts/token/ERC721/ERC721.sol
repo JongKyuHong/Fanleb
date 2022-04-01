@@ -113,9 +113,12 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
         address owner = ownerOf(tokenId);
         require(to != owner, "ERC721: approval to current owner");
 
-        require(msg.sender == owner || isApprovedForAll(owner, msg.sender),
-            "ERC721: approve caller is not owner nor approved for all"
-        );
+        // require(msg.sender == owner || isApprovedForAll(owner, msg.sender),
+        //     "ERC721: approve caller is not owner nor approved for all"
+        // );
+        
+        require(msg.sender == owner,"one");
+        require(isApprovedForAll(owner, msg.sender),"two");
 
         _tokenApprovals[tokenId] = to;
         emit Approval(owner, to, tokenId);

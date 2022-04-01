@@ -5,10 +5,15 @@ const SsafyToken = artifacts.require("SsafyToken");
 const SsafyNFT = artifacts.require("SsafyNFT");
 const SaleFactory = artifacts.require("SaleFactory");
 const Sale = artifacts.require("Sale");
+const fs = require("fs");
 var Web3 = require('web3');
 var web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
 let ssafyTokenContract, salesFactoryContract, nftContract, salesContract;
 let itemId = 0;
+const { abi: sale_abi } = JSON.parse(fs.readFileSync('./build/contracts/Sale.json'));
+const { abi: salefactory_abi } = JSON.parse(fs.readFileSync('./build/contracts/SaleFactory.json'));
+const { abi: nft_abi } = JSON.parse(fs.readFileSync('./build/contracts/SsafyNFT.json'));
+const { abi: token_abi } = JSON.parse(fs.readFileSync('./build/contracts/SsafyToken.json'));
 
 contract("Sale Contract Testing", (accounts) => {
     
@@ -30,368 +35,43 @@ contract("Sale Contract Testing", (accounts) => {
         const seller = accounts[1];
         const purchaser = accounts[2];
 
-        const token = await SsafyToken.deployed("ssafytoken","ssf",10000);
+        const ssafyTokenContract = await SsafyToken.deployed("ssafytoken","ssf",10000);
+        const tokenContract = new web3.eth.Contract(token_abi, ssafyTokenContract.address)
 
-        token.mint(mintAmount);
-        token.forceToTransfer(admin,purchaser,1000);
+        const senda = await tokenContract.methods.mint(mintAmount).send({from:admin});
+
+        tokenContract.methods.forceToTransfer(admin,seller,1000).send({from:admin});
+        tokenContract.methods.forceToTransfer(admin,purchaser,1000).send({from:admin});
 
         const nft = await SsafyNFT.deployed();
-        const id = nft.create(seller,uri);
-
+        const nftContract = new web3.eth.Contract(nft_abi,nft.address)
+        
+        console.log('hi')
+        const tokenId = await nftContract.methods.create(seller,uri).send({from:seller,gas:3000000});
+        console.log('hi2')
         const sf = await SaleFactory.deployed();
-        const addr = sf.createSale(itemId, 100, token.address, sf.address);
+        console.log('hi3')
+        const sfContract = new web3.eth.Contract(salefactory_abi,sf.address)
+        console.log('hi4')
+        const saleaddr = await sfContract.methods.createSale(tokenId.events.Transfer.returnValues.tokenId, 100, ssafyTokenContract.address, nft.address).send({from: seller, gas:3000000});
+        console.log('hi5')
 
-        // const saleCon = await Sale.deployed(admin,seller,itemId,100,token.address,sf.address);
-        // saleCon.purchase(purchaser)
+        const saleContract = new web3.eth.Contract(sale_abi, saleaddr.events.NewSale.returnValues._saleContract);
+        console.log('hi6')
+        const ff = await saleContract.methods.purchase(purchaser).send({from: purchaser, gas: 3000000})
+        console.log(dd, 'hi7')
+        const balance5 = await tokenContract.methods.balanceOf(admin).call();
+        console.log(balance5,'balance5');
 
-        const sale_con = new web3.eth.Contract([
-          {
-            "inputs": [
-              {
-                "internalType": "address",
-                "name": "_admin",
-                "type": "address"
-              },
-              {
-                "internalType": "address",
-                "name": "_seller",
-                "type": "address"
-              },
-              {
-                "internalType": "address",
-                "name": "_buyer",
-                "type": "address"
-              },
-              {
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "_purchasePrice",
-                "type": "uint256"
-              },
-              {
-                "internalType": "address",
-                "name": "_currencyAddress",
-                "type": "address"
-              },
-              {
-                "internalType": "address",
-                "name": "_nftAddress",
-                "type": "address"
-              }
-            ],
-            "stateMutability": "nonpayable",
-            "type": "constructor"
-          },
-          {
-            "anonymous": false,
-            "inputs": [
-              {
-                "indexed": false,
-                "internalType": "address",
-                "name": "bidder",
-                "type": "address"
-              },
-              {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-              }
-            ],
-            "name": "HighestBidIncereased",
-            "type": "event"
-          },
-          {
-            "anonymous": false,
-            "inputs": [
-              {
-                "indexed": false,
-                "internalType": "address",
-                "name": "winner",
-                "type": "address"
-              },
-              {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-              }
-            ],
-            "name": "SaleEnded",
-            "type": "event"
-          },
-          {
-            "inputs": [],
-            "name": "buyer",
-            "outputs": [
-              {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "currencyAddress",
-            "outputs": [
-              {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "ended",
-            "outputs": [
-              {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "erc20Contract",
-            "outputs": [
-              {
-                "internalType": "contract IERC20",
-                "name": "",
-                "type": "address"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "erc721Constract",
-            "outputs": [
-              {
-                "internalType": "contract IERC721",
-                "name": "",
-                "type": "address"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "highestBid",
-            "outputs": [
-              {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "highestBidder",
-            "outputs": [
-              {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "nftAddress",
-            "outputs": [
-              {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "purchasePrice",
-            "outputs": [
-              {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "seller",
-            "outputs": [
-              {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "tokenId",
-            "outputs": [
-              {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [
-              {
-                "internalType": "uint256",
-                "name": "bid_amount",
-                "type": "uint256"
-              }
-            ],
-            "name": "bid",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "purchase",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "confirmItem",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "cancelSales",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "getAddress",
-            "outputs": [
-              {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "getSeller",
-            "outputs": [
-              {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "gettokenId",
-            "outputs": [
-              {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "getSaleInfo",
-            "outputs": [
-              {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-              },
-              {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-              },
-              {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "getCurrencyAmount",
-            "outputs": [
-              {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          }
-        ],addr);
+        const balance6 = await tokenContract.methods.balanceOf(seller).call();
+        console.log(balance6,'balance6');
 
-        sale_con.methods.purchase();
-
-        // admin_balance = await web3.eth.getBalance(admin);
-        // seller_balance = await web3.eth.getBalance(seller);
-        // purchaser_balance = await web3.eth.getBalance(purchaser);
-
-        // console.log(admin_balance,'admin');
-        // console.log(seller_balance,"seller");
-        // console.log(purchaser_balance,"purchaser_balance");
+        const balance7 = await tokenContract.methods.balanceOf(purchaser).call();
+        console.log(balance7,'balance7');
+        
+        // assert.equal(balance5 == 8000,"8000 아니자너,,");
+        // assert.equal(balance6 == 1100,"1100 아니자너,,")
+        // assert.equal(balance7 == 900,"900 아니자너,,")
 
     });
 });
