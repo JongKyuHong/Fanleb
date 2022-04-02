@@ -49,8 +49,8 @@ interface IERC20 {
      *
      * Emits an {Approval} event.
      */
-    //function approve(address spender, uint256 amount) external returns (bool);
-    function approve(address owner,address spender, uint256 amount) external returns (bool);
+    function approve(address spender, uint256 amount) external returns (bool);
+    //function approve(address owner,address spender, uint256 amount) external returns (bool);
     /**
      * @dev Moves `amount` tokens from `sender` to `recipient` using the
      * allowance mechanism. `amount` is then deducted from the caller's

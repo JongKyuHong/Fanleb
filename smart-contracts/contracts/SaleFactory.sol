@@ -59,9 +59,10 @@ contract Sale {
     address public currencyAddress;
     address public nftAddress;
     bool public ended;
+    bool public check;
 
     IERC20 public erc20Contract;
-    IERC721 public erc721Constract;
+    IERC721 public erc721Contract;
 
     event SaleEnded(address winner, uint256 amount);
 
@@ -81,27 +82,28 @@ contract Sale {
         currencyAddress = _currencyAddress;
         nftAddress = _nftAddress;
         ended = false;
-        erc20Contract = ERC20(_currencyAddress);
-        erc721Constract = IERC721(_nftAddress);
+        erc20Contract = IERC20(_currencyAddress);
+        erc721Contract = IERC721(_nftAddress);
     }
 
-    function purchase(address _buyer) public { 
+    function purchase() public { 
         // TODO
-        require(msg.sender != seller,"hi");
-        require(erc20Contract.approve(_buyer, seller, purchasePrice),"hi2");
-        erc20Contract.transferFrom(_buyer,seller , purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
+        buyer = msg.sender;
+        require(msg.sender != seller);
+        erc20Contract.approve(buyer, purchasePrice);
+        erc20Contract.transferFrom(buyer, seller, purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
 
-        erc721Constract.setApprovalForAll(seller, admin, true);
-        erc721Constract.approve(admin, _buyer, tokenId);
-        erc721Constract.transferFrom(admin, seller, _buyer, tokenId); //erc721Constract // NFT소유권을 구매자에게 이전
-        seller = _buyer;
+        erc721Contract.setApprovalForAll(seller, true);
+        erc721Contract.approve(buyer, tokenId);
+        erc721Contract.transferFrom(seller, buyer, tokenId); //erc721Contract // NFT소유권을 구매자에게 이전
+        seller = buyer;
         ended = true;// 컨트랙트의 거래 상태와 구매자 정보를 업데이트
     }
 
     function confirmItem() public {
         // TODO 
     }
-    
+
     function cancelSales() public{
         // TODO
         require(msg.sender == admin || msg.sender == seller);
