@@ -49,8 +49,6 @@ contract("Sale Contract Testing", (accounts) => {
         tokenContract.methods.forceToTransfer(admin,seller,1000).send({from:  admin}); // {from:admin}
         tokenContract.methods.forceToTransfer(admin,purchaser,1000).send({from:  admin}); // {from:admin}
 
-        
-
         const nft = await SsafyNFT.deployed();
         const nftContract = new web3.eth.Contract(nft_abi, nft.address);
         const tokenId = await nftContract.methods.create(seller, uri).send({from:seller ,gas:3000000}); // {from:seller ,gas:3000000}
