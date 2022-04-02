@@ -23,7 +23,7 @@ import Web3 from 'web3';
 import moment from 'moment';
 import Page from '../components/Page';
 import COMMON_HEADER from '../common/HeaderType';
-import COMMON_ABI from '../common/ABI';
+import ABI from '../common/ABI';
 import getSaleInfoBy from '../common/SaleInfoGetter';
 import { onResponse, onContractCall, onInvalidAddress } from '../common/ErrorMessage';
 import getAddressFrom from '../utils/AddressExtractor';
@@ -31,6 +31,7 @@ import sendTransaction from '../utils/TxSender';
 import { convertToAccountingFormat } from '../utils/NumberFormatter';
 import { motion } from 'framer-motion';
 import { MotionContainer, varBounceIn } from '../components/animate';
+import AddressStore from '../common/AddressStore';
 
 // 이미지 스타일
 const ImgStyle = styled('img')({
@@ -174,13 +175,23 @@ const ItemPurchase = () => {
    * 2. 정상 호출 후, Sale 컨트랙트의 purchase() 함수를 호출합니다. 
    * 3. 정상 호출 후 buyer 정보를 백엔드에 업데이트합니다.
    */
+
   const tryPurchase = async () => {
     // TODO
-    const abi = ABI.CONTRACT_ABI.SALE_ABI;
-    const sale_contract = new web3.eth.Contract(abi, );
+    tokenId
+    const sf_abi = ABI.CONTRACT_ABI.SALE_FACTORY_ABI;
+    const sf_addr =  AddressStore.CONTRACT_ADDR.SaleFactory;
+    const sf_contract = new web3.eth.Contract(sf_abi,sf_addr);
+    let events = await sf_contract.getPastEvents('NewSale',{filter:{_saleContract:[]},fromBlock:1,toBlock:'latest'});
+    console.log(events)
+    const sales = sf_contract.allSales();
+    // 3
     setLoading(false);
   };
 
+  const callapi = async () => {
+    
+  }
   return (
     <Page title="SSAFY NFT" maxWidth="100%" minHeight="100%">
       {isCollection === true ? (
