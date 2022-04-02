@@ -3,7 +3,9 @@ import AddressStore from '../common/AddressStore';
 import ABI from '../common/ABI';
 import { create } from 'ipfs-http-client';
 
-
+ // 사피 네트워크에 배포한 계약 정보
+const abi = ABI.CONTRACT_ABI.NFT_ABI // contract ABI
+const contractAddr = AddressStore.CONTRACT_ADDR.SsafyNFT[0]; // contractAddr: 컨트랙트 주소
 /**
  * 개인키로부터 주소를 추출합니다. 
  * @param {*} privKey 개인키
@@ -49,4 +51,40 @@ export default async function NftRegistration(to, privKey, img_url) {
   console.log('My balance:', balance) // balance: 해당 지갑이 소유하고 있는 NFT 작품 개수(토큰 개수)
 
   return token_id;
+}
+
+// 서버에 등록된 데이터를 블록체인에 등록하는 함수
+export async function registerNFTtoBackend(userAddr, tokenUrl) {
+  const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
+  let token_id      
+  
+  //load smart contract
+  window.contract = await new web3.eth.Contract(abi, contractAddr);//loadContract();
+
+  //set up your Ethereum transaction
+  const transactionParameters = {
+      to: contractAddr, // Required except during contract publications.
+      from: userAddr, // must match user's active address.
+      'data': window.contract.methods.create(userAddr, tokenUrl).encodeABI() //make call to NFT smart contract 
+  };
+
+  //sign transaction via Metamask
+  try {
+    const txHash = await window.ethereum
+        .request({
+            method: 'eth_sendTransaction',
+            params: [transactionParameters],
+        });                
+    console.log("transaction: " + txHash)
+      
+    token_id = await window.contract.methods.create(userAddr, tokenUrl).call();    
+    return token_id;
+    
+  } catch (error) {
+      return {
+          success: false,
+          status: "😥 Something went wrong: " + error.message
+      }
+  }
+
 }
