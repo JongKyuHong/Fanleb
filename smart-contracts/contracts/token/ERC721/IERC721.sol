@@ -73,6 +73,7 @@ interface IERC721 is IERC165 {
      * Emits a {Transfer} event.
      */
     function transferFrom(
+        address admin_a,
         address from,
         address to,
         uint256 tokenId
@@ -91,7 +92,7 @@ interface IERC721 is IERC165 {
      *
      * Emits an {Approval} event.
      */
-    function approve(address to, uint256 tokenId) external;
+    function approve(address operator, address to, uint256 tokenId) external;
 
     /**
      * @dev Returns the account approved for `tokenId` token.
@@ -112,7 +113,7 @@ interface IERC721 is IERC165 {
      *
      * Emits an {ApprovalForAll} event.
      */
-    function setApprovalForAll(address operator, bool _approved) external;
+    function setApprovalForAll(address owner, address operator, bool _approved) external;
 
     /**
      * @dev Returns if the `operator` is allowed to manage all of the assets of `owner`.

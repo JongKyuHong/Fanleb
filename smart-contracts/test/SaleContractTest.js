@@ -36,43 +36,25 @@ contract("Sale Contract Testing", (accounts) => {
         const purchaser = accounts[2];
 
         const ssafyTokenContract = await SsafyToken.deployed("ssafytoken","ssf",10000);
-        const tokenContract = new web3.eth.Contract(token_abi, ssafyTokenContract.address)
-
+        const tokenContract = new web3.eth.Contract(token_abi, ssafyTokenContract.address);
         const senda = await tokenContract.methods.mint(mintAmount).send({from:admin});
-
         tokenContract.methods.forceToTransfer(admin,seller,1000).send({from:admin});
         tokenContract.methods.forceToTransfer(admin,purchaser,1000).send({from:admin});
 
         const nft = await SsafyNFT.deployed();
-        const nftContract = new web3.eth.Contract(nft_abi,nft.address)
-        
-        console.log('hi')
-        const tokenId = await nftContract.methods.create(seller,uri).send({from:seller,gas:3000000});
-        console.log('hi2')
+        const nftContract = new web3.eth.Contract(nft_abi, nft.address);
+        const tokenId = await nftContract.methods.create(seller, uri).send({from:seller ,gas:3000000});
+
         const sf = await SaleFactory.deployed();
-        console.log('hi3')
-        const sfContract = new web3.eth.Contract(salefactory_abi,sf.address)
-        console.log('hi4')
-        const saleaddr = await sfContract.methods.createSale(tokenId.events.Transfer.returnValues.tokenId, 100, ssafyTokenContract.address, nft.address).send({from: seller, gas:3000000});
-        console.log('hi5')
+        const sfContract = new web3.eth.Contract(salefactory_abi,sf.address);
 
+        const saleaddr = await sfContract.methods.createSale(seller, tokenId.events.Transfer.returnValues.tokenId, 100, ssafyTokenContract.address, nft.address).send({from: seller, gas:3000000});
         const saleContract = new web3.eth.Contract(sale_abi, saleaddr.events.NewSale.returnValues._saleContract);
-        console.log('hi6')
-        const ff = await saleContract.methods.purchase(purchaser).send({from: purchaser, gas: 3000000})
-        console.log(dd, 'hi7')
-        const balance5 = await tokenContract.methods.balanceOf(admin).call();
-        console.log(balance5,'balance5');
-
-        const balance6 = await tokenContract.methods.balanceOf(seller).call();
-        console.log(balance6,'balance6');
-
-        const balance7 = await tokenContract.methods.balanceOf(purchaser).call();
-        console.log(balance7,'balance7');
+        const ff = await saleContract.methods.purchase(purchaser).send({from: admin, gas: 3000000});
         
-        // assert.equal(balance5 == 8000,"8000 아니자너,,");
-        // assert.equal(balance6 == 1100,"1100 아니자너,,")
-        // assert.equal(balance7 == 900,"900 아니자너,,")
-
+        assert.equal(balance5 == 8000,"no 8000");
+        assert.equal(balance6 == 1100,"no 1100");
+        assert.equal(balance7 == 900,"no 900");
     });
 });
         

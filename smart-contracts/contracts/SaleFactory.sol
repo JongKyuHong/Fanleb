@@ -28,13 +28,14 @@ contract SaleFactory is Ownable {
      * @dev 반드시 구현해야하는 함수입니다. 
      */
     function createSale(
+        address seller,
         uint256 itemId,
         uint256 purchasePrice,
         address currencyAddress,
         address nftAddress
     ) public returns (address) {
         // TODO
-        Sale newContract = new Sale(admin, admin, itemId, purchasePrice, currencyAddress, nftAddress);
+        Sale newContract = new Sale(admin, seller, itemId, purchasePrice, currencyAddress, nftAddress);
         emit NewSale(newContract.getAddress(), newContract.getSeller(), newContract.gettokenId());
         sales.push(newContract.getAddress());
         return newContract.getAddress();
@@ -58,10 +59,6 @@ contract Sale {
     address public currencyAddress;
     address public nftAddress;
     bool public ended;
-
-    // 현재 최고 입찰 상태
-    address public highestBidder;
-    uint256 public highestBid;
 
     IERC20 public erc20Contract;
     IERC721 public erc721Constract;
@@ -94,8 +91,9 @@ contract Sale {
         require(erc20Contract.approve(_buyer, seller, purchasePrice),"hi2");
         erc20Contract.transferFrom(_buyer,seller , purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
 
-        erc721Constract.approve(_buyer, tokenId);
-        erc721Constract.transferFrom(seller, _buyer, tokenId); //erc721Constract // NFT소유권을 구매자에게 이전
+        erc721Constract.setApprovalForAll(seller, admin, true);
+        erc721Constract.approve(admin, _buyer, tokenId);
+        erc721Constract.transferFrom(admin, seller, _buyer, tokenId); //erc721Constract // NFT소유권을 구매자에게 이전
         seller = _buyer;
         ended = true;// 컨트랙트의 거래 상태와 구매자 정보를 업데이트
     }
