@@ -90,7 +90,7 @@ contract Sale {
         // TODO
         buyer = msg.sender;
         require(msg.sender != seller);
-        erc20Contract.approve(buyer, purchasePrice);
+        //erc20Contract.approve(buyer, purchasePrice);
         erc20Contract.transferFrom(buyer, seller, purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
 
         erc721Contract.setApprovalForAll(seller, true);

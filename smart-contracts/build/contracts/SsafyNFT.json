@@ -116,8 +116,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -136,8 +135,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -161,8 +159,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -175,8 +172,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -195,8 +191,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -278,8 +273,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -298,8 +292,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -323,8 +316,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -337,8 +329,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -380,8 +371,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -424,8 +414,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.8.10+commit.fc410830\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"approved\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"approved\",\"type\":\"bool\"}],\"name\":\"ApprovalForAll\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"_tokenURI\",\"type\":\"string\"}],\"name\":\"create\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getApproved\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"}],\"name\":\"isApprovedForAll\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"ownerOf\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"safeTransferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"safeTransferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"approved\",\"type\":\"bool\"}],\"name\":\"setApprovalForAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"tokenByIndex\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"tokenOfOwnerByIndex\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"tokenURI\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"approve(address,uint256)\":{\"details\":\"See {IERC721-approve}.\"},\"balanceOf(address)\":{\"details\":\"See {IERC721-balanceOf}.\"},\"getApproved(uint256)\":{\"details\":\"See {IERC721-getApproved}.\"},\"isApprovedForAll(address,address)\":{\"details\":\"See {IERC721-isApprovedForAll}.\"},\"name()\":{\"details\":\"See {IERC721Metadata-name}.\"},\"ownerOf(uint256)\":{\"details\":\"See {IERC721-ownerOf}.\"},\"safeTransferFrom(address,address,uint256)\":{\"details\":\"See {IERC721-safeTransferFrom}.\"},\"safeTransferFrom(address,address,uint256,bytes)\":{\"details\":\"See {IERC721-safeTransferFrom}.\"},\"setApprovalForAll(address,bool)\":{\"details\":\"See {IERC721-setApprovalForAll}.\"},\"symbol()\":{\"details\":\"See {IERC721Metadata-symbol}.\"},\"tokenByIndex(uint256)\":{\"details\":\"See {IERC721Enumerable-tokenByIndex}.\"},\"tokenOfOwnerByIndex(address,uint256)\":{\"details\":\"See {IERC721Enumerable-tokenOfOwnerByIndex}.\"},\"tokenURI(uint256)\":{\"details\":\"See {IERC721Metadata-tokenURI}.\"},\"totalSupply()\":{\"details\":\"See {IERC721Enumerable-totalSupply}.\"},\"transferFrom(address,address,uint256)\":{\"details\":\"See {IERC721-transferFrom}.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"PJT \\u2160 - \\uacfc\\uc81c 2) NFT Creator \\uad6c\\ud604 \\uc0c1\\ud0dc \\ubcc0\\uc218\\ub098 \\ud568\\uc218\\uc758 \\uc2dc\\uadf8\\ub2c8\\ucc98\\ub294 \\uad6c\\ud604\\uc5d0 \\ub530\\ub77c \\ubcc0\\uacbd\\ud560 \\uc218 \\uc788\\uc2b5\\ub2c8\\ub2e4.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/SsafyNFT.sol\":\"SsafyNFT\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/SsafyNFT.sol\":{\"keccak256\":\"0xf6e3e3be8c92db028370dad2ad1376ad989151c24fc5bab5f70f6a6e0e14e99a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://cd599be6e7b1766d31b38bcfb3b07d3fc5c7956d8ebe7d24e950a513e1b71d5e\",\"dweb:/ipfs/QmdHs5w2eEX7A3UZRbM2iaK3Vgd6aksAJMwA3GyhBvCpjX\"]},\"project:/contracts/token/ERC721/ERC721.sol\":{\"keccak256\":\"0x114673f007db7b4039e299927cc7a2e2bd4bab7ecfcfbc63dedbe477fe6bdcca\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a9395690ecdb6504d23f912354969d314bfe34086f8ea233ac81ad51f509b5ea\",\"dweb:/ipfs/QmZEetznTgeaS7uvxBNxSiRb9kTxWshXUn8rJQ2EEpaKW7\"]},\"project:/contracts/token/ERC721/IERC721.sol\":{\"keccak256\":\"0x178cab4894c1de34941b674a05ddc8a3ad4aeb4eb83a467933323a68868159cf\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d5d29d3d2c3ac106325c28d6b1b11c4b7ad77a4646a572fa7562a31517ef1a12\",\"dweb:/ipfs/QmSY9eHxKXR6EzsMkqcPU6XJPfmdsQDgdf1C7ugCBScZqd\"]},\"project:/contracts/token/ERC721/IERC721Receiver.sol\":{\"keccak256\":\"0x7cb02bc96de2719a6701ab18ef3873c6928e392ebaa624124499dda76c88b067\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a6d6aacfc8b749b7dc40f341cad484e5feb571073959d5d5b8103bf57fb573bd\",\"dweb:/ipfs/QmZDJqj2pciNw4v5N5FMeC2Q1vhBv2jHU3uDQvC5STgsT4\"]},\"project:/contracts/token/ERC721/extensions/ERC721Enumerable.sol\":{\"keccak256\":\"0x18d948798178a07de23bb1c061dc69134e6532d99ddbe8451b9c313aa2012afb\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://f362805e17232f764aa628f3889b41054640979eff1fc698c4685cb2ff3fc8b7\",\"dweb:/ipfs/QmbkgMwFMAbTbaDJzucrYWrKg3XbEizdWZtmuXAKZGvGhL\"]},\"project:/contracts/token/ERC721/extensions/IERC721Enumerable.sol\":{\"keccak256\":\"0x921634b2b0f35058d8b2fbefef4147fabb966e2a9688282452e291cb5e6972a7\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5ab75c38ea2d78b8f5b40f383b16e1f6311253410675f5b2f67636be30ad0b00\",\"dweb:/ipfs/QmaPijzBtBPX52xYT3pCLy1PFhTWLaFTwrAh2k2QaciawC\"]},\"project:/contracts/token/ERC721/extensions/IERC721Metadata.sol\":{\"keccak256\":\"0xb61391c8adec70c983c47cff53d490d8ddc71bf37a12da18dc053b45b4d813ae\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5d08e865414ac6e52f1a61c93acc173079fb3471db5138e3a2c23db2550114cd\",\"dweb:/ipfs/QmUhQ71H29HyjX9GnSWXdZ1Lnh4EPWAbXPhMyuWgSrDxby\"]},\"project:/contracts/utils/Address.sol\":{\"keccak256\":\"0x4cdad91fcb345358c77f4c752b2b3983f783fb6bcd4c6f7f42dba588612907be\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://678c1bfbb9fc26b0aaa34d404adbe08aa36b88b51c9eba6eba13389dac8580b7\",\"dweb:/ipfs/QmZdv53JrE4MtTR915KRpDjao32uCg6TPAXs3p95HMFvw1\"]},\"project:/contracts/utils/Context.sol\":{\"keccak256\":\"0xdb19f5cb22f6551fbb03ba38b8af9e543e26deb4d23788f2946f25c091256ca3\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9381d108c93f3fdd1e5a4580834362f20d0f5e919d97820afd55be553ef10c19\",\"dweb:/ipfs/QmWjioeW1kKfZHtmgrpxDYhwF2sVZ8gXoWTA9mKZvWvZot\"]},\"project:/contracts/utils/Strings.sol\":{\"keccak256\":\"0x90bf9a67cda8539274966706149096a2c6df1c5504aa1a4c36e8be275db822e8\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://29937e4bb514219e1873d0b765e9980c86d2815e521e2b8608c981e284e808cd\",\"dweb:/ipfs/QmeJTbsBXFsdkL1KQERnwr1GPqsqci2dB4jzzcVrgGtBHi\"]},\"project:/contracts/utils/introspection/ERC165.sol\":{\"keccak256\":\"0xf0389fb699481b09fe24019d5a53d6a9e4af3c3fb5d0083eed137aed8020ff69\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ddebb3d549798a232d7e7c74547a802f7fd075a6e4f02a7560e902b5e6f6d995\",\"dweb:/ipfs/QmP1XhRy71vYxiU5eZfo3D4zZvzxgb4VjGhfjm6N4sK683\"]},\"project:/contracts/utils/introspection/IERC165.sol\":{\"keccak256\":\"0xe09bdf91dde6872fa597c6554ced17e679727988578019bf8aa7954e4479ef76\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d262e8e7efe5037ade4db603f32b45e320609777241d01498b988acbad81c8e4\",\"dweb:/ipfs/Qme5ngXzkphT96C1qKWz7XP7yFhYboiP9tVt8AMQHBEkYZ\"]},\"project:/node_modules/@openzeppelin/contracts/utils/Counters.sol\":{\"keccak256\":\"0xf0018c2440fbe238dd3a8732fa8e17a0f9dce84d31451dc8a32f6d62b349c9f1\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://59e1c62884d55b70f3ae5432b44bb3166ad71ae3acd19c57ab6ddc3c87c325ee\",\"dweb:/ipfs/QmezuXg5GK5oeA4F91EZhozBFekhq5TD966bHPH18cCqhu\"]}},\"version\":1}",
@@ -16872,8 +16861,7 @@
     }
   },
   "schemaVersion": "3.4.5",
-  "updatedAt": "2022-04-02T12:14:54.396Z",
-  "networkType": "ethereum",
+  "updatedAt": "2022-04-03T07:57:24.135Z",
   "devdoc": {
     "kind": "dev",
     "methods": {
