@@ -1,6 +1,6 @@
 import { alpha, styled } from '@mui/material/styles';
 import { Box, Stack, Button, AppBar, Toolbar, Avatar, CircularProgress, Input, OutlinedInput, InputAdornment } from '@mui/material';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -19,8 +19,9 @@ import { openModal, updateAddress, updateSuccess } from '../../redux/userSlice';
 
 const Menu = () => (
   <>
-     {/* <Link to="/create"><p>등록하기</p> </Link>      */}
-     <p>순위보기</p>     
+    {/* <Link to="/create"><p>등록하기</p> </Link>      */}    
+    <p onClick={() => alert('준비중')}>순위보기</p>     
+    
     
   </>
  )
@@ -48,7 +49,8 @@ const DashboardNavbar = () => {
   const dispatch = useDispatch();
   const navigator = useNavigate();
   const { userInfo, pending, error } = useSelector(state => state.user);
-  const [toggleMenu,setToggleMenu] = useState(false)
+  const [toggleMenu, setToggleMenu] = useState(false)
+  const [keyword, setKeyword] = useState("");
   //  const [user, setUser] = useState(false)
 
   const handleLogout = () => {
@@ -74,29 +76,44 @@ const DashboardNavbar = () => {
   }
   let account
   function startApp() {
-    // 현재 연결된 web3 provider(예제에서는 Metamask)에 있는 계정을 조회하고,
-    // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
-    window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts) => {
-      if (accounts.length > 0) {
-        account = accounts[0];
-        if (checkUser(account)) {
-          console.log('회원가입 되어있습니다. 주소:', accounts[0])
-          // dispatch(updateAddress(account))
-          dispatch(openModal())
-          getUser(dispatch, account)
+    if (window.ethereum) {
+      // 현재 연결된 web3 provider(예제에서는 Metamask)에 있는 계정을 조회하고,
+      // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
+      window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts) => {
+        if (accounts.length > 0) {
+          account = accounts[0];
+          if (checkUser(account)) {
+            console.log('회원가입 되어있습니다. 주소:', accounts[0])
+            // dispatch(updateAddress(account))
+            dispatch(openModal())
+            getUser(dispatch, account)
+          } else {
+            console.log('회원가입이 안되었습니다.')
+          }
         } else {
-          console.log('회원가입이 안되었습니다.')
+          console.log('인식된 지갑이 없습니다.')
         }
-      } else {
-        console.log('인식된 지갑이 없습니다.')
-      }
-    });
-    // 이벤트 구독     
-    // filter 옵션으로 현재 사용중인 계정의 주소가
-    // to 변수에 저장된 이벤트만 필터링     
+      });
+      // 이벤트 구독     
+      // filter 옵션으로 현재 사용중인 계정의 주소가
+      // to 변수에 저장된 이벤트만 필터링     
+    } else {
+      window.open('https://metamask.io/download/', '_blank')
+    }
   }
   function switchWallet() {
     window.ethereum.request({ method: 'eth_requestAccounts' }).then(e => console.log(e))
+  }
+  const searchKeyword = (e) => {    
+    if (e.key == 'Enter') {
+      // console.log(keyword)
+      navigator(`/search?query=${keyword}`)
+    }
+  }
+  const onInput = (e) => {
+    // setKeyword(`안녕`)
+    setKeyword(e.target.value.normalize('NFC'))
+    console.log(e.target.value.normalize('NFC'))
   }
   // SSAFY 네트워크 chainId: 79f5
   return (
@@ -109,7 +126,11 @@ const DashboardNavbar = () => {
             </Link>
           </div>
           <div className="navbar-links_container">
-            <input type="text" placeholder='검색' autoFocus={true} />
+            <input type="text" placeholder='검색' autoFocus={true}
+              // onKeyPress={searchKeyword}
+              // onChange={onInput}
+              // value={keyword}
+            />
           <Menu />
           {/* {userInfo.account && <Link to="/"><p onClick={handleLogout}>Logout</p></Link> } */}
           

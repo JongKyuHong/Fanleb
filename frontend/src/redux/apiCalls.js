@@ -66,18 +66,18 @@ export const getUser = async (dispatch, userAdr) => {
 
 }
 
-// 내 콜렉션 가져오는 함수: 미완
-export const getMyCollections = async (addr) => {    
-  try {
-    let collections = [];
-    while (true) {
-      const { data } = await axios(`api/collections?page=1&user_address=${addr}`);
-      collections = [...collections, data.data.content]
+// // 내 콜렉션 가져오는 함수: 미완
+// export const getMyCollections = async (addr) => {    
+//   try {
+//     let collections = [];
+//     while (true) {
+//       const { data } = await axios(`api/collections?page=1&user_address=${addr}`);
+//       collections = [...collections, data.data.content]
       
-      if (data.data.last) break
-    }    
-    return collections   
-  } catch (err) {
-    console.log(err)   
-  }
-};
+//       if (data.data.last) break
+//     }    
+//     return collections   
+//   } catch (err) {
+//     console.log(err)   
+//   }
+// };
