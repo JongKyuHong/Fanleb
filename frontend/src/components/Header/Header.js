@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './header.css'
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
@@ -7,7 +7,9 @@ import seller1 from '../../images/seller1.jpg'
 import verify from '../../images/verify.png'
 import coin from '../../images/coin.png';
 import { Link  } from 'react-router-dom';
+import axios from 'axios';
 const Header = () => {
+  const [userData, setUserData] = useState([]);
   var settings = {
     dots: false,
     infinite: false,
@@ -65,6 +67,13 @@ const Header = () => {
       }
     ]
   };
+  useEffect(() => {
+    const getUserData = async () => {
+      const {data} = await axios(`api/users/list?page=1&search[query]=`)
+      setUserData(data.data.content)
+    }
+    getUserData();
+  }, [])
   return (
     <div className='header'>
       <div className="header-content">
@@ -75,19 +84,21 @@ const Header = () => {
       </div>
       <div className="header-slider">
         <h1>인기 스타</h1>
-          <Slider {...settings} className='slider'>
-            <div className='slider-card'>
-              <p className='slider-card-number'>1</p>
+        <Slider {...settings} className='slider'>
+          {userData.map((data, index) => {
+            return <div className='slider-card' key={index}>
+              <p className='slider-card-number'>{index + 1}</p>
               <div className="slider-img">
-                <img src={seller1} alt="" />
+                <img src={data.img_url} alt="" style={{  objectFit: 'cover', width: '100px', height: '100px'}} />
                 <img src={verify} className='verify' alt="" />
               </div>
-              <Link to={`/profile/Rian`}>
-              <p className='slider-card-name'>제임스 본드</p>
+              <Link to={'/'}>
+                <p className='slider-card-name'>{data.nickname}</p>
               </Link>
-              <p className='slider-card-price'>5.250 <span>ETH</span></p>
+              {/* <p className='slider-card-price'>5.250 <span>ETH</span></p> */}
             </div>
-            <div className='slider-card'>
+          })}
+            {/* <div className='slider-card'>
               <p className='slider-card-number'>2</p>
               <div className="slider-img">
                 <img src={seller1} alt="" />
@@ -141,7 +152,7 @@ const Header = () => {
               <p className='slider-card-name'>제임스 본드</p>
               </Link>
               <p className='slider-card-price'>3.548 <span>ETH</span></p>
-            </div>
+            </div> */}
         </Slider>
       </div>
     </div>
