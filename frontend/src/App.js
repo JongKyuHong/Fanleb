@@ -16,7 +16,8 @@ export default function App() {
   const address = useSelector(state => state.user.userInfo.userAddress);
   const navigator = useNavigate();
   let account;
-  const eth = window.ethereum;
+  let eth;
+  let web3;
   // 배포된 컨트랙트의 address와 ABI를 사용해서 컨트랙트 객체 생성
   // 생성한 컨트랙트 객체에 접근해서 정의된 함수를 호출할 수 있음
   function startApp() {        
@@ -68,20 +69,28 @@ export default function App() {
     } else {
       if (window.ethereum) {
         // latest
+        eth = window.ethereum;
         web3 = new Web3(window.ethereum);
         // window.ethereum.request({ method: 'eth_requestAccounts' });
-        // console.log('latest')
+        console.log('latest')
+        console.log(eth)
       } else if (window.web3) {
         // old
         web3 = window.web3;
+        eth = window.web3;
         console.log('Injected web3 detected.');
+        console.log(eth)
       } else {
         // not found
         const provider = new Web3.providers.HttpProvider('http://20.196.209.2:8545');
-        web3 = new Web3(provider);
+        web3 = new Web3(provider);        
         // console.log('No web3 instance injected, using local web3.');
+        console.log(eth)
       }
-      startApp();
+      if (eth !== undefined) {
+        console.log(typeof eth !== undefined)
+        startApp();
+      }
     }
   });
 
@@ -118,7 +127,9 @@ export default function App() {
   }
   // // 계정이 변경되는 것을 감지하고,
   // // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
-  eth.on('accountsChanged', check); 
+  if (eth !== undefined && window.ethereum !== undefined) {
+    eth.on('accountsChanged', check); 
+  }
   
   return (
     <>

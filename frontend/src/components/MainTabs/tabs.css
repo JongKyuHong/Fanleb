@@ -16,6 +16,8 @@
   text-transform: uppercase;
   padding: 1rem 0;
   font-size: 1rem;
+  width: 100px;
+  text-align: center;
 }
 
 .profile-actions__item svg {
@@ -28,9 +30,29 @@
 
 .profile-actions__item:hover {
   cursor: pointer;
+  background: #2A2D3A;
+  border-radius: 10px;
 }
 
 .profile-actions__item--active {
   font-weight: bold;
-  border-top: 1px solid #000;
+  transition: background-color 0.4s ease 0s;
+  border-top: 4px solid #646c7f;
+}
+
+@media screen and (max-width: 550px) {
+  .profile-actions__item {    
+    width: 50px;
+    text-align: center;
+  }
+  .profile-actions__item svg {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .profile-actions__item {
+    width: 30px;
+    text-align: center;
+  }
 }
