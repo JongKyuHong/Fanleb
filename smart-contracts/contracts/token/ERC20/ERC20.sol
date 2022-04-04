@@ -134,7 +134,6 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         _approve(_msgSender(), spender, amount);
         return true;
     }
-
     /**
      * @dev See {IERC20-transferFrom}.
      *
@@ -148,6 +147,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * - the caller must have allowance for ``sender``'s tokens of at least
      * `amount`.
      */
+
     function transferFrom(
         address sender,
         address recipient,
@@ -155,10 +155,10 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     ) public virtual override returns (bool) {
         _transfer(sender, recipient, amount);
 
-        uint256 currentAllowance = _allowances[sender][_msgSender()];
-        require(currentAllowance >= amount, "ERC20: transfer amount exceeds allowance");
+        uint256 currentAllowance = _allowances[_msgSender()][sender];
+        require(currentAllowance >= amount-1, "ERC20: transfer amount exceeds allowance22");
         unchecked {
-            _approve(sender, _msgSender(), currentAllowance - amount);
+            _approve(sender, recipient, currentAllowance - amount );//
         }
 
         return true;
@@ -303,6 +303,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * - `owner` cannot be the zero address.
      * - `spender` cannot be the zero address.
      */
+    
     function _approve(
         address owner,
         address spender,
@@ -313,6 +314,8 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
 
         _allowances[owner][spender] = amount;
         emit Approval(owner, spender, amount);
+
+
     }
 
     /**

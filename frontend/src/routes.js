@@ -11,8 +11,7 @@ import ItemPurchase from './pages/ItemPurchase';
 import CreateNFT from './pages/CreateNFT';
 import Content from './projectsPages/Content'
 import ContentDetail from './projectsPages/ContentDetail'
-import Rank from './projectsPages/Rank';
-import { Dialog, Modal } from '@mui/material';
+import SearchResult from './pages/SearchResult';
 
 // 화면 라우팅 테이블
 export default function Router() {
@@ -54,11 +53,11 @@ export default function Router() {
       ]
     },
     {
-      path: '/rank',
+      path: '/search',
       element: <MainLayout />,
-      children: [
-        { element: <Navigate to="/rank" replace /> },
-        { path: '', element: <Rank/> }
+      children: [        
+        { element: <Navigate to='/search' replace /> },
+        { path: '', element: <SearchResult /> }
       ]
     },
     {

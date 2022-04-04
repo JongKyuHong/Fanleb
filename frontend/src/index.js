@@ -12,14 +12,14 @@ import { persistStore } from 'redux-persist';
 let persistor = persistStore(store);
 
 ReactDOM.render(  
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <HelmetProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </HelmetProvider>
-    </PersistGate>
-  </Provider>, 
-  document.getElementById('root')
+    <HelmetProvider>
+      <BrowserRouter>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <App />
+          </PersistGate>
+        </Provider>
+      </BrowserRouter>
+    </HelmetProvider>
+  ,document.getElementById('root')
 );

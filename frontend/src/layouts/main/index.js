@@ -29,11 +29,11 @@ const MainLayout = () => {
 
   return (
     <RootStyle>
-      <MainStyle>
+      {/* <MainStyle> */}
         <DashboardNavbar />
         <Outlet />
         <Footer />                
-      </MainStyle>
+      {/* </MainStyle> */}
     </RootStyle>
   );
 };

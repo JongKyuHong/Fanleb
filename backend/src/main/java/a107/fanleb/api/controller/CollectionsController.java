@@ -19,26 +19,24 @@ public class CollectionsController {
 
     @PostMapping
     public ResponseEntity<? extends BaseResponseBody> save(@RequestBody CollectionsRegisterReq collectionsRegisterReq) {
-        collectionsService.save(collectionsRegisterReq);
-        return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", collectionsService.save(collectionsRegisterReq)));
     }
 
     @GetMapping
-    public ResponseEntity<? extends BaseResponseBody> show(@RequestParam(value = "page", defaultValue = "1") int page, @RequestBody Map<String, Object> body) {
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", collectionsService.show(page, (String)body.get("user_address"))));
+    public ResponseEntity<? extends BaseResponseBody> show(@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(name="user_address") String userAddress) {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", collectionsService.show(page, userAddress)));
     }
 
-    //todo : 검색
     @GetMapping("/list")
     public ResponseEntity<? extends BaseResponseBody> showList(@RequestParam(required = false, name="search[query]") String query,
                                                                @RequestParam(required = false, name="search[sortAscending]") String isAscending,
-                                                               @RequestParam(required = false, name="search[sortBy]", defaultValue = "singer") String sortedBy,
+                                                               @RequestParam(required = false, name="search[sortBy]") String sortedBy,
                                                                @RequestParam(value = "page", defaultValue = "1") int page) {
         return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", collectionsService.showList(page, query, isAscending, sortedBy)));
     }
 
     @GetMapping("/{collectionId}/contents")
-    public ResponseEntity<? extends BaseResponseBody> showContentsInCollection(@RequestParam(value = "page", defaultValue = "1") int page, @RequestBody Map<String, Object> body, @PathVariable int collectionId) {
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", collectionsService.showContentsInCollection(page, (String)body.get("user_address"), collectionId)));
+    public ResponseEntity<? extends BaseResponseBody> showContentsInCollection(@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(name="user_address") String userAddress, @PathVariable int collectionId) {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", collectionsService.showContentsInCollection(page, userAddress, collectionId)));
     }
 }

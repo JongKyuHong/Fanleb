@@ -13,7 +13,6 @@ import "./SsafyNFT.sol";
 contract SaleFactory is Ownable {
     address public admin;
     address[] public sales;
-    address public test;
 
     event NewSale(
         address indexed _saleContract,
@@ -29,20 +28,17 @@ contract SaleFactory is Ownable {
      * @dev 반드시 구현해야하는 함수입니다. 
      */
     function createSale(
+        address seller,
         uint256 itemId,
-        // uint256 minPrice,
         uint256 purchasePrice,
-        // uint256 startTime,
-        // uint256 endTime,
         address currencyAddress,
         address nftAddress
     ) public returns (address) {
-        // TODO 
-
-        Sale newContract = new Sale(admin,admin,itemId,purchasePrice,currencyAddress,nftAddress);
-        emit NewSale(newContract.getAddress(), newContract.seller(), newContract.tokenId());
+        // TODO
+        Sale newContract = new Sale(admin, seller, itemId, purchasePrice, currencyAddress, nftAddress);
+        emit NewSale(newContract.getAddress(), newContract.getSeller(), newContract.gettokenId());
+        sales.push(newContract.getAddress());
         return newContract.getAddress();
-        // return
     }
 
     function allSales() public view returns (address[] memory) {
@@ -58,132 +54,92 @@ contract Sale {
     address public seller;
     address public buyer;
     address admin;
-    // uint256 public saleStartTime;
-    // uint256 public saleEndTime;
-    //uint256 public minPrice;
     uint256 public purchasePrice;
     uint256 public tokenId;
     address public currencyAddress;
     address public nftAddress;
     bool public ended;
-
-    // 현재 최고 입찰 상태
-    address public highestBidder;
-    uint256 public highestBid;
+    bool public check;
 
     IERC20 public erc20Contract;
-    IERC721 public erc721Constract;
+    IERC721 public erc721Contract;
 
-    event HighestBidIncereased(address bidder, uint256 amount);
     event SaleEnded(address winner, uint256 amount);
 
     constructor(
         address _admin,
         address _seller,
         uint256 _tokenId,
-        //uint256 _minPrice,
         uint256 _purchasePrice,
-        // uint256 startTime,
-        // uint256 endTime,
         address _currencyAddress,
         address _nftAddress
     ) {
-        require(_purchasePrice > 0); // _minPrice > 0
+        require(_purchasePrice > 0);
         tokenId = _tokenId;
-        //minPrice = _minPrice;
         purchasePrice = _purchasePrice;
         seller = _seller;
         admin = _admin;
-        // saleStartTime = startTime;
-        // saleEndTime = endTime;
         currencyAddress = _currencyAddress;
         nftAddress = _nftAddress;
         ended = false;
         erc20Contract = IERC20(_currencyAddress);
-        erc721Constract = IERC721(_nftAddress);
+        erc721Contract = IERC721(_nftAddress);
     }
 
-    function bid(uint256 bid_amount) public onlySeller { //onlyAfterStart
+    function purchase() public { 
         // TODO
-        // int256 success = getTimeLeft();
-        // require(success > 0);
-        require(erc20Contract.approve(buyer, bid_amount));
-    }
+        buyer = msg.sender;
+        require(msg.sender != seller);
+        //erc20Contract.approve(buyer, purchasePrice);
+        erc20Contract.transferFrom(buyer, seller, purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
 
-    function purchase() public onlySeller{ // onlyAfterStart
-        // TODO 
-        // int256 success = getTimeLeft();
-        // require(success > 0);
-        require(erc20Contract.approve(buyer, purchasePrice));
-
-        erc20Contract.transfer(buyer,purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
-        erc20Contract.approve(buyer,purchasePrice);
-        
-        erc721Constract.transferFrom(seller, buyer, tokenId);//erc721Constract // NFT소유권을 구매자에게 이전
-        // 컨트랙트의 거래 상태와 구매자 정보를 업데이트
+        erc721Contract.setApprovalForAll(seller, true);
+        erc721Contract.approve(buyer, tokenId);
+        erc721Contract.transferFrom(seller, buyer, tokenId); //erc721Contract // NFT소유권을 구매자에게 이전
+        seller = buyer;
+        ended = true;// 컨트랙트의 거래 상태와 구매자 정보를 업데이트
     }
 
     function confirmItem() public {
         // TODO 
-        // int256 success = getTimeLeft();
-        // require(success < 0);
-        require(msg.sender == highestBidder);
-        
-        erc20Contract.transfer(msg.sender,purchasePrice);
-        //erc721Constract // NFT소유권을 구매자에게 이전
-        // 컨트랙트의 거래 상태와 구매자 정보를 업데이트
     }
-    
-    function cancelSales() public view{
+
+    function cancelSales() public{
         // TODO
-        // int256 success = getTimeLeft();
-        // require(success > 0);
-        require(msg.sender == admin);
-        require(msg.sender == seller);
-
-        //_burn // 환불진행
-        // NFT소유권 돌려줌
-        // 컨트랙트의 거래 상태를 업데이트
-
+        require(msg.sender == admin || msg.sender == seller);
+        ended = true;
     }
+
     function getAddress() public view returns (address){
         return address(this);
     }
-    // function getTimeLeft() public view returns (int256) {
-    //     return (int256)(saleEndTime - block.timestamp);
-    // }
+
+    function getSeller() public view returns (address){
+        return seller;
+    }
+
+    function gettokenId() public view returns (uint256){
+        return tokenId;
+    }
 
     function getSaleInfo()
         public
         view
         returns (
-            // uint256,
-            // uint256,
-            //uint256,
             uint256,
             uint256,
-            //address,
-            //uint256,
             address,
             address
         )
     {
         return (
-            // saleStartTime,
-            // saleEndTime,
-            //minPrice,
             purchasePrice,
             tokenId,
-            //highestBidder,
-            //highestBid,
             currencyAddress,
             nftAddress
         );
     }
 
-    // function getHighestBid() public view returns(uint256){
-    //     return highestBid;
-    // }
 
     // internal 혹은 private 함수 선언시 아래와 같이 _로 시작하도록 네이밍합니다.
     function _end() internal {
@@ -199,12 +155,4 @@ contract Sale {
         require(msg.sender == seller, "Sale: You are not seller."); 
         _;
     }
-
-    // modifier onlyAfterStart() {
-    //     require(
-    //         block.timestamp >= saleStartTime,
-    //         "Sale: This sale is not started."
-    //     );
-    //     _;
-    // }
 }
