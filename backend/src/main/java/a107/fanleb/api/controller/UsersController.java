@@ -25,9 +25,9 @@ public class UsersController {
     }
 
     @GetMapping("/address")
-    public ResponseEntity<? extends BaseResponseBody> view(@RequestBody Map<String, Object> body) {
+    public ResponseEntity<? extends BaseResponseBody> view(@RequestParam(name = "user_address") String userAddress) {
 
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.view((String)body.get("user_address"))));
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.view(userAddress)));
     }
 
     @PatchMapping("/edit")
@@ -36,8 +36,8 @@ public class UsersController {
     }
 
     @DeleteMapping
-    public ResponseEntity<? extends BaseResponseBody> delete(@RequestBody Map<String, Object> body) {
-        usersService.delete((String) body.get("user_address"));
+    public ResponseEntity<? extends BaseResponseBody> delete(@RequestParam(name = "user_address") String userAddress) {
+        usersService.delete(userAddress);
         return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
     }
 
@@ -53,10 +53,15 @@ public class UsersController {
         return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.showList(page, query)));
     }
 
-    @GetMapping("/first")
-    public ResponseEntity<? extends BaseResponseBody> isFirst(@RequestBody Map<String, Object> body) {
-
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.isFirst((String)body.get("user_address"))));
+    @GetMapping("/valid/first")
+    public ResponseEntity<? extends BaseResponseBody> isDuplicateUseraddress(@RequestParam(name = "user_address") String userAddress) {
+        usersService.isDuplicateUseraddress(userAddress);
+        return ResponseEntity.status(200).body(BaseResponseBody.of("등록된 사용자가 없습니다"));
     }
 
+    @GetMapping("/valid/nickname")
+    public ResponseEntity<? extends BaseResponseBody> isDuplicateNickname(@RequestParam(name = "nickname") String nickname) {
+        usersService.isDuplicateNickname(nickname);
+        return ResponseEntity.status(200).body(BaseResponseBody.of("등록된 사용자가 없습니다"));
+    }
 }

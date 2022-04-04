@@ -108,12 +108,25 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     /**
      * @dev See {IERC721-approve}.
      */
+    // function approve(address operator, address to, uint256 tokenId) public virtual override {
+    //     // TODO
+    //     address owner = ownerOf(tokenId);
+    //     require(to != owner, "ERC721: approval to current owner");
+
+    //     require(operator == owner || isApprovedForAll(owner, operator),
+    //         "ERC721: approve caller is not owner nor approved for all"
+    //     );
+
+    //     _tokenApprovals[tokenId] = to;
+    //     emit Approval(owner, to, tokenId);
+    // }
+
     function approve(address to, uint256 tokenId) public virtual override {
         // TODO
+
         address owner = ownerOf(tokenId);
         require(to != owner, "ERC721: approval to current owner");
-
-        require(msg.sender == owner || isApprovedForAll(owner, msg.sender),
+        require(msg.sender == owner || isApprovedForAll(msg.sender, owner),
             "ERC721: approve caller is not owner nor approved for all"
         );
 
@@ -138,6 +151,10 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
 
         _operatorApprovals[msg.sender][operator] = approved;
         emit ApprovalForAll(msg.sender, operator, approved);
+        // require(operator != owner, "ERC721: approve to caller");
+
+        // _operatorApprovals[owner][operator] = approved;
+        // emit ApprovalForAll(owner, operator, approved);
     }
 
     /**
@@ -175,6 +192,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
      * @dev See {IERC721-transferFrom}.
      */
     function transferFrom(
+        //address admin_a,
         address from,
         address to,
         uint256 tokenId
@@ -182,7 +200,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
        // TODO
        require(from == ownerOf(tokenId));
        require(to != address(0));
-       require(_isApprovedOrOwner(msg.sender, tokenId), "ERC721: transfer caller is not owner nor approved");
+       require(_isApprovedOrOwner(from, tokenId), "ERC721: transfer caller is not owner nor approved");
        _transfer(from, to, tokenId);
     }
 

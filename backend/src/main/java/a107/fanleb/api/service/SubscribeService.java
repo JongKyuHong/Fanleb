@@ -1,23 +1,70 @@
 package a107.fanleb.api.service;
 
-import a107.fanleb.api.request.subscribe.SubscribeEditReq;
+import a107.fanleb.api.response.subscribe.SubscribeCheckRes;
+import a107.fanleb.common.exception.handler.NotExistedUserException;
 import a107.fanleb.domain.subscribe.SubscribeRepository;
+import a107.fanleb.domain.users.Users;
+import a107.fanleb.domain.users.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class SubscribeService {
     private final SubscribeRepository subscribeRepository;
+    private final UsersRepository usersRepository;
 
     @Transactional
-    public void subscribe(SubscribeEditReq subscribeEditReq){
-        subscribeRepository.subscribe(subscribeEditReq.getFromUserAddress(), subscribeEditReq.getToUserAddress());
+    public void subscribe(String fromUserAddress, String toUserAddress) {
+        Optional<Users> opUser = usersRepository.findByUserAddress(toUserAddress);
+        Users user = opUser.orElseThrow(() -> new NotExistedUserException());
+        System.out.println(fromUserAddress);
+        System.out.println(toUserAddress);
+
+        if (user.getMaxSubscribeCnt() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "구독권을 발행한 유저가 아닙니다");
+        } else if (user.getMaxSubscribeCnt() <= user.getCurSubscribeCnt())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "최대 구독수 제한을 초과했습니다");
+        else {
+            subscribeRepository.subscribe(fromUserAddress, toUserAddress);
+
+            user.addCurSubscribeCnt();
+            usersRepository.save(user);
+        }
     }
 
     @Transactional
-    public void unsubscribe(SubscribeEditReq subscribeEditReq){
-        subscribeRepository.unsubscribe(subscribeEditReq.getFromUserAddress(), subscribeEditReq.getToUserAddress());
+    public void unsubscribe(String fromUserAddress, String toUserAddress) {
+        Optional<Users> opUser = usersRepository.findByUserAddress(toUserAddress);
+        Users user = opUser.orElseThrow(() -> new NotExistedUserException());
+
+        subscribeRepository.unsubscribe(fromUserAddress, toUserAddress);
+
+        user.decCurSubscribeCnt();
+        usersRepository.save(user);
     }
+
+    @Transactional(readOnly = true)
+    public void isSubscribe(String fromUserAddress, String toUserAddress) {
+        int cnt = subscribeRepository.findByFromUserAddressAndToUserAddress(fromUserAddress, toUserAddress);
+        if (cnt < 1)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "구독중인 유저가 아닙니다");
+    }
+
+    @Transactional(readOnly = true)
+    public SubscribeCheckRes isPublishSubscribe(String userAddress) {
+        Optional<Users> opUser = usersRepository.findByUserAddress(userAddress);
+        Users user = opUser.orElseThrow(() -> new NotExistedUserException());
+        if (user.getMaxSubscribeCnt() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "구독권을 발행한 유저가 아닙니다");
+        else
+            return SubscribeCheckRes.builder().curSubscribeCnt(user.getCurSubscribeCnt()).maxSubscribeCnt(user.getMaxSubscribeCnt()).build();
+
+    }
+
 }

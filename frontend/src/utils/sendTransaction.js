@@ -23,7 +23,7 @@ const walletAccount = web3.eth.accounts.privateKeyToAccount(privateKey);
 // 2. 사피 네트워크에 배포한 계약 정보
 // const contractAddr = "[배포한 계약 주소: 0x1234...]";
 // const { abi: contractABI } = JSON.parse(fs.readFileSync('./build/contracts/[Truffle compile한 결과물].json'));
-const contractAddr = "0x7d544ddD5CA5D6f9E613eD3AB22f7683Bd726A81";
+const contractAddr = "0xa7f990e19fe9810F19eC5b81d10f0b5204853FBb";
 const { abi: contractABI } = JSON.parse(fs.readFileSync('./build/contracts/SsafyNFT.json'));
 
 const contractInstance = new web3.eth.Contract(contractABI, contractAddr);

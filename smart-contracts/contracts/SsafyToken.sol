@@ -9,7 +9,6 @@ import "./access/Ownable.sol";
  * 테스트 코드 작성을 위해 제공되는 컨트랙트 코드입니다.
  */ 
 contract SsafyToken is ERC20, Ownable{
-    
     constructor(string memory name, string memory symbol, uint8 decimal) ERC20(name, symbol, decimal) {}
     
     function mint(uint256 amount) public onlyOwner{

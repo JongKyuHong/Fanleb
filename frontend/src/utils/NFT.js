@@ -3,43 +3,33 @@ import AddressStore from '../common/AddressStore';
 import ABI from '../common/ABI';
 import { create } from 'ipfs-http-client';
 
-
+ // 사피 네트워크에 배포한 계약 정보
+const abi = ABI.CONTRACT_ABI.NFT_ABI // contract ABI
+const contractAddr = AddressStore.CONTRACT_ADDR.SsafyNFT[0]; // contractAddr: 컨트랙트 주소
 /**
  * 개인키로부터 주소를 추출합니다. 
  * @param {*} privKey 개인키
  * @returns 주소
  */
-export default async function NftRegistration(to, privKey, data, bufferData) {
+export default async function NftRegistration(to, privKey, img_url) {
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
-  let token_id
-  const ipfs = create({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 
     // Contract sendTransaction 시 입력해야 할 것
   // 1. 사피 지갑 정보 (walletAddress, privKey)
   // 2. 사피 네트워크에 배포한 계약 정보 (contractAddr, contractABI)
   // 3. 실행할 메소드 정보 (contractMethod)
-  //
-
-  // ipfs에 사용자가 입력한 데이터(작품 이름, 작가, 설명, 이미지) 저장
-  console.log('ipfs start')
-  const { path } = await ipfs.add(bufferData);
-  data.imageUrl += path;
-  const metaData = JSON.stringify(data);
-  const result = await ipfs.add(metaData);
-  const metaDataPath = 'https://ipfs.infura.io/ipfs/' + result.path; 
-  console.log(metaDataPath) // metaDataPath: NFT 파일 메타데이터(작품 이름, 작가, 설명, 이미지가 담긴 링크)가 담긴 IPFS 주소
 
   // 1. 사피 지갑 정보
   const walletAddress = to; // 지갑 주소 (0x...)
   const walletAccount = web3.eth.accounts.privateKeyToAccount(privKey); // 지갑 계정 (주소, 비공개키, 공개키, 사인, 사인트랜잭션 함수 들어있음)
 
   // 2. 사피 네트워크에 배포한 계약 정보
-  const abi = ABI.CONTRACT_ABI.NFT_ABI 
+  const abi = ABI.CONTRACT_ABI.NFT_ABI
   const contractAddr = AddressStore.CONTRACT_ADDR.SsafyNFT[0]; // contractAddr: 컨트랙트 주소
   const nftContract = new web3.eth.Contract(abi, contractAddr);
 
   // 3. 실행할 메소드 정보(블록체인의 데이터를 변경할 때)
-  const contractMethod = nftContract.methods.create(to, metaDataPath);
+  const contractMethod = nftContract.methods.create(to, img_url);
   const contractEncodedMethod = contractMethod.encodeABI();    
   
   const gasEstimate = await contractMethod.estimateGas({ from: walletAddress });
@@ -61,4 +51,41 @@ export default async function NftRegistration(to, privKey, data, bufferData) {
   console.log('My balance:', balance) // balance: 해당 지갑이 소유하고 있는 NFT 작품 개수(토큰 개수)
 
   return token_id;
+}
+
+// 서버에 등록된 데이터를 블록체인에 등록하는 함수
+export async function registerNFTtoBackend(userAddr, tokenUrl) {
+  const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
+  let token_id      
+  
+  //load smart contract
+  window.contract = await new web3.eth.Contract(abi, contractAddr);//loadContract();
+
+  //set up your Ethereum transaction
+  const transactionParameters = {
+      to: contractAddr, // Required except during contract publications.
+      from: userAddr, // must match user's active address.
+      'data': window.contract.methods.create(userAddr, tokenUrl).encodeABI() //make call to NFT smart contract 
+  };
+
+  //sign transaction via Metamask
+  try {
+    const txHash = await window.ethereum
+        .request({
+            method: 'eth_sendTransaction',
+            params: [transactionParameters],
+        });                
+    console.log("transaction: " + txHash)
+      
+    const res = await window.contract.methods.create(userAddr, tokenUrl).call();
+    console.log('결과', res)
+    return res;
+    
+  } catch (error) {
+      return {
+          success: false,
+          status: "😥 Something went wrong: " + error.message
+      }
+  }
+
 }

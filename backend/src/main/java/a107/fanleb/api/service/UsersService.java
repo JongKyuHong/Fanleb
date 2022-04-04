@@ -1,6 +1,7 @@
 package a107.fanleb.api.service;
 
 import a107.fanleb.api.request.users.UsersEditReq;
+import a107.fanleb.common.exception.handler.NotExistedUserException;
 import a107.fanleb.config.aws.S3Util;
 import a107.fanleb.domain.users.Users;
 import a107.fanleb.domain.users.UsersRepository;
@@ -9,9 +10,11 @@ import a107.fanleb.domain.usersCategory.UsersCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,35 +42,42 @@ public class UsersService {
     public Users edit(UsersEditReq usersEditReq) {
         //유저 카테고리
         String userAddress = usersEditReq.getUser_address();
-        Optional<Users> user = usersRepository.findByUserAddress(userAddress);
-        user.ifPresent(u -> {
-            u.setNickname(usersEditReq.getNickname());
-            u.setUserDescription(usersEditReq.getUser_description());
 
-            //카테고리
-            String userCategoryReq = usersEditReq.getUser_category();
-            UsersCategory userCategory = null;
-            if (!userCategoryReq.isEmpty()) {
-                userCategory = usersCategoryRepository.findByUserCategoryName(userCategoryReq);
+        Optional<Users> Opuser = usersRepository.findByUserAddress(userAddress);
+
+        Users user = Opuser.orElseThrow(() -> new NotExistedUserException());
+
+        Integer cnt = usersEditReq.getSubscription_cnt();
+        System.out.println(cnt);
+        if (cnt != null && cnt > 0)
+            user.setMaxSubscribeCnt(cnt);
+
+        user.setNickname(usersEditReq.getNickname());
+        user.setUserDescription(usersEditReq.getUser_description());
+
+        //카테고리
+        String userCategoryReq = usersEditReq.getUser_category();
+        UsersCategory userCategory = null;
+        if (!userCategoryReq.isEmpty()) {
+            userCategory = usersCategoryRepository.findByUserCategoryName(userCategoryReq);
+        }
+        user.setUsersCategory(userCategory);
+
+        //s3 업로드
+        MultipartFile img = usersEditReq.getImg();
+        if (!img.isEmpty()) {
+            try {
+                String imgUrl = s3util.upload(usersEditReq.getImg(), "users");
+                user.setImgUrl(imgUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            u.setUsersCategory(userCategory);
+        }
 
-            //s3 업로드
-            MultipartFile img = usersEditReq.getImg();
-            if (!img.isEmpty()) {
-                try {
-                    String imgUrl = s3util.upload(usersEditReq.getImg(), "users");
-                    u.setImgUrl(imgUrl);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            usersRepository.save(u);
-        });
+        usersRepository.save(user);
 
 
-        return user.get();
+        return user;
 
     }
 
@@ -84,24 +94,31 @@ public class UsersService {
     @Transactional(readOnly = true)
     public Page<Users> showList(int page, String query) {
         PageRequest pageable = PageRequest.of(page - 1, 12);
-        
+
         //TODO : 구독자 순
 
-        if(query==null || query.isEmpty()){
+        if (query == null || query.isEmpty()) {
             return usersRepository.findAll(pageable);
-        }else{
+        } else {
             return usersRepository.findByNicknameContaining(pageable, query);
         }
     }
 
     @Transactional(readOnly = true)
-    public Boolean isFirst(String userAddress) {
+    public void isDuplicateUseraddress(String userAddress) {
         Optional<Users> user = usersRepository.findByUserAddress(userAddress);
 
-        if(user.isPresent())
-            return false;
-        else
-            return true;
+        user.ifPresent(u -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "등록된 사용자가 있습니다");
+        });
     }
 
+    @Transactional(readOnly = true)
+    public void isDuplicateNickname(String userAddress) {
+        Optional<Users> user = usersRepository.findByNickname(userAddress);
+
+        user.ifPresent(u -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "등록된 사용자가 있습니다");
+        });
+    }
 }

@@ -17,4 +17,5 @@ public class UsersEditReq {
     private String user_category;
     private MultipartFile img;
     private String user_address;
+    private Integer subscription_cnt;
 }
