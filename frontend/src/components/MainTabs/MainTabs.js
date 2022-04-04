@@ -3,16 +3,21 @@ import './tabs.css';
 import { useEffect, useRef, useState } from 'react';
 import { display, style } from '@mui/system';
 
-const MainTabs = (({ category, setCategory }) => {
+const MainTabs = (({ category, setCategory, isMoved, setIsMoved }) => {
   const [position, setPosition] = useState(false);
   const ref = useRef(null);
-  const [status, setStatus] = useState(false);
   // 탭 클릭 시, 상단으로 스크롤 자동 이동
   const handleChange = (newValue) => {
     setCategory(newValue);
+    // if (isMoved) {
+      
+    // } else {
+    //   ref.current?.scrollIntoView({ behavior: 'smooth' })
+    //   setIsMoved(true)
+    // }
     // if (!status) {
     //   setStatus(true)
-    //   window.scroll({top: 708, behavior: 'smooth'})
+      window.scroll({top: 650, behavior: 'smooth'})
     //   console.log('true')
     // } else {      
     //   // window.scroll({ top: 650, behavior: 'smooth' })
@@ -20,7 +25,7 @@ const MainTabs = (({ category, setCategory }) => {
     //   window.scroll({ top: 709, behavior: 'smooth' })
     //   console.log('false')
     // }
-    window.scroll({ top:709, behavior: 'smooth' })    
+    // window.scroll({ top:709, behavior: 'smooth' })    
     // window.scroll({ top: 550, behavior: 'smooth' })
     // if (!status) {      
     //   window.scroll({ top: 651, behavior: 'smooth' })

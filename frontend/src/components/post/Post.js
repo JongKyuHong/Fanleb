@@ -7,21 +7,51 @@ import { display, height, width } from "@mui/system";
 import axios from "axios";
 import UserImg from "./userImage";
 import empty from "./empty-image.jpg";
+import { useDispatch } from "react-redux";
+import { updateThumnail } from "../../redux/modalSlice";
 const Post = (props) => {
   const { post: { nickname, collection_name, img_url, user_address, id }, onItemClicked } = props;
   const [avatarImg, setAvatarImg] = useState("");
   const [elevation, setElevation] = useState(0);
   const [load, setLoad] = useState(false);
+  const [userCategory, setUsercategory] = useState("");
+  const [description, setDescription] = useState("");
+  const dispatch = useDispatch();
   const selectPost = () => {
-    onItemClicked();
+    // onItemClicked();
+    if (!user_address) {
+      alert(`Metamask 지갑을 연동해주세요.`)
+    } else {
+      getData()
+    }
   };
+  const getData = async () => {
+    const thumnailData = {
+      nickname: nickname,
+      category: userCategory.user_category_name,
+      userAddress: user_address,
+      userImgUrl: avatarImg,
+      description: description,
+      imgUrl: img_url,
+      collectionName: collection_name,
+      contentsData: []
+    }
+    const { data } = await axios(`api/contents/thumbnail?user_address=${user_address}`);
+    thumnailData.contentsData = data.data;
+    dispatch(updateThumnail(thumnailData))
+  }
   useEffect(() => {    
-    // axios
-    //   .get(`api/users/address?user_address=${user_address}`)
-    //   .then((res) => setAvatarImg(res.data.data.img_url))
-    // return () => {
-    //   setAvatarImg("")
-    // }
+    axios
+      .get(`api/users/address?user_address=${user_address}`)
+      .then((res) => {
+        setAvatarImg(res.data.data.img_url)
+        setUsercategory(res.data.data.users_category)
+        setDescription(res.data.data.user_description)
+
+      })
+    return () => {
+      setAvatarImg("")
+    }
   }, [])
   return (
     // <Container
@@ -29,7 +59,7 @@ const Post = (props) => {
     //   onMouseLeave={() => set({xys:[0,0,1]})}
     //   style={{transform: rops.xys.interpolate(trans)}}
     // >
-      <div className="card-column" onClick={selectPost} elevation={elevation} onMouseOver={() => setElevation(20)} onMouseOut={() => setElevation(0)} style={{ cursor: 'pointer'}} >
+      <div className="card-column" onClick={selectPost} elevation={elevation} style={{ cursor: 'pointer'}} >
         <div className="bids-card">
         <div className="bids-card-top" style={{
           // position: 'relative',
@@ -56,7 +86,7 @@ const Post = (props) => {
               marginTop: '-100px',              
             }}
           >            
-            <UserImg address={user_address} />            
+            <UserImg avatarImg={avatarImg} />            
           </div>
           {/* <img src="https://static.remove.bg/remove-bg-web/b27c50a4d669fdc13528397ba4bc5bd61725e4cc/assets/start_remove-c851bdf8d3127a24e2d137a55b1b427378cd17385b01aec6e59d5d4b5f39d2ec.png"
             style={{ border: '6px solid var(--color-bg)',
