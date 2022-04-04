@@ -87,8 +87,9 @@ export async function registerNFTtoBackend(userAddr, tokenUrl) {
         });                
     console.log("transaction: " + txHash)
       
-    token_id = await window.contract.methods.create(userAddr, tokenUrl).call();    
-    return token_id;
+    const res = await window.contract.methods.create(userAddr, tokenUrl).call();
+    console.log('결과', res)
+    return res;
     
   } catch (error) {
       return {
