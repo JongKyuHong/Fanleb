@@ -19,8 +19,7 @@ public class CollectionsController {
 
     @PostMapping
     public ResponseEntity<? extends BaseResponseBody> save(@RequestBody CollectionsRegisterReq collectionsRegisterReq) {
-        collectionsService.save(collectionsRegisterReq);
-        return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", collectionsService.save(collectionsRegisterReq)));
     }
 
     @GetMapping

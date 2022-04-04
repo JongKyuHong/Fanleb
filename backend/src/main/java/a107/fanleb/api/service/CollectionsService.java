@@ -24,8 +24,9 @@ public class CollectionsService {
 
 
     @Transactional
-    public void save(CollectionsRegisterReq collectionsRegisterReq) {
-        collectionsRepository.save(Collections.builder().userAddress(collectionsRegisterReq.getUserAddress()).collectionName(collectionsRegisterReq.getCollection()).build());
+    public String save(CollectionsRegisterReq collectionsRegisterReq) {
+        Collections collection = collectionsRepository.save(Collections.builder().userAddress(collectionsRegisterReq.getUserAddress()).collectionName(collectionsRegisterReq.getCollection()).build());
+        return collection.getCollectionName();
     }
 
     @Transactional(readOnly = true)
