@@ -8,7 +8,7 @@ pragma solidity ^0.8.4;
  */
 interface IERC20 {
     /**
-     * @dev Returns the amount of tokens in existence.
+     * @dev Returns the amount of tokens in existence.approve
      */
     function totalSupply() external view returns (uint256);
 
@@ -50,7 +50,7 @@ interface IERC20 {
      * Emits an {Approval} event.
      */
     function approve(address spender, uint256 amount) external returns (bool);
-
+    //function approve(address owner,address spender, uint256 amount) external returns (bool);
     /**
      * @dev Moves `amount` tokens from `sender` to `recipient` using the
      * allowance mechanism. `amount` is then deducted from the caller's

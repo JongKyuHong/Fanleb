@@ -36,17 +36,23 @@ public class Sales {
     private String sellerAddress;
     private String buyerAddress;
 
+    private Double price;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    public void setBuyerAddress(String buyerAddress){
-        this.buyerAddress=buyerAddress;
+    public void setBuyerAddress(String buyerAddress) {
+        this.buyerAddress = buyerAddress;
     }
 
-    public void setSaleYn(Status saleYn){
-        this.saleYn=saleYn;
+    public void setSaleYn(Status saleYn) {
+        this.saleYn = saleYn;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
 }
