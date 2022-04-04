@@ -60,6 +60,7 @@ public class SalesService {
         Sales sales = findSalesByTokenIdAndSaleYnIsNOrElseThrow(tokenId);
         sales.setBuyerAddress(buyerAddress);
         sales.setSaleYn(Status.y);
+        sales.setPrice(salesCompleteReq.getPrice());
         salesRepository.save(sales);
 
         Contents content = contentsRepository.findByTokenId(tokenId).get();

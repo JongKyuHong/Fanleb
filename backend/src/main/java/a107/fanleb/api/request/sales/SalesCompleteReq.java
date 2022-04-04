@@ -12,4 +12,5 @@ import lombok.ToString;
 public class SalesCompleteReq {
     private int tokenId;
     private String buyerAddress;
+    private double price;
 }
