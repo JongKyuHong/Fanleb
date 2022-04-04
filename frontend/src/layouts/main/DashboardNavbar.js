@@ -65,6 +65,7 @@ const DashboardNavbar = () => {
     if (userInfo.account) return;
     accounts = await window.ethereum.request({ method: 'eth_requestAccounts'}).catch((err) => {
       console.log(err.code);
+      
     })
     dispatch(updateSuccess(accounts[0]));
     console.log(accounts)
