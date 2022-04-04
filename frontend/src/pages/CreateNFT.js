@@ -33,7 +33,7 @@ const CreateNFT = () => {
   const [videoSrc, setVideoSrc] = useState(undefined);
 
   const updateFiles = (incommingFiles) => {
-    console.log("incomming files", incommingFiles);
+    // console.log("incomming files", incommingFiles);
     setFiles(incommingFiles);
     setFile(incommingFiles[0].file)
   };
@@ -43,7 +43,7 @@ const CreateNFT = () => {
   };
 
   const handleWatch = (vidSrc) => {
-    console.log("handleWatch", vidSrc);
+    // console.log("handleWatch", vidSrc);
     setVideoSrc(vidSrc);
   };
 
@@ -116,7 +116,7 @@ const CreateNFT = () => {
     formData.append('content_description', newData.description);
 
     try {
-      console.log(`💪 "api/contents" 으로 생성 요청`)
+      // console.log(`💪 "api/contents" 으로 생성 요청`)
       const res = await axios({
         method: "POST",
         url: "api/contents",
@@ -126,15 +126,15 @@ const CreateNFT = () => {
       contentId = res.data.data.id;
       img_url = res.data.data.img_url;
   
-      console.log('백엔드에 최초로 생성한 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)      
+      // console.log('백엔드에 최초로 생성한 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)      
       // 블록체인에 컨텐츠 등록
       try {
         const token_id = await registerNFTtoBackend(address, img_url);
-        console.log('블록체인에 등록한 TokenId:', token_id)
-        console.log('NFT 등록 이후, 백엔드에 업데이트할 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)
-        console.log(`💪 api/contents/${contentId} 으로 업데이트 요청`)
+        // console.log('블록체인에 등록한 TokenId:', token_id)
+        // console.log('NFT 등록 이후, 백엔드에 업데이트할 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)
+        // console.log(`💪 api/contents/${contentId} 으로 업데이트 요청`)
         console.log('서버에 등록할 정보:', token_id, address, newData.myCollection.collection_name)
-        const { data } = await axios({
+        const data = await axios({
           method: 'POST',
           url: `api/contents/${contentId}`,
           data: {
@@ -144,6 +144,9 @@ const CreateNFT = () => {
           },
           headers: {}
         })
+        // const data = await axios.post(`api/contents/${contentId}`, {"token_id": token_id,
+        //     "owner_address": address,
+        //     "collection": newData.myCollection.collection_name})
         console.log('서버에 저장한 결과:', data)
         if (data.result === "success") {
           alert('게시물이 정상적으로 등록되었습니다.')
@@ -153,6 +156,8 @@ const CreateNFT = () => {
         }
       } catch (err) {
         console.log('블록체인 등록 에러')
+        alert('NFT 등록에 실패했습니다.')        
+        navigator('/create')
       }
 
     } catch (err) {
@@ -169,13 +174,13 @@ const CreateNFT = () => {
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0x79F5' }],
       });
-      console.log('추가되어있는 체인으로 교체')
+      // console.log('추가되어있는 체인으로 교체')
       sendData()
     } catch (switchError) {
       // This error code indicates that the chain has not been added to MetaMask.
       if (switchError.code === 4902) {
         try {
-          console.log('체인 추가 시도')
+          // console.log('체인 추가 시도')
           await ethereum.request({
             method: 'wallet_addEthereumChain',
             params: [
@@ -187,7 +192,7 @@ const CreateNFT = () => {
             ],
           });
           sendData()
-          console.log('새로운 체인 추가')
+          // console.log('새로운 체인 추가')
         } catch (addError) {
           // handle "add" error
           console.log('체인 추가 실패')
