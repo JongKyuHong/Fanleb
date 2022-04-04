@@ -9,12 +9,14 @@ import {
   REGISTER,
 } from 'redux-persist';
 import userReducer from "./userSlice";
+import modalReducer from "./modalSlice";
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
 // import thunk from 'redux-thunk';
 
 const reducers = combineReducers({
-  user: userReducer,  
+  user: userReducer,
+  modal: modalReducer,
 });
 
 const persistConfig = {

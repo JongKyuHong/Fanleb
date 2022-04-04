@@ -52,7 +52,6 @@ const DashboardNavbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false)
   const [keyword, setKeyword] = useState("");
   //  const [user, setUser] = useState(false)
-
   const handleLogout = () => {
     setUser(false);
   }
@@ -83,15 +82,15 @@ const DashboardNavbar = () => {
         if (accounts.length > 0) {
           account = accounts[0];
           if (checkUser(account)) {
-            console.log('회원가입 되어있습니다. 주소:', accounts[0])
+            // console.log('회원가입 되어있습니다. 주소:', accounts[0])
             // dispatch(updateAddress(account))
             dispatch(openModal())
             getUser(dispatch, account)
           } else {
-            console.log('회원가입이 안되었습니다.')
+            // console.log('회원가입이 안되었습니다.')
           }
         } else {
-          console.log('인식된 지갑이 없습니다.')
+          // console.log('인식된 지갑이 없습니다.')
         }
       });
       // 이벤트 구독     
@@ -112,13 +111,20 @@ const DashboardNavbar = () => {
   }
   const onInput = (e) => {
     // setKeyword(`안녕`)
-    setKeyword(e.target.value.normalize('NFC'))
-    console.log(e.target.value.normalize('NFC'))
+    // setKeyword(e.target.value.normalize('NFC'))
+    // console.log(e.target.value)
   }
   // SSAFY 네트워크 chainId: 79f5
   return (
-    <RootStyle>
-      <div className='navbar' style={{background: '#24252d'}}>
+    // <RootStyle>
+    <AppBar
+      sx={{
+        boxShadow: 'none',
+        backdropFilter: 'blur(6px)',
+        WebkitBackdropFilter: 'blur(6px)'
+      }}
+    >
+      <div className='navbar' style={{background: '#24252d', height: '10vh'}}>
         <div className="navbar-links">
           <div className="navbar-links_logo">
             <Link to="/"> 
@@ -127,9 +133,9 @@ const DashboardNavbar = () => {
           </div>
           <div className="navbar-links_container">
             <input type="text" placeholder='검색' autoFocus={true}
-              // onKeyPress={searchKeyword}
-              // onChange={onInput}
-              // value={keyword}
+              onKeyPress={searchKeyword}
+              onChange={e => setKeyword(e.target.value)}
+              value={keyword}
             />
           <Menu />
           {/* {userInfo.account && <Link to="/"><p onClick={handleLogout}>Logout</p></Link> } */}
@@ -202,7 +208,8 @@ const DashboardNavbar = () => {
             <CircularProgress />
           } */}
       </div>
-    </RootStyle>
+    </AppBar>
+    // </RootStyle>
 
     // <RootStyle>
     //   <nav className='navbar'>

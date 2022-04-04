@@ -9,6 +9,8 @@ import { closeModal, initialUserInfo, openModal, removeAddress, updateAddress } 
 import axios from 'axios';
 import { checkUser, getUser, registerUser } from './redux/apiCalls';
 import { useNavigate } from 'react-router-dom';
+import ScrollToTop from './components/scrollTop';
+import ThumnailModal from './components/ThumnailModal/ThumnailModal';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -123,19 +125,20 @@ export default function App() {
       dispatch(closeModal())
   
     }
-    eth.removeListener('accountsChanged', check)
+    window.ethereum.removeListener('accountsChanged', check)
   }
   // // 계정이 변경되는 것을 감지하고,
   // // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
-  if (eth !== undefined && window.ethereum !== undefined) {
-    eth.on('accountsChanged', check); 
+  if (window.ethereum !== undefined) {
+    window.ethereum.on('accountsChanged', check); 
   }
-  
   return (
     <>
       {/* <InfoModal /> */}
       <ThemeConfig>
+        <ScrollToTop />
         <UserInfoModal userInfo={userInfo} address={address} />
+        <ThumnailModal />
         <Router />
         <GlobalStyles />
       </ThemeConfig>

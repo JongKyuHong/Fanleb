@@ -1,4 +1,5 @@
 import axios from "axios";
+import { updateThumnail } from "./modalSlice";
 import { updateStart, updateSuccess, updateFailure, fetchUserInfo, updateLoadSuccess } from "./userSlice";
 
 // 유저 회원가입 여부 확인
@@ -67,7 +68,7 @@ export const getUser = async (dispatch, userAdr) => {
 }
 
 // // 내 콜렉션 가져오는 함수: 미완
-// export const getMyCollections = async (addr) => {    
+// export const getMyCollections = async (addr) => {
 //   try {
 //     let collections = [];
 //     while (true) {
@@ -75,9 +76,9 @@ export const getUser = async (dispatch, userAdr) => {
 //       collections = [...collections, data.data.content]
       
 //       if (data.data.last) break
-//     }    
-//     return collections   
+//     }
+//     return collections
 //   } catch (err) {
-//     console.log(err)   
+//     console.log(err)
 //   }
 // };
