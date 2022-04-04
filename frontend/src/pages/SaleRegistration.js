@@ -31,6 +31,7 @@ import { onResponse, onContractCall } from '../common/ErrorMessage';
 import moment from 'moment';
 import Page from '../components/Page';
 import Create_Sale from '../utils/SaleFactory';
+import SALE_Registration_API from '../utils/SaleFactory';
 import ABI from '../common/ABI';
 import AddressStore from '../common/AddressStore';
 // 이미지 스타일
@@ -69,7 +70,6 @@ const SaleRegistration = () => {
   const [approveModal, setApproveModal] = useState(false);
   const [privKey, setPrivKey] = useState('');
   const [loading, setLoading] = useState(false);
-
   // Web3
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
 
@@ -171,15 +171,13 @@ const SaleRegistration = () => {
     // TODO
     const owner_address = getAddressFrom(privKey);
     if (owner_address){
-      setLoading(false); 
-      // 백에 업데이트된
-      const contract_addr = Create_Sale(tokenId,price,AddressStore.CONTRACT_ADDR.SsafyToken,AddressStore.CONTRACT_ADDR.SsafyNFT);
-      const abi = ABI.CONTRACT_ABI.NFT_ABI;
-      const addr = AddressStore.CONTRACT_ADDR.SsafyNFT;
-      const tff = new web3.eth.Contract(abi, addr);
-      tff.methods.transferFrom(owner_address, contract_addr, tokenId); // to : sale에게 nft전송
-      registerSaleInfo(privKey, contract_addr);// api 호출해서 판매정보 등록
-    } 
+      setLoading(true);
+      const sale_addr = Create_Sale(owner_address, tokenId, price, AddressStore.CONTRACT_ADDR.SsafyToken,AddressStore.CONTRACT_ADDR.SsafyNFT);
+
+      registerSaleInfo(owner_address, sale_addr); // api 호출해서 판매정보 등록
+    } else {
+      setLoading(false);
+    }
   };
 
   /**
@@ -190,8 +188,9 @@ const SaleRegistration = () => {
    * 위 createSaleContract()에서
    * 정상 수행 후 반환되는 판매 정보를 API로 호출하여 업데이트합니다.
    */
-  const registerSaleInfo = async (pubKey, saleCA) => {
+  const registerSaleInfo = async (w_a, s_addr) => {
     setLoading(false);
+    SALE_Registration_API(tokenId, w_a, s_addr, AddressStore.CONTRACT_ADDR.SsafyToken);
   };
 
   return (

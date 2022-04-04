@@ -88,6 +88,7 @@ const ItemRegistration = () => {
       const reader = new FileReader();
       reader.readAsArrayBuffer(value);
       reader.onloadend = () => {
+        console.log(reader.result)
         setBufferData(Buffer(reader.result))        
       }
     }
@@ -104,8 +105,7 @@ const ItemRegistration = () => {
   const handlePrivKey = (e) => {
     setPrivKey(e.target.value);
   };
-
-  //const SERVER_BASE_URL = process.env.REACT_APP_BACKEND_HOST_URL;
+  const SERVER_BASE_URL = process.env.REACT_APP_BACKEND_HOST_URL;
   /**
    * PJT Ⅱ - 과제 1: 작품 등록 및 NFT 생성 
    * Req.1-F1 작품 등록 화면 및 등록 요청 
@@ -119,17 +119,18 @@ const ItemRegistration = () => {
    * 정상적으로 트랜잭션이 완결된 후 token Id가 반환됩니다.
    * 5. 정상 동작 시 token Id와 owner_address를 백엔드에 업데이트 요청합니다.
    */
-  axios.defaults.withCredentials = true;
-  
+
   const addItem = async () => {
     // TODO
-    setLoading(true)
+    setLoading(true);
     const owner_address = getAddressFrom(privKey);
-
+    var formData = new FormData();
+  
+    formData.append('image',item);
+    formData.append('content_title',title);
+    formData.append('content_description',description);
+    
     if (owner_address) {
-      setLoading(true);
-      setIsComplete(true);
-
       var data = new FormData();
       data.append('image', item);
       data.append('content_title', '제목');
@@ -139,41 +140,46 @@ const ItemRegistration = () => {
         method: 'post',
         url: 'http://j6a107.p.ssafy.io/api/contents',
         headers: { 
-          "Content-Type" : "multipart/form-data"
+          ...data.getHeaders()
         },
         data : data
       };
 
       axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        const token_id = NftRegistration(owner_address, privKey, response.data.img_url);
+        callapi(token_id, owner_address);
       })
       .catch(function (error) {
         console.log(error);
       });
-      //------------
-      // const data = {
-      //   author,
-      //   title,
-      //   description,
-      //   imageUrl: 'https://ipfs.infura.io/ipfs/'
-      // }
-      // const token_id = await NftRegistration(owner_address, privKey, data, bufferData);
-      //--------------
-      
+      // setTokenId(token_id);
+      setLoading(false);
+      setIsComplete(true);
+    } else {
+      setLoading(false);
     }
   };
 
-  const callapi = async (tokenId, owner_address) => { // 5
-    try{
-      const response = await axios.post(`http://j6a107.p.ssafy.io/api/contents${tokenId}`,{
-        token_id : tokenId,
-        owner_address : owner_address,
-        collection : null,
-      });
-    } catch(error){
-      console.log(error);
+  const callapi = async (tokenId, owner_address) => {
+    data = {
+      token_id : tokenId,
+      owner_address : owner_address,
+      collection : "가수1",
     }
+    var config = {
+      method: 'post',
+      url: `http://j6a107.p.ssafy.io/api/contents/${tokenId}`,
+      headers: {},
+      data : data
+    };
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
   return (
