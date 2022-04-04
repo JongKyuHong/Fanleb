@@ -60,4 +60,8 @@ public class Users {
     public void addCurSubscribeCnt() {
         curSubscribeCnt++;
     }
+
+    public void decCurSubscribeCnt() {
+        curSubscribeCnt--;
+    }
 }

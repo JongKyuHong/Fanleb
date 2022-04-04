@@ -1,6 +1,7 @@
 package a107.fanleb.api.controller;
 
 import a107.fanleb.api.service.SubscribeService;
+import a107.fanleb.common.model.response.AdvancedResponseBody;
 import a107.fanleb.common.model.response.BaseResponseBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,15 +26,14 @@ public class SubscribeController {
         return ResponseEntity.status(200).body(BaseResponseBody.of("success"));
     }
 
-    @GetMapping("/valid/publish")
-    public ResponseEntity<? extends BaseResponseBody> isPublishSubscribe(@RequestParam(name="user_address") String userAddress) {
-        subscribeService.isPublishSubscribe(userAddress);
-        return ResponseEntity.status(200).body(BaseResponseBody.of("구독권을 발행한 유저입니다"));
-    }
-
     @GetMapping("/valid/{fromUserAddress}/{toUserAddress}")
     public ResponseEntity<? extends BaseResponseBody> isSubscribe(@PathVariable String fromUserAddress, @PathVariable String toUserAddress) {
         subscribeService.isSubscribe(fromUserAddress, toUserAddress);
         return ResponseEntity.status(200).body(BaseResponseBody.of("구독 중인 유저입니다"));
+    }
+
+    @GetMapping("/valid/publish")
+    public ResponseEntity<? extends BaseResponseBody> isPublishSubscribe(@RequestParam(name = "user_address") String userAddress) {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("구독권을 발행한 유저입니다", subscribeService.isPublishSubscribe(userAddress)));
     }
 }
