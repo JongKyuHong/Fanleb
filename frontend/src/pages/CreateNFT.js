@@ -7,11 +7,11 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import {  Checkbox, FormControlLabel, Modal } from '@mui/material';
-import { getMyCollections } from '../redux/apiCalls';
 import { LoadingButton } from '@mui/lab';
 import AsyncSelect from 'react-select/async';
 import { registerNFTtoBackend } from '../utils/NFT';
 import { useNavigate } from 'react-router-dom';
+import getMyCollections from '../utils/getMyCollection';
 
 const CreateNFT = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -57,18 +57,23 @@ const CreateNFT = () => {
   //     console.log(values)
   //   }
   // })
-  const addCollection = () => {
+  const addCollection = async () => {    
     if (newCollection.trim().length > 0) {
       const newData = {      
         'collection_name': newCollection,
         'id': collections.length     
       }
-      axios.post(`api/collections`, { "user_address": address, "collection": newCollection })
-        .then(res => {
-          setCollections((prev) => [newData, ...prev])
-          alert('새로운 컬렉션을 만들었습니다.')
-        })
-        .catch(err => console.log(err))
+      const res = await axios.post(`api/collections`, { "user_address": address, "collection": newCollection })
+      console.log(res)
+      const myCollections = await getMyCollections(address)
+      setCollections(myCollections)
+      // 생성된 컬렉션 이름 넣어주기 setMycollection
+      setMyCollection(myCollections[0])
+      // console.log(myCollection)
+      console.log(myCollections[0])
+      alert('새로운 컬렉션을 만들었습니다.')
+      setModalOpen(false)      
+      
       setNewCollection("")
     }
   }
@@ -89,7 +94,8 @@ const CreateNFT = () => {
       alert('컬렉션을 입력해주세요.')
       return
     }
-    
+    const ok = confirm('해당 내용으로 NFT를 발행하시겠습니까?')
+    if (!ok) return
     const newData = {
       title,
       description,
@@ -110,6 +116,7 @@ const CreateNFT = () => {
     formData.append('content_description', newData.description);
 
     try {
+      console.log(`💪 "api/contents" 으로 생성 요청`)
       const res = await axios({
         method: "POST",
         url: "api/contents",
@@ -119,12 +126,14 @@ const CreateNFT = () => {
       contentId = res.data.data.id;
       img_url = res.data.data.img_url;
   
-      console.log('백엔드 등록 정보:', contentId, img_url)
+      console.log('백엔드에 최초로 생성한 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)      
       // 블록체인에 컨텐츠 등록
       try {
         const token_id = await registerNFTtoBackend(address, img_url);
-        // console.log('블록체인에 등록한 TokenId:', token_id)
-        // console.log('서버에 등록할 정보:', token_id, address, newData.myCollection.collection_name)
+        console.log('블록체인에 등록한 TokenId:', token_id)
+        console.log('NFT 등록 이후, 백엔드에 업데이트할 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)
+        console.log(`💪 api/contents/${contentId} 으로 업데이트 요청`)
+        console.log('서버에 등록할 정보:', token_id, address, newData.myCollection.collection_name)
         const { data } = await axios({
           method: 'POST',
           url: `api/contents/${contentId}`,
@@ -135,6 +144,7 @@ const CreateNFT = () => {
           },
           headers: {}
         })
+        console.log('서버에 저장한 결과:', data)
         if (data.result === "success") {
           alert('게시물이 정상적으로 등록되었습니다.')
           navigator('/')
@@ -334,7 +344,21 @@ const CreateNFT = () => {
                     <div className='login-writeForm' autoComplete='off'>
                       <div className="login-formGroup">
                         {/* <label>Collection</label> */}
-                        <input type="text" placeholder='Add Collection' value={newCollection} onChange={e => setNewCollection(e.target.value)} />
+                        <input type="text" placeholder='Add Collection' value={newCollection} onChange={e => setNewCollection(e.target.value)}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              if (newCollection.trim().length > 0) {
+                                const ok = confirm(`${newCollection} 컬렉션을 추가하겠습니까?`);
+                                if (ok) {
+                                  addCollection()
+                                } else {
+                                  alert('컬렉션 생성이 취소되었습니다.')
+                                }
+                              } else {
+                                alert('컬렉션 이름을 작성해주세요.')
+                              }
+                            }
+                          }} />
                       </div>
                       
                       <div className="login-button">
