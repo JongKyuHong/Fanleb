@@ -51,7 +51,7 @@ function ThumnailModal() {
               onClick={() => {
                 if (addr) {
                   closeModal()
-                  navigator(`/content${userAddress}`)
+                  navigator(`/content/${userAddress}`)
                 } else {
                   alert('지갑 연결이 필요합니다.')
                   window.open('https://metamask.io/download/', '_blank')
