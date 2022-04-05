@@ -48,7 +48,7 @@ public class UsersService {
         Users user = Opuser.orElseThrow(() -> new NotExistedUserException());
 
         Integer cnt = usersEditReq.getSubscription_cnt();
-        System.out.println(cnt);
+
         if (cnt != null && cnt > 0)
             user.setMaxSubscribeCnt(cnt);
 

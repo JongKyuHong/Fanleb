@@ -143,7 +143,7 @@ const Posts = () => {
         `api/collections/list?search[sortBy]=${category}&search[query]=&page=${page}`
         )
       return res.data.data.content;
-    } catch (err) {
+    } catch (err) {      
       return 'err'
     }
   };
@@ -250,7 +250,7 @@ const Posts = () => {
               //     <b>Yay! You have seen it all</b>
               //   </div>
               // }
-              >              
+              >
                 {posts?.map((post, idx) => <Post key={idx} post={post} onItemClicked={onItemClicked} />)}              
             </InfiniteScroll> 
           </div>

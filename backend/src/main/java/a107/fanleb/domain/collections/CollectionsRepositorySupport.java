@@ -26,7 +26,6 @@ public class CollectionsRepositorySupport {
     //검색
     //페이징
     public Page<CollectionsListViewRes> findBySortedBy(Pageable pageable, String query, String sortedBy) {
-        System.out.println(sortedBy);
         if(sortedBy.equals("singer")) sortedBy="가수";
         else if(sortedBy.equals("actor")) sortedBy="배우";
         else if(sortedBy.equals("celeb")) sortedBy="셀럽";

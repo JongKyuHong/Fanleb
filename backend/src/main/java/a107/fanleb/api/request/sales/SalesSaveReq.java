@@ -15,8 +15,9 @@ public class SalesSaveReq {
     private String sellerAddress;
     private String salesContractAddress;
     private String cashContractAddress;
+    private double price;
 
     public Sales toSales(){
-        return Sales.builder().tokenId(tokenId).sellerAddress(sellerAddress).saleContractAddress(salesContractAddress).cashContractAddress(cashContractAddress).build();
+        return Sales.builder().tokenId(tokenId).sellerAddress(sellerAddress).price(price).saleContractAddress(salesContractAddress).cashContractAddress(cashContractAddress).build();
     }
 }
