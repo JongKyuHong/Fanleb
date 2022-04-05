@@ -16,6 +16,7 @@ import './navbar.css';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 import { Link } from "react-router-dom";
 import { openModal, updateAddress, updateSuccess } from '../../redux/userSlice';
+import token_transfer from '../../utils/token_transfer';
 
 const Menu = () => (
   <>
@@ -81,7 +82,7 @@ const DashboardNavbar = () => {
       // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
       window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts) => {
         if (accounts.length > 0) {
-          account = accounts[0];
+          account = accounts[0];        
           if (checkUser(account)) {
             console.log('회원가입 되어있습니다. 주소:', accounts[0])
             // dispatch(updateAddress(account))
@@ -102,7 +103,8 @@ const DashboardNavbar = () => {
     }
   }
   function switchWallet() {
-    window.ethereum.request({ method: 'eth_requestAccounts' }).then(e => console.log(e))
+    token_transfer(account)
+    //window.ethereum.request({ method: 'eth_requestAccounts' }).then(e => console.log(e))
   }
   const searchKeyword = (e) => {    
     if (e.key == 'Enter') {
@@ -142,7 +144,7 @@ const DashboardNavbar = () => {
           <Link to="/create"> 
             <button type='button' className='primary-btn' >등록하기</button>
           </Link>
-          <button type='button' className='secondary-btn' onClick={switchWallet}>지갑 변경</button>
+          <button type='button' className='secondary-btn' onClick={switchWallet}>자금 요청</button>
           {/* <button type='button' className='secondary-btn' onClick={enableEth} >지갑 연결</button> */}
           <Avatar onClick={() => dispatch(openModal())} src={userInfo?.imageUrl} size="large" sx={{ width: 56, height: 56, cursor: 'pointer' }} />
             

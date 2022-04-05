@@ -30,7 +30,7 @@ import COMMON_ABI from '../common/ABI';
 import { onResponse, onContractCall } from '../common/ErrorMessage';
 import moment from 'moment';
 import Page from '../components/Page';
-import Create_Sale from '../utils/SaleFactory';
+import {Create_Sale, trans} from '../utils/SaleFactory';
 import SALE_Registration_API from '../utils/SaleFactory';
 import ABI from '../common/ABI';
 import AddressStore from '../common/AddressStore';
@@ -79,25 +79,25 @@ const SaleRegistration = () => {
    * 화면 첫 렌더링시 아이템의 정보를 조회합니다.
    */
   useEffect(() => {
-    checkInfo();
+    checkInfo();   
   }, []);
 
   // 타이핑 헬퍼
   const typeSchema = Yup.object().shape({
     price: Yup.number().positive().integer().required(),
-    minPrice: Yup.number().positive().integer().required()
+    //minPrice: Yup.number().positive().integer().required()
   });
 
   // 입력 데이터 처리
   const formik = useFormik({
     initialValues: {
       price: '',
-      minPrice: ''
+      //minPrice: ''
     },
     validationSchema: typeSchema,
     onSubmit: (value) => {
       setPrice(value.price);
-      setMinPrice(value.minPrice);
+      //setMinPrice(value.minPrice);
     }
   });
   const { errors, touched, handleSubmit, handleReset, getFieldProps } = formik;
@@ -123,17 +123,17 @@ const SaleRegistration = () => {
    * 판매 종료 시간은 해달 날짜의 자정(0시)으로 고정됩니다.
    * 필요에 따라 시간을 지정할 수 있도록 변경해도 괜찮습니다. 
    */
-  const checkDate = () => {
-    const now = parseInt((moment() / 1000).toFixed(0));
-    const endDate = parseInt((moment(date) / 1000).toFixed(0));
+  // const checkDate = () => {
+  //   const now = parseInt((moment() / 1000).toFixed(0));
+  //   const endDate = parseInt((moment(date) / 1000).toFixed(0));
 
-    if (now > endDate) alert('당일은 판매 종료일로 설정할 수 없습니다.');
-    else {
-      setCurrent(now);
-      setDue(endDate);
-      toggleApprove();
-    }
-  };
+  //   if (now > endDate) alert('당일은 판매 종료일로 설정할 수 없습니다.');
+  //   else {
+  //     setCurrent(now);
+  //     setDue(endDate);
+  //     toggleApprove();
+  //   }
+  // };
 
 
   /**
@@ -150,11 +150,37 @@ const SaleRegistration = () => {
    * (제안하기, 구매하기)이 추가되어야 합니다. 
    * 
    */
-  const checkInfo = async () => {
+  const checkInfo = () => {
     // TODO
-    setIsSale(false);
+    if (!isSale){
+      callapi()
+      setIsSale(true)
+    } else {
+      
+    }
+    
   };
 
+  const callapi = async () =>{
+    var config = {
+      method: 'get',
+      url: `http://j6a107.p.ssafy.io/api/contents/${tokenId}`,
+      headers: { }
+    };
+    
+    axios(config)
+    .then(function (response) {
+      const res = response.data.data
+      setAuthor(res.owner_address)
+      setTitle(res.content_title)
+      setDescription(res.content_description)
+      setItem(res.img_url)
+      
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
   /**
    * PJT Ⅲ - 과제 2: 작품 판매 등록
    * Req. 2-F2 Sale 컨트랙트 생성 
@@ -172,9 +198,11 @@ const SaleRegistration = () => {
     const owner_address = getAddressFrom(privKey);
     if (owner_address){
       setLoading(true);
-      const sale_addr = Create_Sale(owner_address, tokenId, price, AddressStore.CONTRACT_ADDR.SsafyToken,AddressStore.CONTRACT_ADDR.SsafyNFT);
-
-      registerSaleInfo(owner_address, sale_addr); // api 호출해서 판매정보 등록
+      const salecontractaddr = Create_Sale(owner_address, tokenId, price);
+      if (salecontractaddr){
+        //trans(owner_address, tokenId, salecontractaddr)
+        registerSaleInfo(owner_address, salecontractaddr); // api 호출해서 판매정보 등록
+      }
     } else {
       setLoading(false);
     }
@@ -190,7 +218,10 @@ const SaleRegistration = () => {
    */
   const registerSaleInfo = async (w_a, s_addr) => {
     setLoading(false);
-    SALE_Registration_API(tokenId, w_a, s_addr, AddressStore.CONTRACT_ADDR.SsafyToken);
+    const ch = SALE_Registration_API(tokenId, w_a, s_addr, AddressStore.CONTRACT_ADDR.SsafyToken);
+    if (ch) { 
+      setIsComplete(true)
+    }
   };
 
   return (
@@ -256,7 +287,7 @@ const SaleRegistration = () => {
                         {symbol}
                       </Typography>
                     </Stack>
-                    <Stack direction="row" alignItems="center">
+                    {/* <Stack direction="row" alignItems="center">
                       <TextField
                         sx={{ width: '100%' }}
                         type="number"
@@ -279,7 +310,7 @@ const SaleRegistration = () => {
                           renderInput={(params) => <TextField sx={{ width: '100%' }} {...params} />}
                         />
                       </Stack>
-                    </LocalizationProvider>
+                    </LocalizationProvider> */}
                   </Stack>
 
                   <Divider sx={{ mt: 5, width: '100%' }} />
@@ -290,11 +321,11 @@ const SaleRegistration = () => {
                       size="large"
                       type="submit"
                       variant="contained"
-                      onClick={
+                      onClick={ () =>
                         Object.keys(touched).length &&
                         !Object.keys(errors).length &&
                         item.length !== 0
-                          ? checkDate
+                          ? toggleApprove()
                           : null
                       }
                     >
