@@ -4,12 +4,16 @@ import a107.fanleb.api.request.contents.ContentsEditReq;
 import a107.fanleb.api.request.contents.ContentsRegisterReq;
 import a107.fanleb.api.request.contents.ContentsUpdateReq;
 import a107.fanleb.api.response.contents.ContentsRegisterRes;
+import a107.fanleb.common.exception.handler.NotExistedTokenIdException;
+import a107.fanleb.common.exception.handler.NotExistedUserException;
 import a107.fanleb.common.exception.handler.NotUniqueTokenIdException;
 import a107.fanleb.config.aws.S3Util;
 import a107.fanleb.domain.collections.Collections;
 import a107.fanleb.domain.collections.CollectionsRepository;
 import a107.fanleb.domain.contents.Contents;
 import a107.fanleb.domain.contents.ContentsRepository;
+import a107.fanleb.domain.users.Users;
+import a107.fanleb.domain.users.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +34,7 @@ public class ContentsService {
     private final S3Util s3util;
     private final ContentsRepository contentsRepository;
     private final CollectionsRepository collectionRepository;
+    private final UsersRepository usersRepository;
 
     @Transactional(readOnly = true)
     public Contents showDetail(int tokenId) {
@@ -68,6 +73,11 @@ public class ContentsService {
 
         String ownerAddress = contentsUpdateReq.getOwnerAddress();
 
+        Optional<Users> byUserAddress = usersRepository.findByUserAddress(ownerAddress);
+        Users user = byUserAddress.orElseThrow(() -> new NotExistedUserException());
+        user.addContentsCnt();
+        usersRepository.save(user);
+
         Optional<Collections> collectionEntity = collectionRepository.findByCollectionNameAndUserAddress(collectionReq, ownerAddress);
 
         if (collectionEntity.isPresent()) {
@@ -76,6 +86,8 @@ public class ContentsService {
             Collections collection = collectionRepository.save(Collections.builder().collectionName(collectionReq).userAddress(ownerAddress).build());
             contentsRepository.update(tokenId, ownerAddress, contentId, collection.getId());
         }
+
+
     }
 
 
@@ -115,7 +127,15 @@ public class ContentsService {
 
     @Transactional
     public void delete(int tokenId) {
-        contentsRepository.deleteByTokenId(tokenId);
+        System.out.println(tokenId);
+        Optional<Contents> byTokenId = contentsRepository.findByTokenId(tokenId);
+        Contents content = byTokenId.orElseThrow(() -> new NotExistedTokenIdException());
+        contentsRepository.delete(content);
+
+        Optional<Users> byUserAddress = usersRepository.findByUserAddress(content.getOwnerAddress());
+        Users user = byUserAddress.orElseThrow(() -> new NotExistedUserException());
+        user.decContentsCnt();
+        usersRepository.save(user);
     }
 
     @Transactional(readOnly = true)
