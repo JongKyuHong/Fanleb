@@ -24,16 +24,28 @@ export default function Router() {
         { path: '', element: <Main /> }
       ]
     },
+    // {
+    //   path: '/content',
+    //   element: <MainLayout />,
+    //   children: [
+    //     { element: <Navigate to="/content" replace /> },
+    //     { path: '', element: <Content /> }
+    //   ]
+    // },
     {
-      path: '/content',
+      path: '/content/:contentId',
       element: <MainLayout />,
       children: [
         { element: <Navigate to="/content" replace /> },
-        { path: '', element: <Content /> }
+        { path: '', element: <Content /> },
+        { path: ':collectionId', element: <Content/> },
+        { path: 'detail/:detailId', element: <ContentDetail/> }
+
+        // { path: '/:collectionId/*', element: <Content/> }
       ]
     },
     {
-      path: '/detail',
+      path: '/detail/:detailId',
       element: <MainLayout />,
       children: [
         { element: <Navigate to="/detail" replace /> },
