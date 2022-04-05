@@ -2,18 +2,65 @@ import {Avatar, Box, Button, Card ,Container, Divider,Link, Stack, Typography, G
 
 import Page from '../components/Page';
 import { useState, useEffect  } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+
+const ContentDetail = ()=>{
+  let {detailId} = useParams()
+
+  useEffect(()=>{
+    console.log(detailId,'param')
+
+  },[])
+
+  return(
+    <>
+    <Detail detailId={detailId}/>
+    </>
+
+  )
+}
+const Detail = ({detailId}) =>{
+  // let {detailId} = useParams()
+  // const detailId = props
+
+  const [detailInfo, setDetailInfo] = useState()
+  
+
+  const getDetailInfo = async () =>{
+    const option = {
+      method: "GET",
+      url: `/api/contents/${detailId}`,
+    }
+    try{
+      const {data} = await axios(option)
+      const a = setDetailInfo(data.data)
+      const loading = await a
+      console.log(loading,'suc')
+      console.log(detailId)
+      console.log(detailInfo)
+      console.log(data)
+    }catch(err){
+      console.log(err)
+      console.log(detailId)
+      }
+  }
+
+  useEffect( ()=>{
+    getDetailInfo()
 
 
-
-const ContentDetail = () =>{
-
+  },[detailId])
   const lorem = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting'
 
   const url1 = 'https://w.namu.la/s/e9683a5adf478bf64a8ee9d3ff4aa24c2383fa7a8b3c9b6ad1419b27bd136a8ba8237e3c0d1d0ef5e158466681e895bf2644ce64af93a4bfd57f9ebfb1a7aaf9cbbac83720db6b093bb92987c7ad54379d93926be28635139a21dc8263064e72'
 
+  if(!detailInfo){
+    return <Box sx={{ color:"#FFFFFF"}}>로딩..</Box>
+    }
     return(
       <Page title="내용페이지" maxWidth="100%" minHeight="100%" alignItems="center" display="flex">
-        <Container sx={{marginTop:"100px"}}>
+        <Container sx={{marginTop:"100px", color:"#FF1122"}}>
           <Stack 
             direction="column"
             divider={<Divider orientaiton="vertical" flexItem />}
@@ -48,7 +95,7 @@ const ContentDetail = () =>{
                 }}
                 >
                   <Grid item>
-                    <img src={url1}/>
+                    <img src={detailInfo.img_url}/>
                   </Grid>
 
               </Grid>
@@ -68,7 +115,7 @@ const ContentDetail = () =>{
                   >
                     <Grid item>
                       <Typography variant='h3'>
-                        제목입니다
+                        {detailInfo.content_title}
                       </Typography>
                     </Grid>
                     <Grid item 
@@ -76,15 +123,15 @@ const ContentDetail = () =>{
                       }}
                     >
                       <Typography>
-                        {lorem}
+                        {detailInfo.content_description}
                       </Typography>
                     </Grid>
                     <Grid item>
                       <Typography>
-                        판매시간
+                        {detailInfo.on_sale_yn === 'y'?"판매중":"판매종료"}
                       </Typography>
                       <Typography>
-                        2022 11월 1일
+                        {detailInfo.created_at}
                       </Typography>
                       <Typography>
                         최근가격
