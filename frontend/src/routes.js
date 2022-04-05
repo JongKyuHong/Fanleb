@@ -11,7 +11,12 @@ import ItemPurchase from './pages/ItemPurchase';
 import CreateNFT from './pages/CreateNFT';
 import Content from './projectsPages/Content'
 import ContentDetail from './projectsPages/ContentDetail'
+<<<<<<< HEAD
+import Rank from './projectsPages/Rank';
+import { Dialog, Modal } from '@mui/material';
+=======
 import SearchResult from './pages/SearchResult';
+>>>>>>> 124aebe3d2a8b1bbea1952c9fcd05b1457c1e174
 
 // 화면 라우팅 테이블
 export default function Router() {
@@ -24,16 +29,28 @@ export default function Router() {
         { path: '', element: <Main /> }
       ]
     },
+    // {
+    //   path: '/content',
+    //   element: <MainLayout />,
+    //   children: [
+    //     { element: <Navigate to="/content" replace /> },
+    //     { path: '', element: <Content /> }
+    //   ]
+    // },
     {
-      path: '/content',
+      path: '/content/:contentId',
       element: <MainLayout />,
       children: [
         { element: <Navigate to="/content" replace /> },
-        { path: '', element: <Content /> }
+        { path: '', element: <Content /> },
+        { path: ':collectionId', element: <Content/> },
+        { path: 'detail/:detailId', element: <ContentDetail/> }
+
+        // { path: '/:collectionId/*', element: <Content/> }
       ]
     },
     {
-      path: '/detail',
+      path: '/detail/:detailId',
       element: <MainLayout />,
       children: [
         { element: <Navigate to="/detail" replace /> },
@@ -41,11 +58,19 @@ export default function Router() {
       ]
     },
     {
+<<<<<<< HEAD
+      path: '/rank',
+      element: <MainLayout />,
+      children: [
+        { element: <Navigate to="/rank" replace /> },
+        { path: '', element: <Rank/> }
+=======
       path: '/search',
       element: <MainLayout />,
       children: [        
         { element: <Navigate to='/search' replace /> },
         { path: '', element: <SearchResult /> }
+>>>>>>> 124aebe3d2a8b1bbea1952c9fcd05b1457c1e174
       ]
     },
     {
