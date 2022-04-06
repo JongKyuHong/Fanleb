@@ -19,7 +19,7 @@ import axios from 'axios';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-const confirmSub = ({contentId}) => {
+const confirmSub = ({contentId, setSub}) => {
     const logOnAddress = useSelector(state => state.user.userInfo.userAddress)
     // 구독정보 확인
     const onSub = async() =>{
@@ -32,6 +32,7 @@ const confirmSub = ({contentId}) => {
             const data = await axios(option)
             console.log(data)
             setOpen(false)
+            setSub(true)
         }catch(err){
             console.log(err.response.data)
             if (logOnAddress===contentId){

@@ -6,6 +6,8 @@ import './ThumnailModal.css';
 import empty from "../post/empty-image.jpg";
 import { useNavigate } from 'react-router-dom';
 import Subscribe from '../../projectsPages/Subscribe';
+import axios from 'axios';
+
 function ThumnailModal() {
   const { isOpen, collectionName, thumnailImgUrl, userImgUrl, nickname, description, category, userAddress, contentsData} = useSelector(state => state.modal);
   const dispatch = useDispatch();
@@ -15,9 +17,40 @@ function ThumnailModal() {
     dispatch(removeThumnail())
     dispatch(toggleModal())
     }
+
+  // 구독관련
   const [open, setOpen] = useState(false)
   const buttonClick = () => {
     setOpen(true)
+  }
+  const [sub,setSub] = useState(false)
+  const [sign, setSign] = useState(false)
+  const onSub = async() =>{
+    const option ={
+      method:"GET",
+      url:`/api/subscribe/valid/${addr}/${userAddress}`,
+    }
+    let status ='기본값'
+    try{
+        const data = await axios(option)
+        console.log(data)
+        status = data.status
+    }catch(err){
+        console.log(err)
+      }
+    
+    if (addr) {
+      if(addr === userAddress || status === 200){
+        closeModal()
+        navigator(`/content/${userAddress}`)
+      }else{
+        console.log(addr,userAddress,status)
+        alert('입장할 수 없습니다!')
+      }
+    }else{
+      alert('지갑 연결이 필요합니다.')
+      window.open('https://metamask.io/download/', '_blank')
+      }
   }
   return (
     <>
@@ -54,15 +87,7 @@ function ThumnailModal() {
             <div className="item-content-buy">
               <button className="primary-btn" onClick={buttonClick}>구독하기 4.5 ETH</button>
             <button className="secondary-btn"
-              onClick={() => {
-                if (addr) {
-                  closeModal()
-                  navigator(`/content/${userAddress}`)
-                } else {
-                  alert('지갑 연결이 필요합니다.')
-                  window.open('https://metamask.io/download/', '_blank')
-                }
-              }}
+              onClick={onSub}
               >입장하기</button>
             </div>
           

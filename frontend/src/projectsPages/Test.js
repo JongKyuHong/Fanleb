@@ -21,7 +21,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const Test = () => {
     const logOnAddress = useSelector(state => state.user.userInfo.userAddress)
-    const contentId = "1A1P1eP5QGefi2DMPTfTL5SLmv7DivfNa"
+    // const contentId = "1A1P1eP5QGefi2DMPTfTL5SLmv7DivfNa"
+    const contentId = "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
+
     // 구독정보 확인
     // const onSub = async() =>{
     //     const option ={
@@ -73,6 +75,7 @@ const Test = () => {
         try{
             const data = await axios(option)
             console.log(data)
+            console.log(data.status)
             setOpen(false)
         }catch(err){
             console.log(err.response.data)
