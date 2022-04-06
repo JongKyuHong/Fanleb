@@ -126,7 +126,7 @@ const Subscribe = ({urlId, open,setOpen}) => {
                     <DialogTitle>구독권 구매하기 </DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            {contentUserInfo.nickname}을 구독합니다.
+                            {contentUserInfo.nickname}을(를) 구독합니다.
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
