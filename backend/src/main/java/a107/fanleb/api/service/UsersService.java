@@ -83,7 +83,11 @@ public class UsersService {
 
     @Transactional
     public void delete(String userAddress) {
-        usersRepository.deleteByUserAddress(userAddress);
+        Optional<Users> byUserAddress = usersRepository.findByUserAddress(userAddress);
+        Users user = byUserAddress.orElseThrow(() -> new NotExistedUserException());
+        s3util.fileDelete(user.getImgUrl().split(".com/")[1]);
+
+        usersRepository.delete(user);
     }
 
     @Transactional(readOnly = true)
