@@ -70,11 +70,16 @@ export async function appr(_to, itemId, s_addr, purchasePrice) {
     console.log('여기는 되네')
     const a = window.contract.methods.setApprovalForAll(s_addr, true).call();
     //trans(_to,itemId, s_addr)
+<<<<<<< HEAD
     const salet = await SALE_Registration_API(itemId, _to, s_addr)
+=======
+    const salet = await SALE_Registration_API(itemId, _to, s_addr, purchasePrice)
+>>>>>>> 535a02baa768870eaeaf37ae9c1066d2eb0bef11
     return salet
   } catch (error){
     console.error(error)
   }
+<<<<<<< HEAD
 
   // window.contract = new web3.eth.Contract(Token_abi, cu_addr)
   // const windowmethod222 = window.contract.methods.approve(s_addr, purchasePrice).encodeABI()
@@ -159,12 +164,21 @@ export async function appr(_to, itemId, s_addr, purchasePrice) {
 
 
 export default function SALE_Registration_API(itemId, walletAddress, Sale_ContractAddr){
+=======
+}
+
+export default function SALE_Registration_API(itemId, walletAddress, Sale_ContractAddr, purchasePrice){
+>>>>>>> 535a02baa768870eaeaf37ae9c1066d2eb0bef11
   
   var data = {
     "token_id" : itemId,
     "seller_address" : walletAddress,
     "sales_contract_address" : Sale_ContractAddr,
     "cash_contract_address" : cu_addr,
+<<<<<<< HEAD
+=======
+    "price" : purchasePrice
+>>>>>>> 535a02baa768870eaeaf37ae9c1066d2eb0bef11
   };
 
   var config = {
@@ -183,20 +197,6 @@ export default function SALE_Registration_API(itemId, walletAddress, Sale_Contra
     console.log(error);
     return false;
   });
-  // const nftMethod2 = NFT_Contract.methods.approve(to, Sale_ContractAddr, itemId);
-  // const nftEncodedMethod2 = nftMethod.encodeABI();
 
-
-  // const gasEstimate2 = await nftEncodedMethod2.estimateGas({ from: walletAddress });
-  
-  // const rawTx3 = {
-  //   from: walletAddress,
-  //   to: Sale_ContractAddr,
-  //   gas: gasEstimate2,
-  //   data: nftEncodedMethod,
-  // };
-
-  // const signedTx3= await walletAccount.signTransaction(rawTx2);
-  // web3.eth.sendSignedTransaction(signedTx2.rawTransaction);
 }
 

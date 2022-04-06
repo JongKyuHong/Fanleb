@@ -26,22 +26,22 @@ public class CollectionsRepositorySupport {
     //검색
     //페이징
     public Page<CollectionsListViewRes> findBySortedBy(Pageable pageable, String query, String sortedBy) {
-        if(sortedBy.equals("singer")) sortedBy="가수";
-        else if(sortedBy.equals("actor")) sortedBy="배우";
-        else if(sortedBy.equals("celeb")) sortedBy="셀럽";
-        else if(sortedBy.equals("general")) sortedBy="일반인";
+        if("singer".equals(sortedBy)) sortedBy="가수";
+        else if("actor".equals(sortedBy)) sortedBy="배우";
+        else if("celeb".equals(sortedBy)) sortedBy="셀럽";
+        else if("general".equals(sortedBy)) sortedBy="일반인";
 
         BooleanBuilder builder = new BooleanBuilder();
 
-        if(!query.isEmpty()){
+        if(query!=null && !query.isEmpty()){
             builder.and(qCollections.collectionName.contains(query));
         }
 
-        if(!sortedBy.isEmpty()){
+        if(query!=null && !sortedBy.isEmpty()){
             builder.and(qUsers.usersCategory.userCategoryName.eq(sortedBy));
         }
 
-        List<CollectionsListViewRes> fetch = jpaQueryFactory.select(new QCollectionsListViewRes(qCollections.id, qCollections.collectionName, qUsers.userAddress, qUsers.nickname, qContents.imgUrl)).from(qCollections).leftJoin(qContents).on(qCollections.eq(qContents.collection)).leftJoin(qUsers).on(qCollections.userAddress.eq(qUsers.userAddress)).groupBy(qCollections).where(builder).orderBy(qCollections.id.desc()).fetch();
+        List<CollectionsListViewRes> fetch = jpaQueryFactory.select(new QCollectionsListViewRes(qCollections.id, qCollections.collectionName, qUsers.userAddress, qUsers.nickname, qContents.imgUrl.max())).from(qCollections).leftJoin(qContents).on(qCollections.eq(qContents.collection)).leftJoin(qUsers).on(qCollections.userAddress.eq(qUsers.userAddress)).groupBy(qCollections).where(builder).orderBy(qCollections.id.desc()).fetch();
 
         final int start = (int)pageable.getOffset();
         final int end = Math.min((start + pageable.getPageSize()), fetch.size());

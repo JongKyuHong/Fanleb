@@ -19,19 +19,19 @@ public class RankingListViewRes {
 
     private int contentsCnt;
 
-    private double recentTradedPrice;
+    private double maxTradedPrice;
 
     private int ownerCnt;
 
     private String imgUrl;
 
     @QueryProjection
-    public RankingListViewRes(String nickname, String userCategoryName, int subscriptionCnt, int contentsCnt, double recentTradedPrice, int ownerCnt, String imgUrl) {
+    public RankingListViewRes(String nickname, String userCategoryName, int subscriptionCnt, int contentsCnt, double maxTradedPrice, int ownerCnt, String imgUrl) {
         this.nickname = nickname;
         this.userCategoryName = userCategoryName;
         this.subscriptionCnt = subscriptionCnt;
         this.contentsCnt = contentsCnt;
-        this.recentTradedPrice = recentTradedPrice;
+        this.maxTradedPrice = maxTradedPrice;
         this.ownerCnt = ownerCnt;
         this.imgUrl = imgUrl;
     }
