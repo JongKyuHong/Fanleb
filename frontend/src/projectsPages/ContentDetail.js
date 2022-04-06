@@ -66,7 +66,7 @@ const Detail = ({detailId}) =>{
     // .catch(function (error) {
     //   console.log(error);
     // });
-    Trade(address,adr,seller,detailInfo.price,token_id)
+    Trade(address,adr,seller,detailInfo.price,detailInfo.token_id)
   }
 
   if(!detailInfo){
