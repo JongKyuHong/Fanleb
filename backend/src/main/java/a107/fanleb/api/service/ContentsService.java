@@ -127,15 +127,16 @@ public class ContentsService {
 
     @Transactional
     public void delete(int tokenId) {
-        System.out.println(tokenId);
         Optional<Contents> byTokenId = contentsRepository.findByTokenId(tokenId);
         Contents content = byTokenId.orElseThrow(() -> new NotExistedTokenIdException());
+        s3util.fileDelete(content.getImgUrl().split(".com/")[1]);
         contentsRepository.delete(content);
 
         Optional<Users> byUserAddress = usersRepository.findByUserAddress(content.getOwnerAddress());
         Users user = byUserAddress.orElseThrow(() -> new NotExistedUserException());
         user.decContentsCnt();
         usersRepository.save(user);
+
     }
 
     @Transactional(readOnly = true)
