@@ -8,17 +8,18 @@ NFT별 Sale 컨트랙트 주소 확인을 위해 다음과 같이 공통 호출 
 - Sales 데이터에서 반환되는 정보 중 sale_contract_address를 사용합니다.
 */
 export default async function getByTokenId(id) {
-  try {
-    return await axios
-      .get('/sales?token_id=' + id, {
-        headers: {
-          header
-        }
-      })
-      .catch((err) => {
-        throw err;
-      });
-  } catch (e) {
-    console.log(e);
-  }
+  var config = {
+    method: 'get',
+    url: `api/sales?token_id=${id}`, // http://j6a107.p.ssafy.io/
+    headers: { header }
+  };
+  
+  axios(config)
+  .then(function (response) {
+    console.log(JSON.stringify(response.data));
+    return response.data.sale_contract_address;
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 }
