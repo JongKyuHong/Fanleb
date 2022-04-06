@@ -52,7 +52,7 @@ const Detail = ({detailId}) =>{
   const url1 = 'https://w.namu.la/s/e9683a5adf478bf64a8ee9d3ff4aa24c2383fa7a8b3c9b6ad1419b27bd136a8ba8237e3c0d1d0ef5e158466681e895bf2644ce64af93a4bfd57f9ebfb1a7aaf9cbbac83720db6b093bb92987c7ad54379d93926be28635139a21dc8263064e72'
 
   const toggletrade = async () => {
-    const [adr,seller] = await getByTokenId(detailInfo.token_id)
+    const res = await getByTokenId(detailInfo.token_id)
     // var config = {
     //   method: 'get',
     //   url: `http://j6a107.p.ssafy.io/api/sales?token_id=${detailInfo.token_id}`,
@@ -66,7 +66,7 @@ const Detail = ({detailId}) =>{
     // .catch(function (error) {
     //   console.log(error);
     // });
-    Trade(address,adr,seller,detailInfo.price,detailInfo.token_id)
+    Trade(address,res[0],res[1],detailInfo.price,detailInfo.token_id)
   }
 
   if(!detailInfo){
