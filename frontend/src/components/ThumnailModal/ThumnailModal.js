@@ -1,5 +1,5 @@
 import { Divider, Modal,Button } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { removeThumnail, toggleModal } from '../../redux/modalSlice';
 import './ThumnailModal.css';
@@ -7,11 +7,15 @@ import empty from "../post/empty-image.jpg";
 import { useNavigate } from 'react-router-dom';
 import Subscribe from '../../projectsPages/Subscribe';
 import axios from 'axios';
+import { getSubscriptionInfo, SubscribeUser } from '../../utils/Subscription';
 
 function ThumnailModal() {
-  const { isOpen, collectionName, thumnailImgUrl, userImgUrl, nickname, description, category, userAddress, contentsData} = useSelector(state => state.modal);
+  const { isOpen, collectionName, thumnailImgUrl, userImgUrl, nickname, description, category, userAddress, contentsData } = useSelector(state => state.modal);
+  
   const dispatch = useDispatch();
-  const addr = useSelector(state => state.user.userInfo.userAddress)
+  const myAddr = useSelector(state => state.user.userInfo.userAddress)
+  const [subscriptionCnt, setSubscriptionsCnt] = useState(0);
+  const [isSubscribed, setIssubscribed] = useState(false);
   const navigator = useNavigate();
   const closeModal = () => {
     dispatch(removeThumnail())
@@ -52,6 +56,22 @@ function ThumnailModal() {
       window.open('https://metamask.io/download/', '_blank')
       }
   }
+  const subscribe = async () => {
+    await SubscribeUser(userAddress, myAddr, setSubscriptionsCnt);
+
+  }  
+  useEffect(() => {    
+    const getData = async () => {
+      const {count, status} = await getSubscriptionInfo(userAddress, myAddr);
+      
+      setSubscriptionsCnt(count)
+      setIssubscribed(status)
+    };
+    if (isOpen) {
+      getData();
+      // console.log('모달 정보', userImgUrl, description)
+    }
+  }, [isOpen])
   return (
     <>
     <Modal
@@ -67,6 +87,39 @@ function ThumnailModal() {
         <div className="item-image">
           <img src={thumnailImgUrl ? thumnailImgUrl : empty} alt="item" />
         </div>
+        {/* <div className="item-content">
+          <div className="item-content-title">
+            <h1>{collectionName}</h1>
+            <p><span>1 SSF</span> ‧ {subscriptionCnt} available</p>
+          </div>
+          <div className="item-content-creator">
+          <div style={{overflow: 'hidden'}}><p>{ category }</p></div>
+            <div>
+              <img src={userImgUrl} alt="creator" />
+              <p>{nickname} </p>             
+            </div>              
+          </div>
+        <div className="item-content-detail">
+          <p>{description}</p>
+          <Divider sx={{margin: '20px 0'}} />
+          <p style={{ overflow: 'hidden', width: 'auto' }}> <span style={{color: 'rgb(32, 129, 226)'}}>{ nickname } </span>님의 Address : {userAddress}</p>
+        </div>
+        <div className="item-content-buy">
+          {!isSubscribed ?
+          
+            <button className="primary-btn" onClick={() => subscribe()}>구독하기 ( 1 SSF )</button>
+            :
+            <button className="secondary-btn"
+              onClick={() => {
+                closeModal()
+                navigator(`/content/${userAddress}`)
+              }}
+            >입장하기</button>
+          }
+          </div>
+        </div>
+      </div>
+    </Modal> */}
           <div className="item-content">
             <div className="item-content-title">
               <h1>{collectionName}</h1>

@@ -11,6 +11,7 @@ import { checkUser, getUser, registerUser } from './redux/apiCalls';
 import { useNavigate } from 'react-router-dom';
 import ScrollToTop from './components/scrollTop';
 import ThumnailModal from './components/ThumnailModal/ThumnailModal';
+import SubscriptionModal from './components/SubscriptionModal/SubscriptionModal';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -126,6 +127,9 @@ export default function App() {
   
     }
     window.ethereum.removeListener('accountsChanged', check)
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 500)
   }
   // // 계정이 변경되는 것을 감지하고,
   // // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
@@ -139,6 +143,7 @@ export default function App() {
         <ScrollToTop />
         <UserInfoModal userInfo={userInfo} address={address} />
         <ThumnailModal />
+        <SubscriptionModal />
         <Router />
         <GlobalStyles />
       </ThemeConfig>
