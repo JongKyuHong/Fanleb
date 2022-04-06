@@ -13,6 +13,7 @@ import Content from './projectsPages/Content'
 import ContentDetail from './projectsPages/ContentDetail'
 import SearchResult from './pages/SearchResult';
 import Test from './projectsPages/Test';
+import Rank from './projectsPages/Rank';
 
 // 화면 라우팅 테이블
 export default function Router() {
@@ -103,6 +104,13 @@ export default function Router() {
         { element: <Navigate to="/whosart" replace /> },
         { path: '', element: <WhosArt /> },
         { path: ':address', element: <WhosArt /> }
+      ]
+    },
+    {
+      path: '/rank',
+      element: <MainLayout />,
+      children: [
+        { path: '', element: <Rank/>},
       ]
     },
     {
