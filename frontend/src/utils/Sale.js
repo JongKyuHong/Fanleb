@@ -23,7 +23,7 @@ const cuaddr = AddressStore.CONTRACT_ADDR.CurrencyAddress[0];
 const sale_abi = ABI.CONTRACT_ABI.SALE_ABI;
 // _to, itemId, purchasePrice, currencyAddress, nftAddress
 
-export default async function Trade(walletaddress, addr, seller_addr, purchasePrice, token_id) {
+export default async function Trade(walletaddress, addr, purchasePrice, token_id) {
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
 
   window.contract = await new web3.eth.Contract(token_abi, cuaddr);
