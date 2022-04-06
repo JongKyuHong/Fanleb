@@ -47,24 +47,6 @@ export default async function Trade(walletaddress, addr, seller_addr, purchasePr
       console.error(error)
   }
 
-  const transactionParameters22 = {
-    to: cuaddr,
-    from: walletaddress,
-    'data': window.contract.methods.transferFrom(walletaddress, seller_addr, purchasePrice).encodeABI()
-  };
-  
-  try {
-    const txHash22 = await window.ethereum
-        .request({
-            method: 'eth_sendTransaction',
-            params: [transactionParameters22],
-        });                
-    console.log("transaction2: " + txHash22)
-    await window.contract.methods.transferFrom(walletaddress, seller_addr, purchasePrice).call();
-  } catch (error) {
-      console.error(error)
-  }
-
   window.contract = await new web3.eth.Contract(nft_abi, nft_addr);
 
   const transactionParameters1 = {
@@ -85,29 +67,11 @@ export default async function Trade(walletaddress, addr, seller_addr, purchasePr
       console.error(error)
   }
 
-  const transactionParameters11 = {
-    to: nft_addr,
-    from: walletaddress,
-    'data': window.contract.methods.transferFrom(seller_addr, walletaddress, token_id).encodeABI()
-  }
-
-  try {
-    const txHash11 = await window.ethereum
-        .request({
-            method: 'eth_sendTransaction',
-            params: [transactionParameters11],
-        });                
-    console.log("transaction1: " + txHash11)
-    await window.contract.methods.transferFrom(seller_addr, walletaddress, token_id).call();
-  } catch (error) {
-      console.error(error)
-  }
-
   window.contract = await new web3.eth.Contract(sale_abi, addr);
   const transactionParameters = {
     to: addr,
     from: walletaddress,
-    'data': window.contract.methods.purchase().encodeABI()
+    'data': window.contract.methods.purchase(walletaddress).encodeABI()
   };
 
   try {
@@ -117,7 +81,7 @@ export default async function Trade(walletaddress, addr, seller_addr, purchasePr
             params: [transactionParameters],
         });                
     console.log("transaction: " + txHash)
-    await window.contract.methods.purchase().send();
+    await window.contract.methods.purchase(walletaddress).call();
   } catch (error) {
     console.error(error)
   }
