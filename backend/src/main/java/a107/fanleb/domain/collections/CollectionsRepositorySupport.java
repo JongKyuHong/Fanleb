@@ -41,7 +41,7 @@ public class CollectionsRepositorySupport {
             builder.and(qUsers.usersCategory.userCategoryName.eq(sortedBy));
         }
 
-        List<CollectionsListViewRes> fetch = jpaQueryFactory.select(new QCollectionsListViewRes(qCollections.id, qCollections.collectionName, qUsers.userAddress, qUsers.nickname, qContents.imgUrl)).from(qCollections).leftJoin(qContents).on(qCollections.eq(qContents.collection)).leftJoin(qUsers).on(qCollections.userAddress.eq(qUsers.userAddress)).groupBy(qCollections).where(builder).orderBy(qCollections.id.desc()).fetch();
+        List<CollectionsListViewRes> fetch = jpaQueryFactory.select(new QCollectionsListViewRes(qCollections.id, qCollections.collectionName, qUsers.userAddress, qUsers.nickname, qContents.imgUrl)).from(qCollections).leftJoin(qContents).on(qCollections.eq(qContents.collection)).leftJoin(qUsers).on(qCollections.userAddress.eq(qUsers.userAddress)).groupBy(qCollections).where(builder).orderBy(qCollections.id.desc(), qContents.id.desc()).fetch();
 
         final int start = (int)pageable.getOffset();
         final int end = Math.min((start + pageable.getPageSize()), fetch.size());
