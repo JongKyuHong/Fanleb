@@ -52,6 +52,7 @@ const DashboardNavbar = () => {
   const { userInfo, pending, error } = useSelector(state => state.user);
   const [toggleMenu, setToggleMenu] = useState(false)
   const [keyword, setKeyword] = useState("");
+  const [acc,setAcc] = useState("");
   //  const [user, setUser] = useState(false)
   const handleLogout = () => {
     setUser(false);
@@ -81,7 +82,8 @@ const DashboardNavbar = () => {
       // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
       window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts) => {
         if (accounts.length > 0) {
-          account = accounts[0];        
+          account = accounts[0];
+          setAcc(account)        
           if (checkUser(account)) {
             // console.log('회원가입 되어있습니다. 주소:', accounts[0])
             // dispatch(updateAddress(account))
@@ -101,8 +103,10 @@ const DashboardNavbar = () => {
       window.open('https://metamask.io/download/', '_blank')
     }
   }
-  function switchWallet() {
-    token_transfer(account)
+  const switchWallet = async () => {
+    const accounts2 = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const account2 = accounts2[0];
+    token_transfer(account2)
     //window.ethereum.request({ method: 'eth_requestAccounts' }).then(e => console.log(e))
   }
   const searchKeyword = (e) => {    

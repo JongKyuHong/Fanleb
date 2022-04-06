@@ -153,8 +153,8 @@ const CreateNFT = () => {
         // console.log('서버에 저장한 결과:', data)
         if (data.result === "success") {
           alert('게시물이 정상적으로 등록되었습니다.')
-          //navigator(`/register/sale/${token_id}`)
-          CreateSale(token_id)
+          navigator('/')
+          //CreateSale(token_id)
         } else {
           alert('게시물 작성을 실패했습니다.')
         }
@@ -207,15 +207,15 @@ const CreateNFT = () => {
     }    
   }
 
-  const CreateSale = async (token_id, price) => {
-    const sale_addr = Create_Sale(address, token_id, price, AddressStore.CONTRACT_ADDR.SsafyToken,AddressStore.CONTRACT_ADDR.SsafyNFT);
-    const check = SALE_Registration_API(address, sale_addr, sale_addr, AddressStore.CONTRACT_ADDR.SsafyToken);
-    if (check) {
-      navigator(`/items/buy/${token_id}`)
-    } else {
-      alert('error')
-    }
-  }
+  // const CreateSale = async (token_id, price) => {
+  //   const sale_addr = Create_Sale(address, token_id, price, AddressStore.CONTRACT_ADDR.SsafyToken,AddressStore.CONTRACT_ADDR.SsafyNFT);
+  //   const check = SALE_Registration_API(address, sale_addr, sale_addr, AddressStore.CONTRACT_ADDR.SsafyToken);
+  //   if (check) {
+  //     navigator(`/items/buy/${token_id}`)
+  //   } else {
+  //     alert('error')
+  //   }
+  // }
 
 //   const filterColors = (inputValue) => {
 //   return collections.filter((i) =>

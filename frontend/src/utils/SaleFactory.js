@@ -18,11 +18,12 @@ const sf_addr = AddressStore.CONTRACT_ADDR.SaleFactory[0];
 const nft_abi = ABI.CONTRACT_ABI.NFT_ABI;
 const nft_addr = AddressStore.CONTRACT_ADDR.SsafyNFT[0];
 
+const Token_abi = ABI.CONTRACT_ABI.TOKEN_ABI;
 const cu_addr = AddressStore.CONTRACT_ADDR.CurrencyAddress[0];
 
 export async function Create_Sale(_to, itemId, purchasePrice) {
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
-
+  
   window.contract = new web3.eth.Contract(sf_abi, sf_addr);
   const windowmethod = window.contract.methods.createSale(_to, itemId, purchasePrice, cu_addr, nft_addr).encodeABI()
   const transactionParameters11 = {
@@ -40,17 +41,17 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
     console.log("transaction: " + txHash)
     const sale_addr = await window.contract.methods.createSale(_to, itemId, purchasePrice, cu_addr, nft_addr).call(); // currency
     console.log(sale_addr, '여기까지는 됨')
-    appr(_to, itemId, sale_addr)
-  
+    const apprt = await appr(_to, itemId, sale_addr, purchasePrice)
+    return sale_addr
   } catch (error){
     console.error(error)
   }
 }
 
-export async function appr(_to, itemId, s_addr) {
+export async function appr(_to, itemId, s_addr, purchasePrice) {
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
   window.contract = new web3.eth.Contract(nft_abi, nft_addr);
-  const windowmethod2 = window.contract.methods.approve(s_addr, itemId).encodeABI()
+  const windowmethod2 = window.contract.methods.setApprovalForAll(s_addr, true).encodeABI()
 
   const tranParameters2 = {
     from : _to,
@@ -67,47 +68,97 @@ export async function appr(_to, itemId, s_addr) {
       console.log('여기 까지도6')
       console.log("transaction3: " + txHash3)
     console.log('여기는 되네')
-    const a = window.contract.methods.approve(s_addr, itemId).call()
-    trans(_to,itemId, s_addr)
+    const a = window.contract.methods.setApprovalForAll(s_addr, true).call();
+    //trans(_to,itemId, s_addr)
+    const salet = await SALE_Registration_API(itemId, _to, s_addr)
+    return salet
   } catch (error){
     console.error(error)
   }
+
+  // window.contract = new web3.eth.Contract(Token_abi, cu_addr)
+  // const windowmethod222 = window.contract.methods.approve(s_addr, purchasePrice).encodeABI()
+
+  // const tranParameters222 = {
+  //   from : _to,
+  //   to : cu_addr,
+  //   data : windowmethod222
+  // }
+
+  // try{
+  //   const txHash5 = await window.ethereum
+  //     .request({
+  //       method : 'eth_sendTransaction',
+  //       params : [tranParameters222],
+  //     });
+  //     console.log('여기 까지도6')
+  //     console.log("transaction3: " + txHash5)
+  //   console.log('여기는 되네')
+  //   const a222 = window.contract.methods.approve(s_addr, purchasePrice).call();
+  //   //trans(_to,itemId, s_addr)
+  // } catch (error){
+  //   console.error(error)
+  // }
+
+  // window.contract = new web3.eth.Contract(nft_abi, nft_addr);
+  // const windowmethod22 = window.contract.methods.approve(s_addr, itemId).encodeABI()
+
+  // const tranParameters22 = {
+  //   from : _to,
+  //   to : nft_addr,
+  //   data : windowmethod22,
+  // }
+
+  // try{
+  //   const txHash4 = await window.ethereum
+  //     .request({
+  //       method : 'eth_sendTransaction',
+  //       params : [tranParameters22],
+  //     });
+  //     console.log('여기 까지도6')
+  //     console.log("transaction4: " + txHash4)
+  //   console.log('여기는 되네')
+  //   const a2 = window.contract.methods.approve(s_addr, itemId).call();
+  //   console.log("여기가능?")
+  //   trans(_to,itemId, s_addr)
+  // } catch (error){
+  //   console.error(error)
+  // }
 }
 
-export async function trans(_to, itemId, s_addr) {
-  const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
-  window.contract = new web3.eth.Contract(nft_abi, nft_addr);
-  const windowmethod3 = window.contract.methods.transferFrom(_to, s_addr, itemId).encodeABI()
+// export async function trans(_to, itemId, s_addr) {
+//   console.log('trans')
+//   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
+//   window.contract = new web3.eth.Contract(nft_abi, nft_addr);
+//   const windowmethod3 = window.contract.methods.safeTransferFrom(_to, s_addr, itemId).encodeABI()
 
+//   console.log(_to,'to')
+//   console.log(itemId,'item')
+//   console.log(s_addr,'s_addr')
 
-  console.log(_to,'to')
-  console.log(itemId,'item')
-  console.log(s_addr,'s_addr')
-
-  const tranParameters = {
-    from : _to,
-    to : nft_addr,
-    data : windowmethod3,
-  };
+//   const tranParameters = {
+//     from : _to,
+//     to : nft_addr,
+//     data : windowmethod3,
+//   };
   
-  try{
-    const txHash2 = await window.ethereum
-      .request({
-        method : 'eth_sendTransaction',
-        params : [tranParameters],
-      });
-      console.log("transaction2: " + txHash2)
-    console.log('여기는 되네')
-    const a = await window.contract.methods.transferFrom(_to, s_addr, itemId).call()
-    console.log(sale_addr)
-  } catch (error){
-    console.error(error)
-  }
-}
+//   try{
+//     const txHash2 = await window.ethereum
+//       .request({
+//         method : 'eth_sendTransaction',
+//         params : [tranParameters],
+//       });
+//       console.log("transaction2: " + txHash2)
+//     console.log('여기는 되네')
+//     const a = await window.contract.methods.safeTransferFrom(_to, s_addr, itemId).call()
+//     console.log(s_addr)
+//   } catch (error){
+//     console.error(error)
+//   }
+// }
 
 
-export default function SALE_Registration_API(itemId, walletAddress, Sale_ContractAddr, currencyAddress){
-  
+export default function SALE_Registration_API(itemId, walletAddress, Sale_ContractAddr){
   
   var data = {
     "token_id" : itemId,
@@ -118,7 +169,7 @@ export default function SALE_Registration_API(itemId, walletAddress, Sale_Contra
 
   var config = {
     method: 'post',
-    url: 'api/sales', // http://j6a107.p.ssafy.io/
+    url: 'http://j6a107.p.ssafy.io/api/sales', // 
     headers: { },
     data : data
   };

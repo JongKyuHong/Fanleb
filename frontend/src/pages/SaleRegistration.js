@@ -175,15 +175,15 @@ const SaleRegistration = () => {
       setTitle(res.content_title)
       setDescription(res.content_description)
       setItem(res.img_url)
-      
     })
     .catch(function (error) {
       console.log(error);
     });
   }
+
   /**
    * PJT Ⅲ - 과제 2: 작품 판매 등록
-   * Req. 2-F2 Sale 컨트랙트 생성 
+   * Req. 2-F2 Sale 컨트랙트 생성
    * 
    * 1. 판매 등록 승인 모달창에 개인키를 입력하면 getAddressFrom() 함수를 이용해 공개키를 반환 받습니다.
    * 2. 공개키가 유효한 경우 Sale Factory 컨트랙트의 createSale() 함수를 호출하여 새로운 Sale 컨트랙트를 생성합니다.
@@ -198,10 +198,12 @@ const SaleRegistration = () => {
     const owner_address = getAddressFrom(privKey);
     if (owner_address){
       setLoading(true);
-      const salecontractaddr = Create_Sale(owner_address, tokenId, price);
+      const salecontractaddr = await Create_Sale(owner_address, tokenId, price);
       if (salecontractaddr){
         //trans(owner_address, tokenId, salecontractaddr)
-        registerSaleInfo(owner_address, salecontractaddr); // api 호출해서 판매정보 등록
+        //registerSaleInfo(owner_address, salecontractaddr); // api 호출해서 판매정보 등록
+        setLoading(false);
+        setIsComplete(true)
       }
     } else {
       setLoading(false);
@@ -216,13 +218,13 @@ const SaleRegistration = () => {
    * 위 createSaleContract()에서
    * 정상 수행 후 반환되는 판매 정보를 API로 호출하여 업데이트합니다.
    */
-  const registerSaleInfo = async (w_a, s_addr) => {
-    setLoading(false);
-    const ch = SALE_Registration_API(tokenId, w_a, s_addr, AddressStore.CONTRACT_ADDR.SsafyToken);
-    if (ch) { 
-      setIsComplete(true)
-    }
-  };
+  // const registerSaleInfo = async (w_a, s_addr) => {
+  //   setLoading(false);
+  //   //const ch = SALE_Registration_API(tokenId, w_a, s_addr, AddressStore.CONTRACT_ADDR.SsafyToken);
+  //   if (ch) { 
+  //     setIsComplete(true)
+  //   }
+  // };
 
   return (
     <Page title="SSAFY NFT" maxWidth="100%" minHeight="100%">
