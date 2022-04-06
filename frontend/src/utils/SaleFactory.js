@@ -70,20 +70,21 @@ export async function appr(_to, itemId, s_addr, purchasePrice) {
     console.log('여기는 되네')
     const a = window.contract.methods.setApprovalForAll(s_addr, true).call();
     //trans(_to,itemId, s_addr)
-    const salet = await SALE_Registration_API(itemId, _to, s_addr)
+    const salet = await SALE_Registration_API(itemId, _to, s_addr, purchasePrice)
     return salet
   } catch (error){
     console.error(error)
   }
 }
 
-export default function SALE_Registration_API(itemId, walletAddress, Sale_ContractAddr){
+export default function SALE_Registration_API(itemId, walletAddress, Sale_ContractAddr, purchasePrice){
   
   var data = {
     "token_id" : itemId,
     "seller_address" : walletAddress,
     "sales_contract_address" : Sale_ContractAddr,
     "cash_contract_address" : cu_addr,
+    "price" : purchasePrice
   };
 
   var config = {
