@@ -41,8 +41,8 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
     console.log("transaction: " + txHash)
     const sale_addr = await window.contract.methods.createSale(_to, itemId, purchasePrice, cu_addr, nft_addr).call(); // currency
     console.log(sale_addr, '여기까지는 됨')
-    appr(_to, itemId, sale_addr, purchasePrice)
-  
+    const apprt = appr(_to, itemId, sale_addr, purchasePrice)
+    return sale_addr
   } catch (error){
     console.error(error)
   }
@@ -70,92 +70,12 @@ export async function appr(_to, itemId, s_addr, purchasePrice) {
     console.log('여기는 되네')
     const a = window.contract.methods.setApprovalForAll(s_addr, true).call();
     //trans(_to,itemId, s_addr)
-    SALE_Registration_API(itemId, _to, s_addr)
+    const salet = SALE_Registration_API(itemId, _to, s_addr)
+    return salet
   } catch (error){
     console.error(error)
   }
-
-  // window.contract = new web3.eth.Contract(Token_abi, cu_addr)
-  // const windowmethod222 = window.contract.methods.approve(s_addr, purchasePrice).encodeABI()
-
-  // const tranParameters222 = {
-  //   from : _to,
-  //   to : cu_addr,
-  //   data : windowmethod222
-  // }
-
-  // try{
-  //   const txHash5 = await window.ethereum
-  //     .request({
-  //       method : 'eth_sendTransaction',
-  //       params : [tranParameters222],
-  //     });
-  //     console.log('여기 까지도6')
-  //     console.log("transaction3: " + txHash5)
-  //   console.log('여기는 되네')
-  //   const a222 = window.contract.methods.approve(s_addr, purchasePrice).call();
-  //   //trans(_to,itemId, s_addr)
-  // } catch (error){
-  //   console.error(error)
-  // }
-
-  // window.contract = new web3.eth.Contract(nft_abi, nft_addr);
-  // const windowmethod22 = window.contract.methods.approve(s_addr, itemId).encodeABI()
-
-  // const tranParameters22 = {
-  //   from : _to,
-  //   to : nft_addr,
-  //   data : windowmethod22,
-  // }
-
-  // try{
-  //   const txHash4 = await window.ethereum
-  //     .request({
-  //       method : 'eth_sendTransaction',
-  //       params : [tranParameters22],
-  //     });
-  //     console.log('여기 까지도6')
-  //     console.log("transaction4: " + txHash4)
-  //   console.log('여기는 되네')
-  //   const a2 = window.contract.methods.approve(s_addr, itemId).call();
-  //   console.log("여기가능?")
-  //   trans(_to,itemId, s_addr)
-  // } catch (error){
-  //   console.error(error)
-  // }
 }
-
-// export async function trans(_to, itemId, s_addr) {
-//   console.log('trans')
-//   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
-//   window.contract = new web3.eth.Contract(nft_abi, nft_addr);
-//   const windowmethod3 = window.contract.methods.safeTransferFrom(_to, s_addr, itemId).encodeABI()
-
-//   console.log(_to,'to')
-//   console.log(itemId,'item')
-//   console.log(s_addr,'s_addr')
-
-//   const tranParameters = {
-//     from : _to,
-//     to : nft_addr,
-//     data : windowmethod3,
-//   };
-  
-//   try{
-//     const txHash2 = await window.ethereum
-//       .request({
-//         method : 'eth_sendTransaction',
-//         params : [tranParameters],
-//       });
-//       console.log("transaction2: " + txHash2)
-//     console.log('여기는 되네')
-//     const a = await window.contract.methods.safeTransferFrom(_to, s_addr, itemId).call()
-//     console.log(s_addr)
-//   } catch (error){
-//     console.error(error)
-//   }
-// }
-
 
 export default function SALE_Registration_API(itemId, walletAddress, Sale_ContractAddr){
   
@@ -182,20 +102,6 @@ export default function SALE_Registration_API(itemId, walletAddress, Sale_Contra
     console.log(error);
     return false;
   });
-  // const nftMethod2 = NFT_Contract.methods.approve(to, Sale_ContractAddr, itemId);
-  // const nftEncodedMethod2 = nftMethod.encodeABI();
 
-
-  // const gasEstimate2 = await nftEncodedMethod2.estimateGas({ from: walletAddress });
-  
-  // const rawTx3 = {
-  //   from: walletAddress,
-  //   to: Sale_ContractAddr,
-  //   gas: gasEstimate2,
-  //   data: nftEncodedMethod,
-  // };
-
-  // const signedTx3= await walletAccount.signTransaction(rawTx2);
-  // web3.eth.sendSignedTransaction(signedTx2.rawTransaction);
 }
 
