@@ -33,7 +33,7 @@ const CreateNFT = () => {
   const [videoSrc, setVideoSrc] = useState(undefined);
 
   const updateFiles = (incommingFiles) => {
-    // console.log("incomming files", incommingFiles);
+    console.log("incomming files", incommingFiles);
     setFiles(incommingFiles);
     setFile(incommingFiles[0].file)
   };
@@ -43,7 +43,7 @@ const CreateNFT = () => {
   };
 
   const handleWatch = (vidSrc) => {
-    // console.log("handleWatch", vidSrc);
+    console.log("handleWatch", vidSrc);
     setVideoSrc(vidSrc);
   };
 
@@ -64,7 +64,6 @@ const CreateNFT = () => {
         'id': collections.length     
       }
       const res = await axios.post(`api/collections`, { "user_address": address, "collection": newCollection })
-      console.log(res)
       const myCollections = await getMyCollections(address)
       setCollections(myCollections)
       // 생성된 컬렉션 이름 넣어주기 setMycollection
@@ -94,6 +93,7 @@ const CreateNFT = () => {
       alert('컬렉션을 입력해주세요.')
       return
     }
+    console.log(file)
     const ok = confirm('해당 내용으로 NFT를 발행하시겠습니까?')
     if (!ok) return
     const newData = {
@@ -130,10 +130,10 @@ const CreateNFT = () => {
       // 블록체인에 컨텐츠 등록
       try {
         const token_id = await registerNFTtoBackend(address, img_url);
-        // console.log('블록체인에 등록한 TokenId:', token_id)
-        // console.log('NFT 등록 이후, 백엔드에 업데이트할 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)
-        // console.log(`💪 api/contents/${contentId} 으로 업데이트 요청`)
-        // console.log('서버에 등록할 정보:', token_id, address, newData.myCollection.collection_name)
+        console.log('블록체인에 등록한 TokenId:', token_id)
+        console.log('NFT 등록 이후, 백엔드에 업데이트할 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)
+        console.log(`💪 api/contents/${contentId} 으로 업데이트 요청`)
+        console.log('서버에 등록할 정보:', token_id, address, newData.myCollection.collection_name)
         const { data } = await axios({
           method: 'POST',
           url: `api/contents/${contentId}`,
@@ -147,7 +147,7 @@ const CreateNFT = () => {
         // const data = await axios.post(`api/contents/${contentId}`, {"token_id": token_id,
         //     "owner_address": address,
         //     "collection": newData.myCollection.collection_name})
-        // console.log('서버에 저장한 결과:', data)
+        console.log('서버에 저장한 결과:', data)
         if (data.result === "success") {
           alert('게시물이 정상적으로 등록되었습니다.')
           navigator('/')

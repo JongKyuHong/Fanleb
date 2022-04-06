@@ -7,8 +7,9 @@ import { display, height, width } from "@mui/system";
 import axios from "axios";
 import UserImg from "./userImage";
 import empty from "./empty-image.jpg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateThumnail } from "../../redux/modalSlice";
+// import CollectionImg from "./CollectionImg";
 const Post = (props) => {
   const { post: { nickname, collection_name, img_url, user_address, id }, onItemClicked } = props;
   const [avatarImg, setAvatarImg] = useState("");
@@ -16,10 +17,12 @@ const Post = (props) => {
   const [load, setLoad] = useState(false);
   const [userCategory, setUsercategory] = useState("");
   const [description, setDescription] = useState("");
+  const [video, setVideo] = useState(false);
+  const { userInfo } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const selectPost = () => {
-    // onItemClicked();
-    if (!user_address) {
+    // onItemClicked();    
+    if (userInfo.userAddress === "" || userInfo.userAddress.length <= 0) {
       alert(`Metamask 지갑을 연동해주세요.`)
     } else {
       getData()
@@ -37,17 +40,26 @@ const Post = (props) => {
       contentsData: []
     }
     const { data } = await axios(`api/contents/thumbnail?user_address=${user_address}`);
-    thumnailData.contentsData = data.data;
+    thumnailData.contentsData = [...data.data];
+    console.log(thumnailData)
+
     dispatch(updateThumnail(thumnailData))
+  } 
+  const encodeUrl = () => {
+    if (img_url.includes('mp4')) {
+      setVideo(true)
+    } else {
+      setVideo(false)
+    }
   }
-  useEffect(() => {    
+  useEffect(() => {
+    // encodeUrl()
     axios
       .get(`api/users/address?user_address=${user_address}`)
       .then((res) => {
         setAvatarImg(res.data.data.img_url)
         setUsercategory(res.data.data.users_category)
         setDescription(res.data.data.user_description)
-
       })
     return () => {
       setAvatarImg("")
@@ -69,12 +81,23 @@ const Post = (props) => {
           // alignItems: 'center',
           // justifyContent: 'center'
         }}>
+          {/* {video ?
+            <video preload="none" loop="1">
+              <source src={img_url} type="video/mp4" />
+            </video>
+            :
+            <img
+              className="profile-image"
+              src={img_url ? img_url : empty}
+              alt=""            
+            />
+          }           */}
           <img
-            className="profile-image"
-            src={img_url ? img_url : empty}
-            alt=""            
-          />
-          
+              className="profile-image"
+              src={img_url ? img_url : empty}
+              alt=""            
+            />
+          {/* <CollectionImg title={collection_name}  imgUrl={img_url} empty={empty} />        */}
           <div
             className="avatar-container"
             style={{
@@ -83,7 +106,7 @@ const Post = (props) => {
               justifyContent: 'center',
               alignItems: 'center',
               // width: '200px',
-              marginTop: '-100px',              
+              marginTop: '-100px',
             }}
           >            
             <UserImg avatarImg={avatarImg} />            
@@ -96,7 +119,7 @@ const Post = (props) => {
           {/* <Link to={`/post/123`}> */}
           <p className="bids-title" style={{textAlign: 'center'}}>{collection_name? collection_name : 'null'}</p>
           {/* </Link> */}
-          <p style={{marginLeft: 'auto', fontSize: '15px', color: 'rgb(32, 129, 226)', textAlign: 'center'}}><span style={{color: 'rgb(112, 122, 131)'}}>by </span>{ nickname }</p>
+          <p style={{ marginLeft: 'auto', fontSize: '15px', color: 'rgb(32, 129, 226)', textAlign: 'center' }}><span style={{ color: 'rgb(112, 122, 131)' }}>by </span>{nickname}</p>          
         </div>
         <div className="bids-card-bottom">
             {/* <p>{nickname} <span>{ user_address }</span></p> */}

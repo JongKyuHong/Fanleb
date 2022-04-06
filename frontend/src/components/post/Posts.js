@@ -138,6 +138,7 @@ const Posts = () => {
   const [page, setPage] = useState(2);
 
   const fetchCollections = async () => {
+    if (!hasMore) return
     try {
       const res = await axios(
         `api/collections/list?search[sortBy]=${category}&search[query]=&page=${page}`
@@ -174,6 +175,9 @@ const Posts = () => {
       setPage(2)
       setHasMore(true)
       const { data } = await axios(`api/collections/list?search[sortBy]=${category}&search[query]=&page=1`);
+      if (data.data.last) {
+        setHasMore(false)
+      }
       setPosts(data.data.content);
     };
     getFirstData();
