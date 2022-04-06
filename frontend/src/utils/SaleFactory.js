@@ -41,7 +41,7 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
     console.log("transaction: " + txHash)
     const sale_addr = await window.contract.methods.createSale(_to, itemId, purchasePrice, cu_addr, nft_addr).call(); // currency
     console.log(sale_addr, '여기까지는 됨')
-    const apprt = appr(_to, itemId, sale_addr, purchasePrice)
+    const apprt = await appr(_to, itemId, sale_addr, purchasePrice)
     return sale_addr
   } catch (error){
     console.error(error)
@@ -70,7 +70,7 @@ export async function appr(_to, itemId, s_addr, purchasePrice) {
     console.log('여기는 되네')
     const a = window.contract.methods.setApprovalForAll(s_addr, true).call();
     //trans(_to,itemId, s_addr)
-    const salet = SALE_Registration_API(itemId, _to, s_addr)
+    const salet = await SALE_Registration_API(itemId, _to, s_addr)
     return salet
   } catch (error){
     console.error(error)
