@@ -12,6 +12,7 @@ import CreateNFT from './pages/CreateNFT';
 import Content from './projectsPages/Content'
 import ContentDetail from './projectsPages/ContentDetail'
 import SearchResult from './pages/SearchResult';
+import Test from './projectsPages/Test';
 
 // 화면 라우팅 테이블
 export default function Router() {
@@ -102,6 +103,14 @@ export default function Router() {
         { element: <Navigate to="/whosart" replace /> },
         { path: '', element: <WhosArt /> },
         { path: ':address', element: <WhosArt /> }
+      ]
+    },
+    {
+      path: '/test',
+      element: <MainLayout />,
+      children: [
+        { element: <Navigate to="/subscribe" replace /> },
+        { path: '', element: <Test/>},
       ]
     },
     { path: '*', element: <Navigate to="/404" replace /> }
