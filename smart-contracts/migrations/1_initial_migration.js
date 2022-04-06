@@ -2,7 +2,7 @@
 const SsafyToken = artifacts.require("SsafyToken");
 const SsafyNFT = artifacts.require("SsafyNFT");
 const SaleFactory = artifacts.require("SaleFactory");
-const ERC20 = artifacts.require("ERC20");
+//const ERC20 = artifacts.require("IERC20");
 /**
  * 
  * PJT Ⅰ/Ⅲ - 시나리오 테스트
@@ -16,4 +16,5 @@ module.exports = async function (deployer) {
   deployer.deploy(SsafyNFT);
   deployer.deploy(SsafyToken, "SSAFY", "SSF", 100);
   deployer.deploy(SaleFactory)
+  //deployer.deploy(IERC20, SsafyNFT.address)
 };

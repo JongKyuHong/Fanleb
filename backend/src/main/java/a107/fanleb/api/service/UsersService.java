@@ -10,6 +10,7 @@ import a107.fanleb.domain.usersCategory.UsersCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +49,7 @@ public class UsersService {
         Users user = Opuser.orElseThrow(() -> new NotExistedUserException());
 
         Integer cnt = usersEditReq.getSubscription_cnt();
-        System.out.println(cnt);
+
         if (cnt != null && cnt > 0)
             user.setMaxSubscribeCnt(cnt);
 
@@ -83,7 +84,11 @@ public class UsersService {
 
     @Transactional
     public void delete(String userAddress) {
-        usersRepository.deleteByUserAddress(userAddress);
+        Optional<Users> byUserAddress = usersRepository.findByUserAddress(userAddress);
+        Users user = byUserAddress.orElseThrow(() -> new NotExistedUserException());
+        s3util.fileDelete(user.getImgUrl().split(".com/")[1]);
+
+        usersRepository.delete(user);
     }
 
     @Transactional(readOnly = true)
@@ -93,9 +98,7 @@ public class UsersService {
 
     @Transactional(readOnly = true)
     public Page<Users> showList(int page, String query) {
-        PageRequest pageable = PageRequest.of(page - 1, 12);
-
-        //TODO : 구독자 순
+        PageRequest pageable = PageRequest.of(page - 1, 12, Sort.by("curSubscribeCnt").descending());
 
         if (query == null || query.isEmpty()) {
             return usersRepository.findAll(pageable);

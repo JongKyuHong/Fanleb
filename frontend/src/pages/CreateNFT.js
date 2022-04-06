@@ -12,6 +12,9 @@ import AsyncSelect from 'react-select/async';
 import { registerNFTtoBackend } from '../utils/NFT';
 import { useNavigate } from 'react-router-dom';
 import getMyCollections from '../utils/getMyCollection';
+import Create_Sale from '../utils/SaleFactory';
+import SALE_Registration_API from '../utils/SaleFactory'
+import AddressStore from '../common/AddressStore';
 
 const CreateNFT = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -133,8 +136,8 @@ const CreateNFT = () => {
         // console.log('블록체인에 등록한 TokenId:', token_id)
         // console.log('NFT 등록 이후, 백엔드에 업데이트할 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)
         // console.log(`💪 api/contents/${contentId} 으로 업데이트 요청`)
-        console.log('서버에 등록할 정보:', token_id, address, newData.myCollection.collection_name)
-        const data = await axios({
+        // console.log('서버에 등록할 정보:', token_id, address, newData.myCollection.collection_name)
+        const { data } = await axios({
           method: 'POST',
           url: `api/contents/${contentId}`,
           data: {
@@ -147,10 +150,11 @@ const CreateNFT = () => {
         // const data = await axios.post(`api/contents/${contentId}`, {"token_id": token_id,
         //     "owner_address": address,
         //     "collection": newData.myCollection.collection_name})
-        console.log('서버에 저장한 결과:', data)
+        // console.log('서버에 저장한 결과:', data)
         if (data.result === "success") {
           alert('게시물이 정상적으로 등록되었습니다.')
           navigator('/')
+          //CreateSale(token_id)
         } else {
           alert('게시물 작성을 실패했습니다.')
         }
@@ -202,6 +206,16 @@ const CreateNFT = () => {
       // handle other "switch" errors
     }    
   }
+
+  // const CreateSale = async (token_id, price) => {
+  //   const sale_addr = Create_Sale(address, token_id, price, AddressStore.CONTRACT_ADDR.SsafyToken,AddressStore.CONTRACT_ADDR.SsafyNFT);
+  //   const check = SALE_Registration_API(address, sale_addr, sale_addr, AddressStore.CONTRACT_ADDR.SsafyToken);
+  //   if (check) {
+  //     navigator(`/items/buy/${token_id}`)
+  //   } else {
+  //     alert('error')
+  //   }
+  // }
 
 //   const filterColors = (inputValue) => {
 //   return collections.filter((i) =>

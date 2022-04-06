@@ -36,6 +36,7 @@ public class Users {
 
     private Integer maxSubscribeCnt;
     private int curSubscribeCnt;
+    private int contentsCnt;
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
@@ -63,5 +64,13 @@ public class Users {
 
     public void decCurSubscribeCnt() {
         curSubscribeCnt--;
+    }
+
+    public void addContentsCnt() {
+        contentsCnt++;
+    }
+
+    public void decContentsCnt() {
+        contentsCnt--;
     }
 }
