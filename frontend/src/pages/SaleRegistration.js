@@ -198,7 +198,7 @@ const SaleRegistration = () => {
     const owner_address = getAddressFrom(privKey);
     if (owner_address){
       setLoading(true);
-      const salecontractaddr = Create_Sale(owner_address, tokenId, price);
+      const salecontractaddr = await Create_Sale(owner_address, tokenId, price);
       if (salecontractaddr){
         //trans(owner_address, tokenId, salecontractaddr)
         //registerSaleInfo(owner_address, salecontractaddr); // api 호출해서 판매정보 등록
