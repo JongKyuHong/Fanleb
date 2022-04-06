@@ -16,6 +16,7 @@ import './navbar.css';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 import { Link } from "react-router-dom";
 import { openModal, updateAddress, updateSuccess } from '../../redux/userSlice';
+import { toggleSubsModal } from '../../redux/modalSlice';
 
 const Menu = () => (
   <>
@@ -49,8 +50,9 @@ const DashboardNavbar = () => {
   const dispatch = useDispatch();
   const navigator = useNavigate();
   const { userInfo, pending, error } = useSelector(state => state.user);
-  const [toggleMenu, setToggleMenu] = useState(false)
+  const [toggleMenu, setToggleMenu] = useState(false);
   const [keyword, setKeyword] = useState("");
+  const [style, setStyle] = useState(false);
   //  const [user, setUser] = useState(false)
   const handleLogout = () => {
     setUser(false);
@@ -100,8 +102,11 @@ const DashboardNavbar = () => {
       window.open('https://metamask.io/download/', '_blank')
     }
   }
-  function switchWallet() {
-    window.ethereum.request({ method: 'eth_requestAccounts' }).then(e => console.log(e))
+  function openSubscriptionModal() {
+    // window.ethereum.request({ method: 'eth_requestAccounts' }).then(e => console.log(e))
+    dispatch(toggleSubsModal())
+    // window.ethereum.request({ method: 'eth_requestAccounts' }).then(res => console.log(res))
+    
   }
   const searchKeyword = (e) => {    
     if (e.key == 'Enter') {
@@ -146,9 +151,9 @@ const DashboardNavbar = () => {
         {userInfo?.userAddress?.length > 0 ? (
           <>
           <Link to="/create"> 
-            <button type='button' className='primary-btn' >등록하기</button>
+            <button type='button' className='primary-btn' onMouseOver={() => setStyle(true)} onMouseOut={() => setStyle(false)} style={style ? { opacity: 0.8, textDecoration: 'none'} : {}}>등록하기</button>
           </Link>
-          <button type='button' className='secondary-btn' onClick={switchWallet}>지갑 변경</button>
+          <button type='button' className='secondary-btn' onClick={openSubscriptionModal}>내 구독권</button>
           {/* <button type='button' className='secondary-btn' onClick={enableEth} >지갑 연결</button> */}
           <Avatar onClick={() => dispatch(openModal())} src={userInfo?.imageUrl} size="large" sx={{ width: 56, height: 56, cursor: 'pointer' }} />
             
