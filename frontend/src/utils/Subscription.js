@@ -61,7 +61,7 @@ const nftContractAddr = AddressStore.CONTRACT_ADDR.SsafyNFT[0]; // contractAddr:
 // 서버에 등록된 데이터를 블록체인에 등록하는 함수
 
 export async function CreateSubscriptionNFT(userAddr, image, amount) {
-  console.log(userAddr, image, amount)
+  // console.log(userAddr, image, amount)
   let imgUrl;
   const ipfs = create({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
   try {
@@ -75,10 +75,10 @@ export async function CreateSubscriptionNFT(userAddr, image, amount) {
     imgUrl: imgUrl,
   }
   // tokenId: ""
-  console.log('메타데이터', metaData)
+  // console.log('메타데이터', metaData)
   const result = await ipfs.add(JSON.stringify(metaData))
   const metaJson = `https://ipfs.infura.io/ipfs/${result.path}`
-  console.log('메타데이터 경로:', metaJson)
+  // console.log('메타데이터 경로:', metaJson)
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
   //load smart contract
   window.contract = new web3.eth.Contract(subscriptionAbi, subscriptionContractAddr);//loadContract();
@@ -97,7 +97,7 @@ export async function CreateSubscriptionNFT(userAddr, image, amount) {
   };
   //sign transaction via Metamask
   try {
-    console.log('트랜잭션 시도')
+    // console.log('트랜잭션 시도')
     const txHash = await window.ethereum
         .request({
             method: 'eth_sendTransaction',
@@ -105,9 +105,9 @@ export async function CreateSubscriptionNFT(userAddr, image, amount) {
         });                
     console.log("transaction: " + txHash)
       
-    const mintRes = await window.contract.methods.batchMint(userAddr, amount, metaJson).call();
-    const balRes = await window.contract.methods.balanceOf(userAddr).call();
-    console.log('결과', mintRes, balRes)
+    // const mintRes = await window.contract.methods.batchMint(userAddr, amount, metaJson).call();
+    // const balRes = await window.contract.methods.balanceOf(userAddr).call();
+    // console.log('결과', mintRes, balRes)
     return mintRes;
     
   } catch (error) {
@@ -148,10 +148,10 @@ export async function getSubscriptionInfo(userAddr, myAddr) {
   //load smart contract
 
   if (!userAddr.startsWith('0x') || (!myAddr.startsWith('0x'))) {
-    console.log(userAddr, myAddr)
+    // console.log(userAddr, myAddr)
     return { 'count': Math.floor(Math.random() * 100), 'status': true }
   }
-  console.log(userAddr, myAddr, '진행')
+  // console.log(userAddr, myAddr, '진행')
   
 
   // 썸네일 창의 유저가 현재 팔고 있는 구독권 개수 
@@ -223,7 +223,7 @@ export async function getSubscriptionInfo(userAddr, myAddr) {
   }
   // console.log('해당 user가 보유 중인 구독권 수:', userBalance);
   // console.log('토큰 인덱스: ', tokenIndex, '구독할 수 있는 구독권 수: ', currentSubscriptions)
-  console.log('결과', currentSubscriptions, isSubscrption)
+  // console.log('결과', currentSubscriptions, isSubscrption)
   return { 'count': currentSubscriptions, 'status': isSubscrption }
 }
 
@@ -254,7 +254,7 @@ export async function SubscribeUser(userAddr, myAddr, setSubscriptionsCnt) {
     alert('구매할 수 있는 구독권이 없습니다.');
     return // 종료
   }  
-  console.log('구매 가능한 구독권 tokenID 리스트:', tokenList) // 구독권은 다 같으니까 항상 0번 인덱스의 구독권을 구매하기로.
+  // console.log('구매 가능한 구독권 tokenID 리스트:', tokenList) // 구독권은 다 같으니까 항상 0번 인덱스의 구독권을 구매하기로.
 
   
   // 거래 시작
@@ -270,7 +270,7 @@ export async function SubscribeUser(userAddr, myAddr, setSubscriptionsCnt) {
   };
   //sign transaction via Metamask
   try {
-    console.log('트랜잭션 시도')
+    // console.log('트랜잭션 시도')
     const txHash = await window.ethereum
         .request({
             method: 'eth_sendTransaction',
@@ -294,7 +294,7 @@ export async function SubscribeUser(userAddr, myAddr, setSubscriptionsCnt) {
       saleContractAddr = event.returnValues[0]
 
 
-      console.log('사용할 Sale Contract 주소:', saleContractAddr)
+      // console.log('사용할 Sale Contract 주소:', saleContractAddr)
       // console.log('모든 세일 컨트랙트 주소', sales)
       // 이 트랜잭션은 실패할 것으로 예상됩니다. => 승인(approve)해주었는지? or 돈이 충분히 있는지?
       let tokenContract = new web3.eth.Contract(tokenAbi, tokenContractAddr);//loadContract();
@@ -308,13 +308,13 @@ export async function SubscribeUser(userAddr, myAddr, setSubscriptionsCnt) {
         };
         //sign transaction via Metamask
         try {
-          console.log('Token 컨트랙트의 approve 트랜잭션 시도')
+          // console.log('Token 컨트랙트의 approve 트랜잭션 시도')
           const txHash = await window.ethereum
               .request({
                   method: 'eth_sendTransaction',
                   params: [transactionParameters2],
               });                
-          console.log("Token 컨트랙트의 approve transaction: " + txHash)
+          // console.log("Token 컨트랙트의 approve transaction: " + txHash)
           // 최후의 거래 트랜잭션  
           let saleContract = new web3.eth.Contract(saleAbi, saleContractAddr);//loadContract();
           const transactionParameters3 = {
@@ -324,7 +324,7 @@ export async function SubscribeUser(userAddr, myAddr, setSubscriptionsCnt) {
           };
           //sign transaction via Metamask
           try {
-            console.log('sale 컨트랙트의 purchase 트랜잭션 시도')
+            // console.log('sale 컨트랙트의 purchase 트랜잭션 시도')
             const txHash = await window.ethereum
                 .request({
                     method: 'eth_sendTransaction',

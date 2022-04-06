@@ -89,7 +89,7 @@ const CreateNFT = () => {
       alert('내용을 입력해주세요.')
       return
     }
-    if (!myCollection || myCollection.length <= 0) {
+    if (!myCollection || myCollection?.length == "") {
       alert('컬렉션을 입력해주세요.')
       return
     }
@@ -104,7 +104,6 @@ const CreateNFT = () => {
     }
     let contentId;
     let img_url;
-    
     if (selectIpfs) {
       // IPFS에 컨텐츠 기본 정보 등록
 
@@ -114,7 +113,7 @@ const CreateNFT = () => {
     formData.append('image', newData.file);
     formData.append('content_title', newData.title);
     formData.append('content_description', newData.description);
-
+    
     try {
       // console.log(`💪 "api/contents" 으로 생성 요청`)
       const res = await axios({
@@ -130,24 +129,24 @@ const CreateNFT = () => {
       // 블록체인에 컨텐츠 등록
       try {
         const token_id = await registerNFTtoBackend(address, img_url);
-        console.log('블록체인에 등록한 TokenId:', token_id)
-        console.log('NFT 등록 이후, 백엔드에 업데이트할 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)
-        console.log(`💪 api/contents/${contentId} 으로 업데이트 요청`)
-        console.log('서버에 등록할 정보:', token_id, address, newData.myCollection.collection_name)
+        // console.log('블록체인에 등록한 TokenId:', token_id)
+        // console.log('NFT 등록 이후, 백엔드에 업데이트할 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)
+        // console.log(`💪 api/contents/${contentId} 으로 업데이트 요청`)
+        // console.log('서버에 등록할 정보:', token_id, address, newData.myCollection)
         const { data } = await axios({
           method: 'POST',
           url: `api/contents/${contentId}`,
           data: {
             "token_id": token_id,
             "owner_address": address,
-            "collection": newData.myCollection.collection_name
+            "collection": newData.myCollection
           },
           headers: {}
         })
         // const data = await axios.post(`api/contents/${contentId}`, {"token_id": token_id,
         //     "owner_address": address,
         //     "collection": newData.myCollection.collection_name})
-        console.log('서버에 저장한 결과:', data)
+        // console.log('서버에 저장한 결과:', data)
         if (data.result === "success") {
           alert('게시물이 정상적으로 등록되었습니다.')
           navigator('/')
@@ -324,7 +323,12 @@ const CreateNFT = () => {
               <div className="formGroup" >
                 <label>내 컬렉션</label>
                 <div style={{display: 'flex'}} className="select-box">                  
-                  <select style={{ flexGrow: 1 }} value={myCollection} onChange={e => setMyCollection(e.target.value)} id="collection" name='collection'>
+                  <select style={{ flexGrow: 1 }} value={myCollection} onChange={e => {
+
+                    setMyCollection(e.target.value)
+                    console.log(e.target.value)
+                  }
+                  } id="collection" name='collection'>
                     {collections.map((collection, idx) => {
                       return <option key={idx} value={collection.collection_name}>{collection.collection_name}</option>
                     })}                    

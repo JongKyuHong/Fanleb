@@ -41,7 +41,7 @@ const Post = (props) => {
     }
     const { data } = await axios(`api/contents/thumbnail?user_address=${user_address}`);
     thumnailData.contentsData = [...data.data];
-    console.log(thumnailData)
+    // console.log(thumnailData)
 
     dispatch(updateThumnail(thumnailData))
   } 

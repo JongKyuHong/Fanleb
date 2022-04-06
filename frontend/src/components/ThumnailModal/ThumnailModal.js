@@ -31,7 +31,7 @@ function ThumnailModal() {
     };
     if (isOpen) {
       getData();
-      console.log('모달 정보', userImgUrl, description)
+      // console.log('모달 정보', userImgUrl, description)
     }
   }, [isOpen])
   return (
