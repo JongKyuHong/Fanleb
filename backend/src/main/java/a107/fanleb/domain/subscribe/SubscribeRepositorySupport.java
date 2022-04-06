@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,7 +26,10 @@ public class SubscribeRepositorySupport {
         final int start = (int)pageable.getOffset();
         final int end = Math.min((start + pageable.getPageSize()), fetch.size());
 
-        return new PageImpl<>(fetch.subList(start, end), pageable, fetch.size());
+        if(start > fetch.size())
+            return new PageImpl<>(new ArrayList<>(), pageable, fetch.size());
+        else
+            return new PageImpl<>(fetch.subList(start, end), pageable, fetch.size());
 
     }
 
@@ -35,7 +39,10 @@ public class SubscribeRepositorySupport {
         final int start = (int)pageable.getOffset();
         final int end = Math.min((start + pageable.getPageSize()), fetch.size());
 
-        return new PageImpl<>(fetch.subList(start, end), pageable, fetch.size());
+        if(start > fetch.size())
+            return new PageImpl<>(new ArrayList<>(), pageable, fetch.size());
+        else
+            return new PageImpl<>(fetch.subList(start, end), pageable, fetch.size());
 
     }
 }
