@@ -58,25 +58,25 @@ const Subscribe = ({urlId, open,setOpen}) => {
         }catch(err){
             console.log(err.response.data)
             const error = err.response.data.result
-            alert(`구독할 수 없습니다 ${error}`)
+            alert(`구독할 수 없습니다. ${error}`)
         }
 
     }
     // 입장할때 사용할 것
-    const getSubscribe= async() =>{
-        const option ={
-            method:"GET",
-            url:`/api/contents?page=1&user_address=${urlId}`,
-            }
-        try{
-            const data = await axios(option)
-            console.log(data)
-            console.log(data.status)
-        }catch(err){
-            console.log(err)
-        }
+    // const getSubscribe= async() =>{
+    //     const option ={
+    //         method:"GET",
+    //         url:`/api/contents?page=1&user_address=${urlId}`,
+    //         }
+    //     try{
+    //         const data = await axios(option)
+    //         console.log(data)
+    //         console.log(data.status)
+    //     }catch(err){
+    //         console.log(err)
+    //     }
 
-    }
+    // }
     // 구독할 유저정보 불러오기
     const getId = async ()=>{
         const option ={
