@@ -17,7 +17,7 @@ export default async function getByTokenId(id) {
   axios(config)
   .then(function (response) {
     //console.log(JSON.stringify(response.data));
-    return [response.data.sale_contract_address, response.data.seller_address];
+    return response.data.sale_contract_address;
   })
   .catch(function (error) {
     console.log(error);
