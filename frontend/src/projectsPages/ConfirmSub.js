@@ -34,7 +34,12 @@ const confirmSub = ({contentId}) => {
             setOpen(false)
         }catch(err){
             console.log(err.response.data)
+            if (logOnAddress===contentId){
+                setOpen(false)
+            }else{
             setOpen(true)
+            }
+
         }
 
     }
