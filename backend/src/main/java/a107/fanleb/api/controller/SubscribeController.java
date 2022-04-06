@@ -36,4 +36,14 @@ public class SubscribeController {
     public ResponseEntity<? extends BaseResponseBody> isPublishSubscribe(@RequestParam(name = "user_address") String userAddress) {
         return ResponseEntity.status(200).body(AdvancedResponseBody.of("구독권을 발행한 유저입니다", subscribeService.isPublishSubscribe(userAddress)));
     }
+
+    @GetMapping("/from/list")
+    public ResponseEntity<? extends BaseResponseBody> viewFromList(@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(name = "user_address") String userAddress) {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", subscribeService.viewFromList(page, userAddress)));
+    }
+
+    @GetMapping("/to/list")
+    public ResponseEntity<? extends BaseResponseBody> viewToList(@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(name = "user_address") String userAddress) {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", subscribeService.viewToList(page, userAddress)));
+    }
 }
