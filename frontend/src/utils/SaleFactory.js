@@ -70,115 +70,25 @@ export async function appr(_to, itemId, s_addr, purchasePrice) {
     console.log('여기는 되네')
     const a = window.contract.methods.setApprovalForAll(s_addr, true).call();
     //trans(_to,itemId, s_addr)
-<<<<<<< HEAD
-    const salet = await SALE_Registration_API(itemId, _to, s_addr)
-=======
     const salet = await SALE_Registration_API(itemId, _to, s_addr, purchasePrice)
->>>>>>> 535a02baa768870eaeaf37ae9c1066d2eb0bef11
     return salet
   } catch (error){
     console.error(error)
   }
-<<<<<<< HEAD
-
-  // window.contract = new web3.eth.Contract(Token_abi, cu_addr)
-  // const windowmethod222 = window.contract.methods.approve(s_addr, purchasePrice).encodeABI()
-
-  // const tranParameters222 = {
-  //   from : _to,
-  //   to : cu_addr,
-  //   data : windowmethod222
-  // }
-
-  // try{
-  //   const txHash5 = await window.ethereum
-  //     .request({
-  //       method : 'eth_sendTransaction',
-  //       params : [tranParameters222],
-  //     });
-  //     console.log('여기 까지도6')
-  //     console.log("transaction3: " + txHash5)
-  //   console.log('여기는 되네')
-  //   const a222 = window.contract.methods.approve(s_addr, purchasePrice).call();
-  //   //trans(_to,itemId, s_addr)
-  // } catch (error){
-  //   console.error(error)
-  // }
-
-  // window.contract = new web3.eth.Contract(nft_abi, nft_addr);
-  // const windowmethod22 = window.contract.methods.approve(s_addr, itemId).encodeABI()
-
-  // const tranParameters22 = {
-  //   from : _to,
-  //   to : nft_addr,
-  //   data : windowmethod22,
-  // }
-
-  // try{
-  //   const txHash4 = await window.ethereum
-  //     .request({
-  //       method : 'eth_sendTransaction',
-  //       params : [tranParameters22],
-  //     });
-  //     console.log('여기 까지도6')
-  //     console.log("transaction4: " + txHash4)
-  //   console.log('여기는 되네')
-  //   const a2 = window.contract.methods.approve(s_addr, itemId).call();
-  //   console.log("여기가능?")
-  //   trans(_to,itemId, s_addr)
-  // } catch (error){
-  //   console.error(error)
-  // }
-}
-
-// export async function trans(_to, itemId, s_addr) {
-//   console.log('trans')
-//   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
-//   window.contract = new web3.eth.Contract(nft_abi, nft_addr);
-//   const windowmethod3 = window.contract.methods.safeTransferFrom(_to, s_addr, itemId).encodeABI()
-
-//   console.log(_to,'to')
-//   console.log(itemId,'item')
-//   console.log(s_addr,'s_addr')
-
-//   const tranParameters = {
-//     from : _to,
-//     to : nft_addr,
-//     data : windowmethod3,
-//   };
-  
-//   try{
-//     const txHash2 = await window.ethereum
-//       .request({
-//         method : 'eth_sendTransaction',
-//         params : [tranParameters],
-//       });
-//       console.log("transaction2: " + txHash2)
-//     console.log('여기는 되네')
-//     const a = await window.contract.methods.safeTransferFrom(_to, s_addr, itemId).call()
-//     console.log(s_addr)
-//   } catch (error){
-//     console.error(error)
-//   }
-// }
 
 
-export default function SALE_Registration_API(itemId, walletAddress, Sale_ContractAddr){
-=======
-}
+
+
+
 
 export default function SALE_Registration_API(itemId, walletAddress, Sale_ContractAddr, purchasePrice){
->>>>>>> 535a02baa768870eaeaf37ae9c1066d2eb0bef11
   
   var data = {
     "token_id" : itemId,
     "seller_address" : walletAddress,
     "sales_contract_address" : Sale_ContractAddr,
     "cash_contract_address" : cu_addr,
-<<<<<<< HEAD
-=======
     "price" : purchasePrice
->>>>>>> 535a02baa768870eaeaf37ae9c1066d2eb0bef11
   };
 
   var config = {
