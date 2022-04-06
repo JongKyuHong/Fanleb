@@ -198,8 +198,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
         uint256 tokenId
     ) public virtual override {
        // TODO
-       require(from == ownerOf(tokenId));
-       require(to != address(0));
+       //require(_isApprovedOrOwner(from, tokenId), "ERC721: transfer caller is not owner nor approved");
        require(_isApprovedOrOwner(from, tokenId), "ERC721: transfer caller is not owner nor approved");
        _transfer(from, to, tokenId);
     }

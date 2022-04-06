@@ -32,6 +32,9 @@ import { convertToAccountingFormat } from '../utils/NumberFormatter';
 import { motion } from 'framer-motion';
 import { MotionContainer, varBounceIn } from '../components/animate';
 import AddressStore from '../common/AddressStore';
+import getByTokenId from '../common/SaleInfoGetter';
+import SaleRegistration from './SaleRegistration';
+import Trade from '../utils/Sale'
 
 // 이미지 스타일
 const ImgStyle = styled('img')({
@@ -178,13 +181,10 @@ const ItemPurchase = () => {
 
   const tryPurchase = async () => {
     // TODO
-    tokenId
-    const sf_abi = ABI.CONTRACT_ABI.SALE_FACTORY_ABI;
-    const sf_addr =  AddressStore.CONTRACT_ADDR.SaleFactory;
-    const sf_contract = new web3.eth.Contract(sf_abi,sf_addr);
-    let events = await sf_contract.getPastEvents('NewSale',{filter:{_saleContract:[]},fromBlock:1,toBlock:'latest'});
-    console.log(events)
-    const sales = sf_contract.allSales();
+    const sale_addr = getByTokenId(tokenId);
+    Trade(address, sale_addr, price)
+    //const sale_abi = ABI.CONTRACT_ABI.SALE_ABI;
+    //const sale_contract = new web3.eth.Contract(sale_abi, sale_addr);
     // 3
     setLoading(false);
   };

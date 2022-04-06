@@ -86,17 +86,18 @@ contract Sale {
         erc721Contract = IERC721(_nftAddress);
     }
 
-    function purchase() public { 
+    function purchase(address _buyer) public { 
         // TODO
-        buyer = msg.sender;
-        require(msg.sender != seller);
+        buyer = _buyer;
+        require(buyer != seller);
         //erc20Contract.approve(buyer, purchasePrice);
         erc20Contract.transferFrom(buyer, seller, purchasePrice); // 구매자의 토큰을 즉시 구매가만큼 판매자에게 송금
 
-        erc721Contract.setApprovalForAll(seller, true);
-        erc721Contract.approve(buyer, tokenId);
+        //erc721Contract.setApprovalForAll(seller, true);
+        //erc721Contract.approve(buyer, tokenId);
         erc721Contract.transferFrom(seller, buyer, tokenId); //erc721Contract // NFT소유권을 구매자에게 이전
         seller = buyer;
+        buyer = address(0);
         ended = true;// 컨트랙트의 거래 상태와 구매자 정보를 업데이트
     }
 
