@@ -77,6 +77,10 @@ export async function appr(_to, itemId, s_addr, purchasePrice) {
   }
 }
 
+
+
+
+
 export default function SALE_Registration_API(itemId, walletAddress, Sale_ContractAddr, purchasePrice){
   
   var data = {
