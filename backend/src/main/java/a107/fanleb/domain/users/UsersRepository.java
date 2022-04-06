@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface UsersRepository extends JpaRepository<Users, Integer> {
     Optional<Users> findByUserAddress(String userAddress);
     Optional<Users> findByNickname(String nickname);
-    void deleteByUserAddress(String userAddress);
     Page<Users> findAll(Pageable page);
     Page<Users> findByNicknameContaining(Pageable page, String nickname);
 
