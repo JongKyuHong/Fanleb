@@ -11,12 +11,12 @@ export default async function getByTokenId(id) {
   var config = {
     method: 'get',
     url: `http://j6a107.p.ssafy.io/api/sales?token_id=${id}`, // 
-    headers: { header }
+    headers: { }
   };
   
   axios(config)
   .then(function (response) {
-    //console.log(JSON.stringify(response.data));
+    console.log(JSON.stringify(response.data));
     return response.data.data.sale_contract_address;
   })
   .catch(function (error) {
