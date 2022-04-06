@@ -52,7 +52,7 @@ function ThumnailModal() {
               <p style={{overflow: 'hidden', width: 'auto'}}>Address: {userAddress}</p>
             </div>
             <div className="item-content-buy">
-              <button className="primary-btn" onClick={() => alert('준비중')}>구독하기 4.5 ETH</button>
+              <button className="primary-btn" onClick={buttonClick}>구독하기 4.5 ETH</button>
             <button className="secondary-btn"
               onClick={() => {
                 if (addr) {
