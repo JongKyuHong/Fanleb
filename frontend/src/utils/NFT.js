@@ -59,7 +59,7 @@ export async function registerNFTtoBackend(userAddr, tokenUrl) {
   let token_id      
   
   //load smart contract
-  window.contract = await new web3.eth.Contract(abi, contractAddr);//loadContract();
+  window.contract = new web3.eth.Contract(abi, contractAddr);//loadContract();
 
   //set up your Ethereum transaction
   const transactionParameters = {
@@ -78,7 +78,7 @@ export async function registerNFTtoBackend(userAddr, tokenUrl) {
     console.log("transaction: " + txHash)
       
     const res = await window.contract.methods.create(userAddr, tokenUrl).call();
-    console.log('결과', res)
+    // console.log('결과', res)
     return res;
     
   } catch (error) {

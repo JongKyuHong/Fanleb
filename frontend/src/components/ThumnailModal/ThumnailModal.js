@@ -20,19 +20,50 @@ function ThumnailModal() {
     setOpen(true)
   }
   return (
-    <>
-      <Modal
-        open={isOpen}
-        onBackdropClick={closeModal}
-        // disableScrollLock={true}
-        sx={{
-          overflow: 'scroll',
-          height: '100%',
-        }}
-      >
-        <div className='item section__padding' style={{width: '90%', background: '#24252d', borderRadius: '30px', }}>
-          <div className="item-image">
-            <img src={thumnailImgUrl ? thumnailImgUrl : empty} alt="item" />
+    <Modal
+      open={isOpen}
+      onBackdropClick={closeModal}
+      // disableScrollLock={true}
+      sx={{
+        overflow: 'scroll',
+        height: '100%',
+      }}
+    >
+      <div className='item section__padding' style={{width: '90%', background: '#24252d', borderRadius: '30px', }}>
+        <div className="item-image">
+          <img src={thumnailImgUrl ? thumnailImgUrl : empty} alt="item" />
+        </div>
+          <div className="item-content">
+            <div className="item-content-title">
+              <h1>{collectionName}</h1>
+              <p>From <span>4.5 SSF</span> ‧ 20 of 25 available</p>
+            </div>
+            <div className="item-content-creator">
+            <div style={{overflow: 'hidden'}}><p>{ category }</p></div>
+              <div>
+                <img src={userImgUrl} alt="creator" />
+                <p>{nickname} </p>             
+              </div>              
+            </div>
+            <div className="item-content-detail">
+            <p>{description}</p>
+            <Divider sx={{margin: '20px 0'}} />
+              <p style={{overflow: 'hidden', width: 'auto'}}>Address: {userAddress}</p>
+            </div>
+            <div className="item-content-buy">
+              <button className="primary-btn" onClick={() => alert('준비중')}>구독하기 4.5 ETH</button>
+            <button className="secondary-btn"
+              onClick={() => {
+                if (addr) {
+                  closeModal()
+                  navigator(`/content/${userAddress}`)
+                } else {
+                  alert('지갑 연결이 필요합니다.')
+                  window.open('https://metamask.io/download/', '_blank')
+                }
+              }}
+              >입장하기</button>
+            </div>
           </div>
             <div className="item-content">
               <div className="item-content-title">

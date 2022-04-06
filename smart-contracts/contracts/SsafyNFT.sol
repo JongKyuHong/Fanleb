@@ -16,7 +16,7 @@ contract SsafyNFT is ERC721, ERC721Enumerable{
 
     mapping(uint256 => string) tokenURIs;
 
-    constructor() ERC721("FANLEB", "FLC") {
+    constructor() ERC721("SSAFY", "SSF") {
         // TODO   
     }
 

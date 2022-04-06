@@ -33,7 +33,7 @@ public class S3Util {
     }
 
     // 파일 삭제
-    public void fileDelete(String bucketName, String fileName) {
+    public void fileDelete(String fileName) {
         amazonS3.deleteObject(bucketName, fileName);
     }
 
