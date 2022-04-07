@@ -23,7 +23,9 @@ const currency_addr = AddressStore.CONTRACT_ADDR.CurrencyAddress[0];
 
 export async function Create_Sale(_to, itemId, purchasePrice) {
   //const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
-  const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://20.196.209.2:6174')); 
+  const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://20.196.209.2:6174'));
+
+  console.log(itemId,'itemId')
   let salefactoryContract = new web3.eth.Contract(sf_abi, sf_addr);
   const transactionParameters11 = {
     to : sf_addr,
@@ -57,53 +59,72 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
                   method : 'eth_sendTransaction',
                   params : [tranParameters2],
                 });
-                console.log("transaction3: " + txHash3)
-          
-                const transParameter22 = {
-                  to : nft_addr,
-                  from : _to,
-                  data : nftContract.methods.transferFrom(_to, saleContractAddr, itemId).encodeABI()
-                }
 
-                try{
-                  const txHash33 = await window.ethereum
-                    .request({
-                      method : 'eth_sendTransaction',
-                      params : [transParameter22],
-                    });
-                    console.log("transaction3: " + txHash33)
-                } catch (error){
-                  console.error(error)
-                }
-              //SALE_Registration_API(itemId, _to, saleContractAddr, purchasePrice)
-                var data = {
-                  "token_id" : itemId,
-                  "seller_address" : _to,
-                  "sales_contract_address" : saleContractAddr,
-                  "cash_contract_address" : currency_addr,
-                  "price" : purchasePrice
-                };
-              
-                var config = {
-                  method: 'post',
-                  url: 'http://j6a107.p.ssafy.io/api/sales', // 
-                  headers: { },
-                  data : data
-                };
-              
-                axios(config)
-                .then(function (response) {
-                  console.log(JSON.stringify(response.data));
-                })
-                .catch(function (error) {
-                  console.log(error);
-                });
+                console.log(saleContractAddr,'saleContractaddr')
+
+                console.log("transaction3: " + txHash3)
+                  const transParameter222 = {
+                    to : nft_addr,
+                    from : _to,
+                    data : nftContract.methods.approve(saleContractAddr, itemId).encodeABI()
+                  }
+                  try{
+                    const txHash333 = await window.ethereum
+                      .request({
+                        method : 'eth_sendTransaction',
+                        params : [transParameter222],
+                      });
+                      console.log("transaction3: " + txHash333)
+                
+                    const transParameter22 = {
+                      to : nft_addr,
+                      from : _to,
+                      data : nftContract.methods.transferFrom(_to, saleContractAddr, itemId).encodeABI()
+                    }
+                    
+                    try{
+                      const txHash33 = await window.ethereum
+                        .request({
+                          method : 'eth_sendTransaction',
+                          params : [transParameter22],
+                        });
+                        console.log("transaction3: " + txHash33)
+                    } catch (error){
+                      console.error(error)
+                    }
+                  //SALE_Registration_API(itemId, _to, saleContractAddr, purchasePrice)
+                    // var data = {
+                    //   "token_id" : itemId,
+                    //   "seller_address" : _to,
+                    //   "sales_contract_address" : saleContractAddr,
+                    //   "cash_contract_address" : currency_addr,
+                    //   "price" : purchasePrice
+                    // };
+                  
+                    // var config = {
+                    //   method: 'post',
+                    //   url: 'http://j6a107.p.ssafy.io/api/sales', // 
+                    //   headers: { },
+                    //   data : data
+                    // };
+                  
+                    // axios(config)
+                    // .then(function (response) {
+                    //   console.log(JSON.stringify(response.data));
+                    // })
+                    // .catch(function (error) {
+                    //   console.log(error);
+                    // });
             } catch (error){
               console.error(error)
             }
-      }
-      s()
-    })
+
+          } catch (error){
+            console.error(error)
+          }
+          }
+          s()
+        })
   } catch (error){
     console.error(error)
   }
