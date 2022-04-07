@@ -60,6 +60,7 @@ function SubscriptionModal() {
     const getData = async () => {
       const res = await getMySubscriptionNFT(userAddress)
       setSubscriptions(res)
+      console.log(res,'ㄻ나럼니ㅏ런')
     };
     if (isOpen) {
       getData()

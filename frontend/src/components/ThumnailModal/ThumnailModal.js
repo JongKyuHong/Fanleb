@@ -32,7 +32,7 @@ function ThumnailModal() {
   const onSub = async() =>{
     const option ={
       method:"GET",
-      url:`/api/subscribe/valid/${addr}/${userAddress}`,
+      url:`/api/subscribe/valid/${myAddr}/${userAddress}`,
     }
     let status ='기본값'
     try{
@@ -43,12 +43,12 @@ function ThumnailModal() {
         console.log(err)
       }
     
-    if (addr) {
-      if(addr === userAddress || status === 200){
+    if (myAddr) {
+      if(myAddr === userAddress || status === 200){
         closeModal()
         navigator(`/content/${userAddress}`)
       }else{
-        console.log(addr,userAddress,status)
+        console.log(myAddr,userAddress,status)
         alert('입장할 수 없습니다!')
       }
     }else{
