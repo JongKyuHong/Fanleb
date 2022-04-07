@@ -30,7 +30,7 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
     from : _to,
     data :  salefactoryContract.methods.createSale(_to, itemId, purchasePrice, currency_addr, nft_addr).encodeABI()
   };
-  let saleContractAddr
+  
   try{
     const txHash = await window.ethereum
       .request({
@@ -38,7 +38,7 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
         params : [transactionParameters11],
       });
       console.log("transaction: " + txHash)
-      
+      let saleContractAddr
       salefactoryContract.events.NewSale({})
         .on('data', (event) => {
           saleContractAddr = event.returnValues[0]
@@ -57,13 +57,13 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
           };
             axios(config)
           .then(function (response) {
-            const res_d = response.data
-            return res_d
+            console.log(JSON.stringify(response.data));
           })
           .catch(function (error) {
             console.log(error);
           });
         })
+    return saleContractAddr
   } catch (error){
     console.error(error)
   }
