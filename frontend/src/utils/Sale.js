@@ -25,6 +25,9 @@ const erc = ABI.CONTRACT_ABI.ERC_ABI;
 // _to, itemId, purchasePrice, currencyAddress, nftAddress
 
 export default async function Trade(walletaddress, sale_addr, purchasePrice, token_id) {
+  console.log(sale_addr,'addr')
+  console.log(purchasePrice,'purchasePrice')
+  console.log(walletaddress,'wallet')
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
   let tokenContract = new web3.eth.Contract(erc, cuaddr);
 
@@ -45,7 +48,7 @@ export default async function Trade(walletaddress, sale_addr, purchasePrice, tok
     let nftContract = new web3.eth.Contract(nft_abi, nft_addr);
       const transactionParameters1 = {
         to: nft_addr,
-        from: walletaddress,
+        from: walletaddress, // walletaddress
         data: nftContract.methods.approve(sale_addr, token_id).encodeABI()
       }
       try {
@@ -60,7 +63,7 @@ export default async function Trade(walletaddress, sale_addr, purchasePrice, tok
         const transactionParameters = {
           to: sale_addr,
           from: walletaddress,
-          data: SaleContract.methods.purchase().encodeABI()
+          data: SaleContract.methods.purchase(walletaddress).encodeABI()
         };
     
         try {

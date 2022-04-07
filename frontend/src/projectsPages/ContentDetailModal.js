@@ -66,21 +66,21 @@ const Detail = ({detailId}) =>{
   },[detailId])
 
   const toggletrade = async () => {
-    const res = await getByTokenId(detailInfo.token_id)
-    // var config = {
-    //   method: 'get',
-    //   url: `http://j6a107.p.ssafy.io/api/sales?token_id=${detailInfo.token_id}`,
-    //   headers: { }
-    // };
+    var config = {
+      method: 'get',
+      url: `/api/sales?token_id=${detailInfo.token_id}`, // http://j6a107.p.ssafy.io/
+      headers: { }
+    };
     
-    // axios(config)
-    // .then(function (response) {
-    //   setPrice(response.data.)
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
-    Trade(address,res,detailInfo.price,detailInfo.token_id)
+    axios(config)
+    .then(function (response) {
+      console.log('hi')
+      Trade(address, response.data.data.sale_contract_address,response.data.data.price, detailInfo.token_id)
+      console.log('hi2')
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
   if(!detailInfo){
