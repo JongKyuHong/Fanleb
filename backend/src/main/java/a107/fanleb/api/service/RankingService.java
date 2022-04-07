@@ -17,9 +17,9 @@ public class RankingService {
     private final RankingRepoistorySuppot rankingRepoistorySuppot;
 
     @Transactional(readOnly = true)
-    public Page<RankingListViewRes> view(int page) {
+    public Page<RankingListViewRes> view(int page, String sortedBy) {
         PageRequest pageable = PageRequest.of(page - 1, 10);
 
-        return rankingRepoistorySuppot.view(pageable);
+        return rankingRepoistorySuppot.view(pageable, sortedBy);
     }
 }
