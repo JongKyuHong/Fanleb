@@ -5,7 +5,7 @@ export const modalSlice = createSlice({
   name: "modal",
   initialState: {
     isOpen: false,
-    // thumnailInfo: {
+    thumnailInfo: {
       thumnailImgUrl: "",
       contentsData: "",
       userImgUrl: "",
@@ -14,25 +14,26 @@ export const modalSlice = createSlice({
       category: "",
       userAddress: "",
       collectionName: "",
-    // }
+    },
+      isSubsOpen: false,
   },
   reducers: {
     toggleModal: (state) => {
       state.isOpen = !state.isOpen;
     },
-    updateThumnail (state, action) {
+    updateThumnail (state, {payload}) {
       // console.log(state.contentsData)
       // console.log('리덕스에서', action.payload.contentsData)
       state.isOpen = true;
-      state.thumnailImgUrl = action.payload.imgUrl;
+      state.thumnailImgUrl = payload.imgUrl;
       // 리덕스에서 배열은 그냥 넣으면 작동이 안된다!      
-      // state.contentsData.push(action.payload);
-      state.userImgUrl = action.payload.userImgUrl;
-      state.nickname = action.payload.nickname;
-      state.description = action.payload.description;
-      state.category = action.payload.category;
-      state.userAddress = action.payload.userAddress;
-      state.collectionName = action.payload.collectionName;
+      state.contentsData.push(payload);
+      state.userImgUrl = payload.userImgUrl;
+      state.nickname = payload.nickname;
+      state.description = payload.description;
+      state.category = payload.category;
+      state.userAddress = payload.userAddress;
+      state.collectionName = payload.collectionName;
     },
     removeThumnail: (state) => {
       state.thumnailImgUrl = "";
@@ -43,6 +44,9 @@ export const modalSlice = createSlice({
       state.category = "";
       state.userAddress = "";
       state.collectionName = "";
+    },
+    toggleSubsModal: (state) => {
+      state.isSubsOpen = !state.isSubsOpen;
     }
   },
 });
@@ -50,6 +54,7 @@ export const modalSlice = createSlice({
 export const {
   toggleModal,
   updateThumnail,
-  removeThumnail
+  removeThumnail,
+  toggleSubsModal,
 } = modalSlice.actions;
 export default modalSlice.reducer;

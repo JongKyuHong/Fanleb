@@ -8,6 +8,7 @@ import verify from '../../images/verify.png'
 import coin from '../../images/coin.png';
 import { Link  } from 'react-router-dom';
 import axios from 'axios';
+import empty from '../post/empty-image.jpg';
 const Header = () => {
   const [userData, setUserData] = useState([]);
   var settings = {
@@ -73,6 +74,9 @@ const Header = () => {
       setUserData(data.data.content)
     }
     getUserData();
+    return () => {
+      setUserData([])
+    }
   }, [])
   return (
     <div className='header'>
@@ -89,7 +93,7 @@ const Header = () => {
             return <div className='slider-card' key={index}>
               <p className='slider-card-number'>{index + 1}</p>
               <div className="slider-img">
-                <img src={data.img_url} alt="" style={{  objectFit: 'cover', width: '100px', height: '100px'}} />
+                <img src={data.img_url ? data.img_url : empty} alt="" style={{  objectFit: 'cover', width: '100px', height: '100px'}} />
                 <img src={verify} className='verify' alt="" />
               </div>
               <Link to={'/'}>

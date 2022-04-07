@@ -45,22 +45,22 @@ const MainTabs = (({ category, setCategory, isMoved, setIsMoved }) => {
 
   // 페이지 바닥에 닿았는지 체크
   const handleScroll = () => {
-    const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight
-    if (bottom) {
-      setPosition(true)
-    } else {
-      setPosition(false)
-    }
+    // const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight
+    // if (bottom) {
+    //   setPosition(true)
+    // } else {
+    //   setPosition(false)
+    // }
   };
   
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, {
-      passive: true
-    });
+    // window.addEventListener('scroll', handleScroll, {
+    //   passive: true
+    // });
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    // return () => {
+    //   window.removeEventListener('scroll', handleScroll);
+    // };
   }, []);
 
 
