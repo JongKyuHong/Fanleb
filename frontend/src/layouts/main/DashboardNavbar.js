@@ -16,8 +16,8 @@ import './navbar.css';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 import { Link } from "react-router-dom";
 import { openModal, updateAddress, updateSuccess } from '../../redux/userSlice';
-import { toggleSubsModal } from '../../redux/modalSlice';
 import token_transfer from '../../utils/token_transfer';
+import { openSubsModal } from '../../redux/modalSlice';
 
 const Menu = () => {
   const navigator = useNavigate()
@@ -111,9 +111,13 @@ const DashboardNavbar = () => {
   // }
   function openSubscriptionModal() {
     // window.ethereum.request({ method: 'eth_requestAccounts' }).then(e => console.log(e))
-    dispatch(toggleSubsModal())
+    dispatch(openSubsModal())
     // window.ethereum.request({ method: 'eth_requestAccounts' }).then(res => console.log(res))
   }
+  function openInfoModal() {
+    dispatch(openModal());
+  }
+  
     const switchWallet = async () => {
       const accounts2 = await window.ethereum.request({ method: 'eth_requestAccounts' });
       const account2 = accounts2[0];
@@ -169,7 +173,7 @@ const DashboardNavbar = () => {
                 <button type='button' className='secondary-btn' onClick={openSubscriptionModal}>내 구독권</button>
                 <button type='button' className='secondary-btn' onClick={switchWallet}>자금 요청</button>
                 {/* <button type='button' className='secondary-btn' onClick={enableEth} >지갑 연결</button> */}
-                <Avatar onClick={() => dispatch(openModal())} src={userInfo?.imageUrl} size="large" sx={{ width: 56, height: 56, cursor: 'pointer' }} />
+                <Avatar onClick={openInfoModal} src={userInfo?.imageUrl} size="large" sx={{ width: 56, height: 56, cursor: 'pointer' }} />
             
           
               </>

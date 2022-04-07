@@ -2,10 +2,10 @@ import { Divider, Grid, Modal, TextField } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleSubsModal } from '../../redux/modalSlice';
 import { CreateSubscriptionNFT, getMySubscriptionNFT, getSsafyToken } from '../../utils/Subscription';
 import SubscriptionImage from "./SubscriptionImage";
 import './Subs.css';
+import { closeSubsModal } from '../../redux/modalSlice';
 function SubscriptionModal() {
   const dispatch = useDispatch();
   const isOpen = useSelector(state => state.modal.isSubsOpen);
@@ -14,11 +14,11 @@ function SubscriptionModal() {
   const [count, setCount] = useState("");
   const [subscriptions, setSubscriptions] = useState([]);
   const closeModal = () => {
-    dispatch(toggleSubsModal());
+    dispatch(closeSubsModal());
   };
   const createSubs = async () => {    
-    // console.log(userAddress, pic.file, count)
-    if (count > 50) {
+    console.log(userAddress, pic.file, count)
+    if (count > 10) {
       alert('한번에 그렇게 많이 발행할 수 없습니다.')
       return
     }
@@ -26,6 +26,10 @@ function SubscriptionModal() {
       alert('발행할 구독권 개수를 올바르게 입력해주세요.')
       return
     }    
+    if (pic.file === undefined) {
+      alert('구독권으로 발행할 이미지를 올려주세요.')
+      return
+    }
     const ok = confirm(`해당 이미지로 ${count}개의 구독권을 발행하시겠습니까? 한번 발행한 구독권은 수정할 수 없습니다.`);
     if (!ok) return
     try {      
@@ -64,6 +68,9 @@ function SubscriptionModal() {
     };
     if (isOpen) {
       getData()
+    }
+    return () => {
+      setSubscriptions([]);
     }
   }, [isOpen])
   return (
