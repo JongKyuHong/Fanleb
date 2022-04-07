@@ -56,7 +56,7 @@ export default async function NftRegistration(to, privKey, img_url) {
 // 서버에 등록된 데이터를 블록체인에 등록하는 함수
 export async function registerNFTtoBackend(userAddr, tokenUrl) {
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
-  let token_id      
+  let token_id
   
   //load smart contract
   window.contract = new web3.eth.Contract(abi, contractAddr);//loadContract();
@@ -79,6 +79,7 @@ export async function registerNFTtoBackend(userAddr, tokenUrl) {
       
     const res = await window.contract.methods.create(userAddr, tokenUrl).call();
     // console.log('결과', res)
+    console.log(res, 'resres')
     return res;
     
   } catch (error) {
