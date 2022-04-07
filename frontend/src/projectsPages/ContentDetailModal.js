@@ -38,6 +38,7 @@ const handleClose = e => {
 const Detail = ({detailId}) =>{
   // let {detailId} = useParams()
   // const detailId = props
+  let navigate = useNavigate()
   const address = useSelector(state => state.user.userInfo.userAddress);
   const [detailInfo, setDetailInfo] = useState()
   const [price, setPrice] = useState()
@@ -76,7 +77,8 @@ const Detail = ({detailId}) =>{
   },[detailId])
 
   const toggletrade = async () => {
-    Trade(address, saleInfo.sale_contract_address, saleInfo.price, detailInfo.token_id)
+    const data = await Trade(address, saleInfo.sale_contract_address, saleInfo.price, detailInfo.token_id)
+    navigate(-1)
   }
 
   if(!detailInfo){

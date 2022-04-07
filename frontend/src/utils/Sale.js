@@ -68,19 +68,21 @@ export default async function Trade(walletaddress, sale_addr, purchasePrice, tok
     
     var config = {
       method: 'patch',
-      url: 'http://j6a107.p.ssafy.io/api/sales/purchase',
+      url: '/api/sales/purchase', // http://j6a107.p.ssafy.io
       headers: { },
       data : data
     };
     
-    axios(config)
+    await axios(config)
     .then(function (response) {
-      console.log(JSON.stringify(response.data));
+      const res_data = response.data
+      return res_data
     })
     .catch(function (error) {
       console.log(error);
-    });      
-    } catch (error) {
-      console.log(error.message)
+    });
+
+  } catch (error) {
+    console.log(error.message)
   }
 }
