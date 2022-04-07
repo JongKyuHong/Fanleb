@@ -1,5 +1,5 @@
-import { Avatar, Paper, Skeleton } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Avatar, CardMedia, Paper, Skeleton } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import './bids.css';
@@ -20,6 +20,13 @@ const Post = (props) => {
   const [video, setVideo] = useState(false);
   const { userInfo } = useSelector(state => state.user);
   const dispatch = useDispatch();
+  const ref = useRef();
+  const playVideo = () => {
+    ref.current.play()
+  }
+  const pauseVideo = () => {
+    ref.current.pause()
+  }
   const selectPost = () => {
     // onItemClicked();    
     if (userInfo.userAddress === "" || userInfo.userAddress.length <= 0) {
@@ -28,6 +35,34 @@ const Post = (props) => {
       getData()
     }
   };
+  const detectMedia = (inputUrl) => {
+    if (inputUrl === null || inputUrl === NaN || inputUrl === undefined) {
+      return
+    }
+    const images = ["jpg", "gif", "png"]
+    const videos = ["mp4", "3gp", "ogg"]
+    // const url = new URL(inputUrl)
+    // let extension = inputUrl?.split(".")
+    // extension = extension[extension?.length - 1]
+    
+    let extension = inputUrl.split(".")
+    // console.log(extension)
+    extension = extension[extension.length - 1]
+    if (images.includes(extension)) {
+      setVideo(false)      
+      
+    } else if (videos.includes(extension)) {      
+      setVideo(true)      
+    }
+    // if (images.includes(inputUrl)) {
+    //   setVideo(false)      
+      
+    // } else if (videos.includes(inputUrl)) {      
+    //   setVideo(true)      
+    // }
+
+  }
+
   const getData = async () => {
     const thumnailData = {
       nickname: nickname,
@@ -41,8 +76,6 @@ const Post = (props) => {
     }
     const { data } = await axios(`api/contents/thumbnail?user_address=${user_address}`);
     thumnailData.contentsData = [...data.data];
-    // console.log(thumnailData)
-
     dispatch(openThumnailModal(thumnailData))
   } 
   const encodeUrl = () => {
@@ -54,6 +87,8 @@ const Post = (props) => {
   }
   useEffect(() => {
     // encodeUrl()
+    detectMedia(img_url)
+    // console.log(img_url)
     axios
       .get(`api/users/address?user_address=${user_address}`)
       .then((res) => {
@@ -62,7 +97,9 @@ const Post = (props) => {
         setDescription(res.data.data.user_description)
       })
     return () => {
-      setAvatarImg("")
+      setAvatarImg("")      
+      setUsercategory("")
+      setDescription("")      
     }
   }, [])
   return (
@@ -92,11 +129,20 @@ const Post = (props) => {
               alt=""            
             />
           }           */}
-          <img
+          {video ?
+            <CardMedia className="video-player profile-image" component="video" src={img_url ? img_url : empty} loading="lazy" style={{ objectFit: 'cover' }} loop onMouseOver={playVideo} onMouseOut={pauseVideo} ref={ref} controlsList="noplaybackrate" />
+
+            
+            :
+            <CardMedia
+              component='img'
               className="profile-image"
               src={img_url ? img_url : empty}
-              alt=""            
+              alt=""
+              loading="lazy"
             />
+          }
+          {/* <iframe className="profile-image" src="https://youtu.be/CRx503FbaJg" /> */}
           {/* <CollectionImg title={collection_name}  imgUrl={img_url} empty={empty} />        */}
           <div
             className="avatar-container"
@@ -117,9 +163,9 @@ const Post = (props) => {
            width: '70%', height: '10%' }} alt="profile" />             */}
           
           {/* <Link to={`/post/123`}> */}
-          <p className="bids-title" style={{textAlign: 'center'}}>{collection_name? collection_name : 'null'}</p>
+          <p className="bids-title" style={{ overflow: 'hidden', textAlign: 'center' }} title={collection_name}>{collection_name? collection_name : 'null'}</p>
           {/* </Link> */}
-          <p style={{ marginLeft: 'auto', fontSize: '15px', color: 'rgb(32, 129, 226)', textAlign: 'center' }}><span style={{ color: 'rgb(112, 122, 131)' }}>by </span>{nickname}</p>          
+          <p style={{ fontSize: '15px', color: 'rgb(32, 129, 226)', textAlign: 'center' }}><span style={{ color: 'rgb(112, 122, 131)' }}>by </span>{nickname}</p>          
         </div>
         <div className="bids-card-bottom">
             {/* <p>{nickname} <span>{ user_address }</span></p> */}

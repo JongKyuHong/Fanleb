@@ -22,7 +22,7 @@ export default function App() {
   let eth;
   let web3;
   // 배포된 컨트랙트의 address와 ABI를 사용해서 컨트랙트 객체 생성
-  // 생성한 컨트랙트 객체에 접근해서 정의된 함수를 호출할 수 있음
+  // 생성한 컨트랙트 객체에 접근해서 정의된 함수를 호출할 수 있음  
   function startApp() {        
     // 현재 연결된 web3 provider(예제에서는 Metamask)에 있는 계정을 조회하고,
     // 선택된 계정을 현재 계정에 해당하는 account 변수에 할당
@@ -93,6 +93,8 @@ export default function App() {
       if (eth !== undefined) {
         console.log(typeof eth !== undefined)
         startApp();
+      } else {
+        
       }
     }
   });
