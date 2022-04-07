@@ -198,7 +198,7 @@ const SaleRegistration = () => {
     const owner_address = getAddressFrom(privKey);
     if (owner_address){
       setLoading(true);
-      await Create_Sale(owner_address, tokenId, price);
+      const create_value = await Create_Sale(owner_address, tokenId, price);
       setLoading(false)
       setIsComplete(true)
     }

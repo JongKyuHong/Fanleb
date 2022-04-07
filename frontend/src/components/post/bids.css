@@ -113,6 +113,13 @@ font-weight: normal;
   height: 100px;
   width: 100px;
 }
+
+.post-video::-webkit-media-controls {
+  display: none;
+}
+.vsc-controller {
+  display: none;
+}
 @media (min-width: 1440px) {
   .card-column {
     width: 25%;    
