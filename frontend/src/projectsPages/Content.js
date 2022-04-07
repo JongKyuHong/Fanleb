@@ -21,6 +21,7 @@ import { LocalConvenienceStoreOutlined, SettingsPowerOutlined } from '@mui/icons
 import ContentDetail from './ContentDetail';
 import ConfirmSub from './ConfirmSub';
 import { useSelector } from 'react-redux';
+import InfiniteScroll from 'react-infinite-scroll-component';
 // 프로필 관련
 const ProfileCard = ({contentId}) => {
     const {profile, setProfile} = useContext(ContentContext)
@@ -286,21 +287,27 @@ const ContentCardList = ({contentId})=>{
 
     // const [items, setItems] = useState()
     let url = ''
-    
+
+    const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(1)
     const getItems = async() =>{
         console.log(now)
         switch(now){
             case "collection":
-                url = `/api/collections?page=1&user_address=${contentId}`
+                url = `/api/collections?page=${page}&user_address=${contentId}`
                 break;
             case "all":
-                url = `/api/contents?page=1&user_address=${contentId}`
+                url = `/api/contents?page=${page}&user_address=${contentId}`
+            case "buy":
+                url = `/api/contents?address?page=${page}&user_address=${contentId}`
+
         }
         const option = {
             method: "GET",
             url: url
         }
         console.log(url,"url",now)
+        if(!hasMore) return
         try{
             const getData = await axios(option)
             setItems(getData.data.data.content)
@@ -310,38 +317,76 @@ const ContentCardList = ({contentId})=>{
             console.log(err)
         }
     }
+    const fetchData = async () => {
+        const collectionsFromServer = await getItems();
+        if (collectionsFromServer === 'err') {
+          setHasMore(false)
+          return
+        }
+        if (items.length === 0 || items.length < 12 || collectionsFromServer.length === 0 || collectionsFromServer.length < 12) {
+          setItems([...items, ...collectionsFromServer]);
+          setHasMore(false)
+          // return
+        } else {
+          setItems([...items, ...collectionsFromServer]);
+          setPage(page + 1);    
+        }
+      };
 
     useEffect(()=>{
         const start = async ()=>{
-            await getItems()
-            console.log(items,"items")
-            setLoading(1)
-            console.log(now,"현재의상태입니다",loading)
-            console.log(now==='all')
-        }
-        start()
-
-    },[now])
-
-    useEffect(()=>{
-        const getCollections = async ()=>{
+            setItems([])
+            setPage(1)
+            setHashMore(true)
+            switch(now){
+                case "collection":
+                    url = `/api/collections?page=${page}&user_address=${contentId}`
+                    break;
+                case "all":
+                    url = `/api/contents?page=${page}&user_address=${contentId}`
+                case "buy":
+                    url = `/api/contents?address?page=${page}&user_address=${contentId}`
+            }
             const option = {
                 method: "GET",
-                url:`api/collections/${collectionId}/contents?page=1&user_address=1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa`
+                url: url
             }
-            try{const getData = await axios(option)
-            setItems(getData.data.data.content)
-            setNow('')
+            try{
+                const getData = await axios(option)
+                console.log(getData.data.data.last,'겟데이터시작')
+                if (getData.data.data.last){
+                    setHasMore(false)
+                }
+                setItems(getData.data.data.content)
             }catch(err){
                 console.log(err)
-            }
+                }
         }
-        if(Boolean(collectionId)){
-            getCollections()
-            console.log(now,'콜렉션ㄴ나우')
+        start()
+        return () =>{
+            setItems([])
         }
-        console.log(items,'콜렉션불러온다음')
-    },[collectionId])
+    },[now])
+
+    // useEffect(()=>{
+    //     const getCollections = async ()=>{
+    //         const option = {
+    //             method: "GET",
+    //             url:`api/collections/${collectionId}/contents?page=1&user_address=1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa`
+    //         }
+    //         try{const getData = await axios(option)
+    //         setItems(getData.data.data.content)
+    //         setNow('')
+    //         }catch(err){
+    //             console.log(err)
+    //         }
+    //     }
+    //     if(Boolean(collectionId)){
+    //         getCollections()
+    //         console.log(now,'콜렉션ㄴ나우')
+    //     }
+    //     console.log(items,'콜렉션불러온다음')
+    // },[collectionId])
 
 
     const goToContent = () =>{
@@ -359,7 +404,13 @@ const ContentCardList = ({contentId})=>{
     //     </Box>
     return(
         <>
-        {items && now ==="all" && items.map( (item) => (<Thumbnail key={item.token_id} props ={item} onClick={handleOpen} />)) }
+        <InfiniteScroll
+            dataLength={items?.length}
+            next={fetchData}
+            hasMore={hasMore}
+        >
+            {items && now ==="all" && items.map( (item) => (<Thumbnail key={item.token_id} props ={item} onClick={handleOpen} />)) }
+        </InfiniteScroll>
 
         {/* {now ==="all" && <Typography sx={{color:"#1122FF"}} > 로딩돼</Typography>} */}
 
