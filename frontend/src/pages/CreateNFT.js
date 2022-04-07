@@ -154,8 +154,14 @@ const CreateNFT = () => {
         //     "collection": newData.myCollection.collection_name})
         console.log('서버에 저장한 결과:', data)
         if (data.result === "success") {
-          alert('게시물이 정상적으로 등록되었습니다.')
-          navigator('/')
+          //alert('게시물이 정상적으로 등록되었습니다.')
+          var retval = confirm("판매등록 하시겠습니까?")
+          if(retval) {
+            navigator(`/register/sale/${token_id}`)
+          } else{
+            alert("취소를 누르셨습니다")
+            navigator('/')
+          }
           //CreateSale(token_id)
         } else {
           alert('게시물 작성을 실패했습니다.')

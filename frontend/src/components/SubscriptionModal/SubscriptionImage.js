@@ -16,7 +16,6 @@ function SubscriptionImage({ subscription }) {
   useEffect(() => {
     if (subscription) {
       axios(subscription).then(res => {    
-        // console.log(res.data.imgUrl)
         setImage(res.data.imgUrl)
         setAuthor(res.data.author)
         getUserInfo(res.data.author)

@@ -56,14 +56,16 @@ public class RankingRepoistorySuppot {
             return new PageImpl<>(new ArrayList<>(), pageable, fetch.size());
         else {
             int id = (int) pageable.getOffset() + 1;
+            List<RankingListViewRes> sub = fetch.subList(start, end);
 
             for (RankingListViewRes r :
-                    fetch) {
+                    sub) {
                 r.setId(id);
                 id++;
             }
 
-            return new PageImpl<>(fetch.subList(start, end), pageable, fetch.size());
+
+            return new PageImpl<>(sub, pageable, fetch.size());
 
         }
     }
