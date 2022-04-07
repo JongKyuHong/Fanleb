@@ -288,7 +288,7 @@ export async function SubscribeUser(userAddr, myAddr, setSubscriptionsCnt) {
   const transactionParameters = {
     to: subscriptionContract, // Required except during contract publications.
     from: myAddr, // must match user's active address.
-    data: subscriptionContract.methods.transferFrom(userAddr, myAddr, targetId).encodeABI(), //make call to NFT smart contract
+    data: subscriptionContract.methods.transferFrom(userAddr, myAddr, Number(tokenList[0])).encodeABI(), //make call to NFT smart contract
   };
   //sign transaction via Metamask
   try {
