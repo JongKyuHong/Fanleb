@@ -49,8 +49,9 @@ public class UsersController {
 
     @GetMapping("/list")
     public ResponseEntity<? extends BaseResponseBody> showList(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                               @RequestParam(required = false, name = "user_address") String userAddress,
                                                                @RequestParam(required = false, name = "search[query]") String query) {
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.showList(page, query)));
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", usersService.showList(page, query, userAddress)));
     }
 
     @GetMapping("/valid/first")

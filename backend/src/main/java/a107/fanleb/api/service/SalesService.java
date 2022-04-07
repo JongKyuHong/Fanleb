@@ -64,6 +64,7 @@ public class SalesService {
 
         Contents content = contentsRepository.findByTokenId(tokenId).get();
         content.setOnSaleYn(Status.n);
+        content.setRecentOwnerAddress(buyerAddress);
         contentsRepository.save(content);
     }
 
