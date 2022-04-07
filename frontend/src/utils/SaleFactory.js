@@ -93,28 +93,30 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
                       console.error(error)
                     }
                   //SALE_Registration_API(itemId, _to, saleContractAddr, purchasePrice)
-                    // var data = {
-                    //   "token_id" : itemId,
-                    //   "seller_address" : _to,
-                    //   "sales_contract_address" : saleContractAddr,
-                    //   "cash_contract_address" : currency_addr,
-                    //   "price" : purchasePrice
-                    // };
-                  
-                    // var config = {
-                    //   method: 'post',
-                    //   url: 'http://j6a107.p.ssafy.io/api/sales', // 
-                    //   headers: { },
-                    //   data : data
-                    // };
-                  
-                    // axios(config)
-                    // .then(function (response) {
-                    //   console.log(JSON.stringify(response.data));
-                    // })
-                    // .catch(function (error) {
-                    //   console.log(error);
-                    // });
+                  const ownera = await nftContract.methods.ownerOf(itemId).call();
+                  console.log(ownera, 'owner')
+                  var data = {
+                    "token_id" : itemId,
+                    "seller_address" : _to,
+                    "sales_contract_address" : saleContractAddr,
+                    "cash_contract_address" : currency_addr,
+                    "price" : purchasePrice
+                  };
+                
+                  var config = {
+                    method: 'post',
+                    url: 'http://j6a107.p.ssafy.io/api/sales', // 
+                    headers: { },
+                    data : data
+                  };
+                
+                  axios(config)
+                  .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
             } catch (error){
               console.error(error)
             }
