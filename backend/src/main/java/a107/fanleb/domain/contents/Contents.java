@@ -70,4 +70,9 @@ public class Contents {
         this.onSaleYn = onSaleYn;
     }
 
+    public void setRecentOwnerAddress(String recentOwnerAddress) {
+        this.recentOwnerAddress = recentOwnerAddress;
+    }
+
+
 }
