@@ -59,15 +59,16 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
             data : data
           };
         
-          axios(config)
+          await axios(config)
           .then(function (response) {
-            console.log(JSON.stringify(response.data));
+            const res_d = response.data
+            return res_d
           })
           .catch(function (error) {
             console.log(error);
           });
         })
-      return saleContractAddr
+      
   } catch (error){
     console.error(error)
   }
