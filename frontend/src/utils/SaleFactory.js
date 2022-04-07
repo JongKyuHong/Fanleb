@@ -30,7 +30,7 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
     from : _to,
     data :  salefactoryContract.methods.createSale(_to, itemId, purchasePrice, currency_addr, nft_addr).encodeABI()
   };
-
+  let saleContractAddr
   try{
     const txHash = await window.ethereum
       .request({
@@ -38,40 +38,38 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
         params : [transactionParameters11],
       });
       console.log("transaction: " + txHash)
-      let saleContractAddr
+      
       salefactoryContract.events.NewSale({})
         .on('data', (event) => {
           console.log("hi")
           saleContractAddr = event.returnValues[0]
-        
-          var data = {
-            "token_id" : itemId,
-            "seller_address" : _to,
-            "sales_contract_address" : saleContractAddr,
-            "cash_contract_address" : currency_addr,
-            "price" : purchasePrice
-          };
-        
-          var config = {
-            method: 'post',
-            url: 'http://j6a107.p.ssafy.io/api/sales',
-            headers: { },
-            data : data
-          };
-        
-          await axios(config)
-          .then(function (response) {
-            const res_d = response.data
-            return res_d
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
         })
-      
   } catch (error){
     console.error(error)
   }
+  var data = {
+    "token_id" : itemId,
+    "seller_address" : _to,
+    "sales_contract_address" : saleContractAddr,
+    "cash_contract_address" : currency_addr,
+    "price" : purchasePrice
+  };
+
+  var config = {
+    method: 'post',
+    url: 'http://j6a107.p.ssafy.io/api/sales',
+    headers: { },
+    data : data
+  };
+
+  await axios(config)
+  .then(function (response) {
+    const res_d = response.data
+    return res_d
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 }
 
 
