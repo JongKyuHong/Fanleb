@@ -30,11 +30,11 @@ const confirmSub = ({contentId, setSub}) => {
         
         try{
             const data = await axios(option)
-            console.log(data)
+            console.log(data,'구독정보확인입니다')
             setOpen(false)
-            setSub(true)
+            // setSub(true)
         }catch(err){
-            console.log(err.response.data)
+            console.log(err.response)
             if (logOnAddress===contentId){
                 setOpen(false)
             }else{
