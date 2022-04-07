@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.*;
 public class RankingController {
     private final RankingService rankingService;
 
-    @GetMapping
-    public ResponseEntity<? extends BaseResponseBody> view(@RequestParam(value = "page", defaultValue = "1") int page) {
-        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", rankingService.view(page)));
+    @GetMapping//subscriptionCnt, contentsCnt, maxTradedPrice, ownerCnt
+    public ResponseEntity<? extends BaseResponseBody> view(
+            @RequestParam(required = false, name = "search[sortBy]") String sortedBy,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
+        return ResponseEntity.status(200).body(AdvancedResponseBody.of("success", rankingService.view(page, sortedBy)));
     }
 }
