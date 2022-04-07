@@ -147,12 +147,20 @@ const Detail = ({detailId}) =>{
                     <Grid/> */}
                       <Divider variant="middle" />
                     <Grid item>
-                      <Button variant="contained" color="secondary">
-                        현재 가격:{detailInfo.price}
-                      </Button>
-                      <Button variant="contained" color="secondary" onClick={toggletrade}>
-                        구매하기
-                      </Button>
+                    <Box sx={{padding:"20px",}}>
+                        <Typography>
+                          NFT 정보
+                        </Typography>
+                        <Box sx={{marginTop:"15px"}}>
+                          현재 가격 : {detailInfo.price}
+                        </Box>
+                        <Box sx={{margin:"20px"}}>
+                          <Button variant="contained" color="secondary" onClick={toggletrade}>
+                            구매하기
+                          </Button>
+                        </Box>
+                      </Box>
+
                     </Grid>
                     </Grid>
                   </Grid>
