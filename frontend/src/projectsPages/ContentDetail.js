@@ -163,11 +163,7 @@ const Detail = ({detailId}) =>{
                     <Grid/> */}
                       <Divider />
                     <Grid item>
-<<<<<<< HEAD
-                    <Box sx={{padding:"20px",}}>
-=======
                       <Box sx={{padding:"20px",}}>
->>>>>>> 555d0dbc469d9851ed2c30c01b44f990672c0657
                         <Typography>
                           NFT 정보
                         </Typography>
@@ -180,14 +176,8 @@ const Detail = ({detailId}) =>{
                           </Button>
                         </Box>
                       </Box>
-<<<<<<< HEAD
-
                     </Grid>
-=======
->>>>>>> 555d0dbc469d9851ed2c30c01b44f990672c0657
                     </Grid>
-                  </Grid>
-                
               </Box> 
             </Box>
           </Stack>
