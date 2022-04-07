@@ -16,11 +16,8 @@ import './navbar.css';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 import { Link } from "react-router-dom";
 import { openModal, updateAddress, updateSuccess } from '../../redux/userSlice';
-<<<<<<< HEAD
 import { toggleSubsModal } from '../../redux/modalSlice';
 import token_transfer from '../../utils/token_transfer';
-=======
->>>>>>> feature/frontend-rank
 
 const Menu = () =>{
   const navigator = useNavigate()
