@@ -29,7 +29,7 @@ export default async function Trade(walletaddress, sale_addr, purchasePrice, tok
   console.log(purchasePrice,'purchasePrice')
   console.log(walletaddress,'wallet')
   const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
-  let tokenContract = new web3.eth.Contract(erc, cuaddr);
+  let tokenContract = new web3.eth.Contract(token_abi, cuaddr);
 
   const transactionParameters2 = {
     to: cuaddr,
@@ -45,19 +45,19 @@ export default async function Trade(walletaddress, sale_addr, purchasePrice, tok
         });                
     console.log("transaction: " + txHash3333)
     
-    let nftContract = new web3.eth.Contract(nft_abi, nft_addr);
-      const transactionParameters1 = {
-        to: nft_addr,
-        from: walletaddress, // walletaddress
-        data: nftContract.methods.approve(walletaddress, token_id).encodeABI() // sale_addr
-      }
-      try {
-        const txHash1 = await window.ethereum
-            .request({
-                method: 'eth_sendTransaction',
-                params: [transactionParameters1],
-            });                
-        console.log("transaction1: " + txHash1)
+    // let nftContract = new web3.eth.Contract(nft_abi, nft_addr);
+    //   const transactionParameters1 = {
+    //     to: nft_addr,
+    //     from: walletaddress, // walletaddress
+    //     data: nftContract.methods.approve(sale_addr, token_id).encodeABI() // sale_addr
+    //   }
+    //   try {
+    //     const txHash1 = await window.ethereum
+    //         .request({
+    //             method: 'eth_sendTransaction',
+    //             params: [transactionParameters1],
+    //         });                
+    //     console.log("transaction1: " + txHash1)
         let SaleContract = new web3.eth.Contract(sale_abi, sale_addr);
 
         const transactionParameters = {
@@ -77,9 +77,9 @@ export default async function Trade(walletaddress, sale_addr, purchasePrice, tok
           } catch (error) {
             console.error(error)
           }
-        } catch (error) {
-          console.error(error)
-        }
+        // } catch (error) {
+        //   console.error(error)
+        // }
     } catch (error) {
       console.log(error.message)
   }
