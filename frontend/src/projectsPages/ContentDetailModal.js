@@ -14,7 +14,6 @@ const ContentDetailModal = ()=>{
   let navigate = useNavigate()
   useEffect(()=>{
     console.log(detailId,'param')
-    console.log('모달디테일로이도앻ㅆ습니다')
   },[])
 
 const [open,setOpen] = useState(true)
@@ -44,9 +43,9 @@ const Detail = ({detailId}) =>{
   const address = useSelector(state => state.user.userInfo.userAddress);
   const [detailInfo, setDetailInfo] = useState()
   const [price, setPrice] = useState()
-  
-
+  const [saleInfo, setSaleInfo] = useState()
   const getDetailInfo = async () =>{
+    
     const option = {
       method: "GET",
       url: `/api/contents/${detailId}`,
@@ -56,32 +55,31 @@ const Detail = ({detailId}) =>{
       setDetailInfo(data.data)
     }catch(err){
       console.log(err)
-      }
-  }
-
-  useEffect( ()=>{
-    getDetailInfo()
-
-
-  },[detailId])
-
-  const toggletrade = async () => {
+    }
     var config = {
       method: 'get',
-      url: `/api/sales?token_id=${detailInfo.token_id}`, // http://j6a107.p.ssafy.io/
+      url: `/api/sales?token_id=${data.data.token_id}`, // http://j6a107.p.ssafy.io/
       headers: { }
     };
-    
     axios(config)
     .then(function (response) {
-      console.log('hi')
-      Trade(address, response.data.data.sale_contract_address,response.data.data.price, detailInfo.token_id)
-      console.log('hi2')
+      setSaleInfo(response.data.data)
+      setPrice(response.data.data.price)
     })
     .catch(function (error) {
       console.log(error);
     });
   }
+
+
+  useEffect( ()=>{
+    getDetailInfo()
+  },[]) // detailId
+
+  const toggletrade = async () => {
+    Trade(address, saleInfo.sale_contract_address, saleInfo.price, detailInfo.token_id)
+  }
+
 
   if(!detailInfo){
     return <Box sx={{ color:"#FFFFFF"}}>로딩..</Box>
@@ -145,7 +143,6 @@ const Detail = ({detailId}) =>{
                         {detailInfo.content_title}
                       </Typography>
                       <Box sx={{display:"flex", justifyContent:"right", padding:"10px"}}>
-
                         {detailInfo.on_sale_yn ==='y'?<Chip label="판매중" color="info" />:<Chip label="판매종료" color="info" />}
                       </Box>
                       <Box sx={{display:"flex", justifyContent:"right", paddingRight:"15px"}}>
@@ -172,19 +169,6 @@ const Detail = ({detailId}) =>{
 
                     </Grid>
                     <Grid item>
-                      {/* <Typography>
-                        {detailInfo.on_sale_yn === 'y'?"판매중":"판매종료"}
-                      </Typography>
-                      <Typography>
-                        {detailInfo.created_at}
-                      </Typography>
-                      <Typography>
-                        최근가격
-                      </Typography>
-                      <Typography>
-                        36원
-                      </Typography>
-                    <Grid/> */}
                       <Divider />
                     <Grid item>
                       <Box sx={{padding:"20px",}}>
@@ -192,7 +176,7 @@ const Detail = ({detailId}) =>{
                           NFT 정보
                         </Typography>
                         <Box sx={{marginTop:"15px"}}>
-                          현재 가격 : {detailInfo.price}
+                          현재 가격 : {price}
                         </Box>
                         <Box sx={{margin:"20px"}}>
                           <Button variant="contained" color="secondary" onClick={toggletrade}>
