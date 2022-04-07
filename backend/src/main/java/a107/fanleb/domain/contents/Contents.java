@@ -35,7 +35,7 @@ public class Contents {
 
     private String contentDescription;
 
-    private String ownerAddress;
+    private String ownerAddress; //원작자
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @CreationTimestamp
@@ -51,6 +51,8 @@ public class Contents {
 
     @Column(unique = true, nullable = false)
     private String imgUrl;
+    
+    String recentOwnerAddress; //구매자
 
     public void setContentTitle(String contentTitle) {
         this.contentTitle = contentTitle;
@@ -67,5 +69,10 @@ public class Contents {
     public void setOnSaleYn(Status onSaleYn) {
         this.onSaleYn = onSaleYn;
     }
+
+    public void setRecentOwnerAddress(String recentOwnerAddress) {
+        this.recentOwnerAddress = recentOwnerAddress;
+    }
+
 
 }

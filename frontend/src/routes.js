@@ -11,8 +11,10 @@ import ItemPurchase from './pages/ItemPurchase';
 import CreateNFT from './pages/CreateNFT';
 import Content from './projectsPages/Content'
 import ContentDetail from './projectsPages/ContentDetail'
+import ContentDetailModal from './projectsPages/ContentDetailModal'
 import SearchResult from './pages/SearchResult';
 import Test from './projectsPages/Test';
+import Rank from './projectsPages/Rank';
 
 // 화면 라우팅 테이블
 export default function Router() {
@@ -40,11 +42,12 @@ export default function Router() {
         { element: <Navigate to="/content" replace /> },
         { path: '', element: <Content /> },
         { path: ':collectionId', element: <Content/> },
-        { path: 'detail/:detailId', element: <ContentDetail/> }
+        { path: 'detail/:detailId', element: <ContentDetailModal/> }
 
         // { path: '/:collectionId/*', element: <Content/> }
       ]
     },
+
     {
       path: '/detail/:detailId',
       element: <MainLayout />,
@@ -103,6 +106,13 @@ export default function Router() {
         { element: <Navigate to="/whosart" replace /> },
         { path: '', element: <WhosArt /> },
         { path: ':address', element: <WhosArt /> }
+      ]
+    },
+    {
+      path: '/rank',
+      element: <MainLayout />,
+      children: [
+        { path: '', element: <Rank/>},
       ]
     },
     {

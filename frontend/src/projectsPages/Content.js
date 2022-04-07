@@ -6,7 +6,7 @@ Divider,
 styled} from '@mui/material';
 
 import React, { useContext, useState, useEffect  } from 'react';
-import { useParams } from 'react-router-dom';
+import { Routes, useParams, } from 'react-router-dom';
 import { ContentContext } from './ContentContext';
 
 
@@ -31,11 +31,11 @@ const ProfileCard = ({contentId}) => {
             url:`/api/users/address?user_address=${contentId}`,
         }
         try{ 
-            const {data} = await axios(option)
-            setProfile(data.data)
-            console.log(data.data,"프로필")
+            const data = await axios(option)
+            const result = await data.data.data
+            setProfile(result)
+            console.log(result,"프로필")
             console.log(profile)
-            console.log(profile,"img_url",profile.img_url)
         }catch(err){
             console.log(err)
             console.log("프로필에러")
@@ -68,7 +68,7 @@ const ProfileCard = ({contentId}) => {
 }
 
 const ProfileDetail = ({props}) => {
-    const {id, max_subscribe_cnt, nickname, user_description, users_category, cur_subscribe_cnt } = props
+    const {id, max_subscribe_cnt, nickname, user_description, users_category, cur_subscribe_cnt, contents_cnt } = props
 
     return (
     <Box
@@ -99,6 +99,11 @@ const ProfileDetail = ({props}) => {
             <Grid>
                 <Typography>
                     구독자 {props && cur_subscribe_cnt}
+                </Typography>
+            </Grid>
+            <Grid>
+                <Typography>
+                    컨텐츠 {props && contents_cnt}
                 </Typography>
             </Grid>
             <Grid>
@@ -193,7 +198,7 @@ const Thumbnail = ({props}) => {
                 </ImageListItem>
             {/* </Link> */}
         </Grid>
-
+{/* 
         <Dialog
             open={onModal}
             onClose={handleClose}
@@ -202,7 +207,7 @@ const Thumbnail = ({props}) => {
             <Link to={`detail/${token_id}`}>
                 {token_id}번 게시글로 이동합니다
             </Link>
-        </Dialog>
+        </Dialog> */}
 
         </>
 
@@ -341,7 +346,7 @@ const ContentCardList = ({contentId})=>{
     //     </Box>
     return(
         <>
-        {items && now ==="all" && items.map( (item,key) => (<Thumbnail key={key} props ={item} onClick={handleOpen} />)) }
+        {items && now ==="all" && items.map( (item) => (<Link key={item.token_id} to={`detail/${item.token_id}`}> <Thumbnail key={item.token_id} props ={item} onClick={handleOpen} /> </Link>)) }
 
         {/* {now ==="all" && <Typography sx={{color:"#1122FF"}} > 로딩돼</Typography>} */}
 

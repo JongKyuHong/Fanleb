@@ -19,14 +19,18 @@ import { openModal, updateAddress, updateSuccess } from '../../redux/userSlice';
 import token_transfer from '../../utils/token_transfer';
 import { openSubsModal } from '../../redux/modalSlice';
 
-const Menu = () => (
-  <>
+const Menu = () => {
+  const navigator = useNavigate()
+  return(
+
+    <>
     {/* <Link to="/create"><p>등록하기</p> </Link>      */}    
-    <p onClick={() => alert('준비중')}>순위보기</p>     
+    <p onClick={() => navigator(`/rank/`)}>순위보기</p>         
     
     
   </>
- )
+    )
+  }
 
 // 헤더 화면 (상단 메뉴바)
 const DashboardNavbar = () => {
