@@ -49,7 +49,7 @@ export default async function Trade(walletaddress, sale_addr, purchasePrice, tok
       const transactionParameters1 = {
         to: nft_addr,
         from: walletaddress, // walletaddress
-        data: nftContract.methods.approve(sale_addr, token_id).encodeABI()
+        data: nftContract.methods.approve(walletaddress, token_id).encodeABI() // sale_addr
       }
       try {
         const txHash1 = await window.ethereum
@@ -63,7 +63,7 @@ export default async function Trade(walletaddress, sale_addr, purchasePrice, tok
         const transactionParameters = {
           to: sale_addr,
           from: walletaddress,
-          data: SaleContract.methods.purchase(walletaddress).encodeABI()
+          data: SaleContract.methods.purchase().encodeABI()
         };
     
         try {
