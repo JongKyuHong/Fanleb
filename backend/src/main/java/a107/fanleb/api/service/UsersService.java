@@ -1,10 +1,12 @@
 package a107.fanleb.api.service;
 
 import a107.fanleb.api.request.users.UsersEditReq;
+import a107.fanleb.api.response.users.UserViewRes;
 import a107.fanleb.common.exception.handler.NotExistedUserException;
 import a107.fanleb.config.aws.S3Util;
 import a107.fanleb.domain.users.Users;
 import a107.fanleb.domain.users.UsersRepository;
+import a107.fanleb.domain.users.UsersRepositorySupport;
 import a107.fanleb.domain.usersCategory.UsersCategory;
 import a107.fanleb.domain.usersCategory.UsersCategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import java.util.Optional;
 public class UsersService {
 
     private final UsersRepository usersRepository;
+    private final UsersRepositorySupport usersRepositorySupport;
     private final UsersCategoryRepository usersCategoryRepository;
     private final S3Util s3util;
 
@@ -97,14 +100,10 @@ public class UsersService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Users> showList(int page, String query) {
+    public Page<UserViewRes> showList(int page, String query, String userAddress) {
         PageRequest pageable = PageRequest.of(page - 1, 12, Sort.by("curSubscribeCnt").descending());
 
-        if (query == null || query.isEmpty()) {
-            return usersRepository.findAll(pageable);
-        } else {
-            return usersRepository.findByNicknameContaining(pageable, query);
-        }
+        return usersRepositorySupport.showList(pageable, query, userAddress);
     }
 
     @Transactional(readOnly = true)
