@@ -11,8 +11,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -25,7 +29,14 @@ public class CollectionsService {
 
     @Transactional
     public String save(CollectionsRegisterReq collectionsRegisterReq) {
-        Collections collection = collectionsRepository.save(Collections.builder().userAddress(collectionsRegisterReq.getUserAddress()).collectionName(collectionsRegisterReq.getCollection()).build());
+        String collectionName = collectionsRegisterReq.getCollection();
+        String userAddress = collectionsRegisterReq.getUserAddress();
+        Optional<Collections> byCollectionNameAndUserAddress = collectionsRepository.findByCollectionNameAndUserAddress(collectionName, userAddress);
+        byCollectionNameAndUserAddress.ifPresent(c -> {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 생성된 컬렉션 이름입니다.");
+        });
+
+        Collections collection = collectionsRepository.save(Collections.builder().userAddress(collectionsRegisterReq.getUserAddress()).collectionName(collectionName).build());
         return collection.getCollectionName();
     }
 
