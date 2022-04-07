@@ -139,11 +139,15 @@ public class ContentsService {
 
     }
 
+
     @Transactional(readOnly = true)
     public Page<Contents> showByAddress(int page, String address) {
         PageRequest pageable = PageRequest.of(page - 1, 10, Sort.by("id").descending());
 
-        return contentsRepository.findByOwnerAddress(pageable, address);
+        //recent_owner_address == null and owner_address=:
+        //or
+        //recent_owner_address ==:
+        return contentsRepository.findByRecentOwnerAddressIsNullAndOwnerAddressOrRecentOwnerAddress(pageable, address, address);
     }
 
     @Transactional(readOnly = true)
