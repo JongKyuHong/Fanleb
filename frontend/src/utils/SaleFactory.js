@@ -43,33 +43,39 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
         .on('data', (event) => {
           console.log("hi")
           saleContractAddr = event.returnValues[0]
+          
+          async function s() {
+            var data = {
+              "token_id" : itemId,
+              "seller_address" : _to,
+              "sales_contract_address" : saleContractAddr,
+              "cash_contract_address" : currency_addr,
+              "price" : purchasePrice
+            };
+          
+            var config = {
+              method: 'post',
+              url: 'http://j6a107.p.ssafy.io/api/sales',
+              headers: { },
+              data : data
+            };
+            
+              await axios(config)
+              .then(function (response) {
+                const res_d = response.data
+                return res_d
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+              }
+          s()
         })
+
   } catch (error){
     console.error(error)
   }
-  var data = {
-    "token_id" : itemId,
-    "seller_address" : _to,
-    "sales_contract_address" : saleContractAddr,
-    "cash_contract_address" : currency_addr,
-    "price" : purchasePrice
-  };
-
-  var config = {
-    method: 'post',
-    url: 'http://j6a107.p.ssafy.io/api/sales',
-    headers: { },
-    data : data
-  };
-
-  await axios(config)
-  .then(function (response) {
-    const res_d = response.data
-    return res_d
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+  
 }
 
 
