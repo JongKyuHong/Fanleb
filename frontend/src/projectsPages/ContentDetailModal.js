@@ -74,9 +74,7 @@ const Detail = ({detailId}) =>{
     
     axios(config)
     .then(function (response) {
-      console.log('hi')
       Trade(address, response.data.data.sale_contract_address,response.data.data.price, detailInfo.token_id)
-      console.log('hi2')
     })
     .catch(function (error) {
       console.log(error);
