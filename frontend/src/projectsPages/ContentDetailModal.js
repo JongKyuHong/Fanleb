@@ -1,23 +1,39 @@
-import {Avatar, Box, Button, Card ,Container, Divider,Link, Stack, Typography, Grid, ImageListItem, Chip} from '@mui/material';
+import {Avatar, Box, Button, Card ,Container, Divider,Link, Stack, Typography, Grid, ImageListItem, Chip, Modal} from '@mui/material';
 
 import Page from '../components/Page';
 import { useState, useEffect  } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Trade from '../utils/Sale'
 import getByTokenId from '../common/SaleInfoGetter';
 import { useSelector } from 'react-redux';
 import { Badge } from '@mui/icons-material';
 
-const ContentDetail = ()=>{
+const ContentDetailModal = ()=>{
   let {detailId} = useParams()
+  let navigate = useNavigate()
   useEffect(()=>{
     console.log(detailId,'param')
+    console.log('모달디테일로이도앻ㅆ습니다')
   },[])
 
+const [open,setOpen] = useState(true)
+const handleClose = e => {
+    setOpen(false)
+    // e.stopPropagation()
+    navigate(-1)
+
+
+}
   return(
     <>
+    <Modal
+        open={open}
+        onClose={handleClose}
+    >
+
     <Detail detailId={detailId}/>
+    </Modal>
     </>
 
   )
@@ -27,42 +43,50 @@ const Detail = ({detailId}) =>{
   // const detailId = props
   const address = useSelector(state => state.user.userInfo.userAddress);
   const [detailInfo, setDetailInfo] = useState()
+  const [price, setPrice] = useState()
   
+
   const getDetailInfo = async () =>{
+    const option = {
+      method: "GET",
+      url: `/api/contents/${detailId}`,
+    }
+    try{
+      const {data} = await axios(option)
+      setDetailInfo(data.data)
+    }catch(err){
+      console.log(err)
+      }
+  }
+
+  useEffect( ()=>{
+    getDetailInfo()
+
+
+  },[detailId])
+
+  const toggletrade = async () => {
     var config = {
       method: 'get',
-      url: `http://j6a107.p.ssafy.io/api/contents/${detailId}`,
+      url: `/api/sales?token_id=${detailInfo.token_id}`, // http://j6a107.p.ssafy.io/
       headers: { }
     };
     
     axios(config)
     .then(function (response) {
-      setDetailInfo(response.data.data)
+      console.log('hi')
+      Trade(address, response.data.data.sale_contract_address,response.data.data.price, detailInfo.token_id)
+      console.log('hi2')
     })
     .catch(function (error) {
       console.log(error);
     });
   }
 
-  useEffect( ()=>{
-    getDetailInfo()
-  },[detailId])
-
-  const toggletrade = async () => {
-    const res = await getByTokenId(detailInfo.token_id)
-    // if (res) {
-    //   //const a = await Trade(address,res,detailInfo.price,detailInfo.token_id)
-    // }
-    //Trade(address,"0x27b47c55CDe4b7Ea71b2Bd6FDF9B3206182d3744",1, 93)
-    console.log(res, 'res')
-    Trade(address, res[0], res[1], detailInfo.token_id)
-  }
-
   if(!detailInfo){
     return <Box sx={{ color:"#FFFFFF"}}>로딩..</Box>
     }
     return(
-      <Page title="내용페이지" maxWidth="100%" minHeight="100%" alignItems="center" display="flex">
         <Container sx={{marginTop:"100px", color:"#FFFFFF"}}>
           <Stack 
             direction="column"
@@ -177,15 +201,15 @@ const Detail = ({detailId}) =>{
                         </Box>
                       </Box>
                     </Grid>
-                    </Grid>
+                  </Grid>
+                
               </Box> 
             </Box>
           </Stack>
         </Container>
-      </Page>
     
 
     )
 }
 
-export default ContentDetail;
+export default ContentDetailModal;

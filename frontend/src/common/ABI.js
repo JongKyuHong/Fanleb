@@ -995,8 +995,7 @@ const ABI = {
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -1039,8 +1038,7 @@ const ABI = {
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -1053,8 +1051,7 @@ const ABI = {
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -1115,8 +1112,7 @@ const ABI = {
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -1129,8 +1125,7 @@ const ABI = {
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -1150,8 +1145,7 @@ const ABI = {
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -1164,8 +1158,7 @@ const ABI = {
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -1454,7 +1447,7 @@ const ABI = {
       "stateMutability": "nonpayable",
       "type": "function"
     }
-    ],
+  ],
   SUBSCRIPTION_ABI: [
     {
       "inputs": [],

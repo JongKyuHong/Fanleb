@@ -19,17 +19,18 @@ const nft_abi = ABI.CONTRACT_ABI.NFT_ABI;
 const nft_addr = AddressStore.CONTRACT_ADDR.SsafyNFT[0];
 
 const Token_abi = ABI.CONTRACT_ABI.TOKEN_ABI;
-const cu_addr = AddressStore.CONTRACT_ADDR.CurrencyAddress[0];
+const currency_addr = AddressStore.CONTRACT_ADDR.CurrencyAddress[0];
 
 export async function Create_Sale(_to, itemId, purchasePrice) {
-  const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
-  
-  window.contract = new web3.eth.Contract(sf_abi, sf_addr);
-  const windowmethod = window.contract.methods.createSale(_to, itemId, purchasePrice, cu_addr, nft_addr).encodeABI()
+  //const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
+  const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://20.196.209.2:6174'));
+
+  console.log(itemId,'itemId')
+  let salefactoryContract = new web3.eth.Contract(sf_abi, sf_addr);
   const transactionParameters11 = {
     to : sf_addr,
     from : _to,
-    data :  windowmethod,// currency
+    data :  salefactoryContract.methods.createSale(_to, itemId, purchasePrice, currency_addr, nft_addr).encodeABI()
   };
 
   try{
@@ -38,75 +39,97 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
         method : 'eth_sendTransaction',
         params : [transactionParameters11],
       });
-    console.log("transaction: " + txHash)
-    const sale_addr = await window.contract.methods.createSale(_to, itemId, purchasePrice, cu_addr, nft_addr).call(); // currency
-    console.log(sale_addr, '여기까지는 됨')
-    const apprt = await appr(_to, itemId, sale_addr, purchasePrice)
-    return sale_addr
+      console.log("transaction: " + txHash)
+      let saleContractAddr
+      salefactoryContract.events.NewSale({})
+        .on('data', (event) => {
+          saleContractAddr = event.returnValues[0]
+        
+          let nftContract = new web3.eth.Contract(nft_abi, nft_addr);
+          async function s(){
+            const tranParameters2 = {
+              to : nft_addr,
+              from : _to,
+              data : nftContract.methods.setApprovalForAll(saleContractAddr, true).encodeABI()
+            }
+            
+            try{
+              const txHash3 = await window.ethereum
+                .request({
+                  method : 'eth_sendTransaction',
+                  params : [tranParameters2],
+                });
+
+                console.log(saleContractAddr,'saleContractaddr')
+
+                console.log("transaction3: " + txHash3)
+                  const transParameter222 = {
+                    to : nft_addr,
+                    from : _to,
+                    data : nftContract.methods.approve(nft_addr, itemId).encodeABI()
+                  }
+                  try{
+                    const txHash333 = await window.ethereum
+                      .request({
+                        method : 'eth_sendTransaction',
+                        params : [transParameter222],
+                      });
+                      console.log("transaction3: " + txHash333)
+                
+                    const transParameter22 = {
+                      to : nft_addr,
+                      from : _to,
+                      data : nftContract.methods.transferFrom(_to, saleContractAddr, itemId).encodeABI()
+                    }
+                    
+                    try{
+                      const txHash33 = await window.ethereum
+                        .request({
+                          method : 'eth_sendTransaction',
+                          params : [transParameter22],
+                        });
+                        console.log("transaction3: " + txHash33)
+                    } catch (error){
+                      console.error(error)
+                    }
+                  //SALE_Registration_API(itemId, _to, saleContractAddr, purchasePrice)
+                  const ownera = await nftContract.methods.ownerOf(itemId).call();
+                  console.log(ownera, 'owner')
+                  var data = {
+                    "token_id" : itemId,
+                    "seller_address" : _to,
+                    "sales_contract_address" : saleContractAddr,
+                    "cash_contract_address" : currency_addr,
+                    "price" : purchasePrice
+                  };
+                
+                  var config = {
+                    method: 'post',
+                    url: 'http://j6a107.p.ssafy.io/api/sales', // 
+                    headers: { },
+                    data : data
+                  };
+                
+                  axios(config)
+                  .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+            } catch (error){
+              console.error(error)
+            }
+
+          } catch (error){
+            console.error(error)
+          }
+          }
+          s()
+        })
   } catch (error){
     console.error(error)
   }
 }
 
-export async function appr(_to, itemId, s_addr, purchasePrice) {
-  const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ETHEREUM_RPC_URL));
-  window.contract = new web3.eth.Contract(nft_abi, nft_addr);
-  const windowmethod2 = window.contract.methods.setApprovalForAll(s_addr, true).encodeABI()
-
-  const tranParameters2 = {
-    from : _to,
-    to : nft_addr,
-    data : windowmethod2,
-  }
-
-  try{
-    const txHash3 = await window.ethereum
-      .request({
-        method : 'eth_sendTransaction',
-        params : [tranParameters2],
-      });
-      console.log('여기 까지도6')
-      console.log("transaction3: " + txHash3)
-    console.log('여기는 되네')
-    const a = window.contract.methods.setApprovalForAll(s_addr, true).call();
-    //trans(_to,itemId, s_addr)
-    const salet = await SALE_Registration_API(itemId, _to, s_addr, purchasePrice)
-    return salet
-  } catch (error){
-    console.error(error)
-  }
-}
-
-
-
-
-
-export default function SALE_Registration_API(itemId, walletAddress, Sale_ContractAddr, purchasePrice){
-  
-  var data = {
-    "token_id" : itemId,
-    "seller_address" : walletAddress,
-    "sales_contract_address" : Sale_ContractAddr,
-    "cash_contract_address" : cu_addr,
-    "price" : purchasePrice
-  };
-
-  var config = {
-    method: 'post',
-    url: 'http://j6a107.p.ssafy.io/api/sales', // 
-    headers: { },
-    data : data
-  };
-
-  axios(config)
-  .then(function (response) {
-    console.log(JSON.stringify(response.data));
-    return true;
-  })
-  .catch(function (error) {
-    console.log(error);
-    return false;
-  });
-
-}
 
