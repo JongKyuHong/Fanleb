@@ -66,7 +66,7 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
                   const transParameter222 = {
                     to : nft_addr,
                     from : _to,
-                    data : nftContract.methods.approve(saleContractAddr, itemId).encodeABI()
+                    data : nftContract.methods.approve(nft_addr, itemId).encodeABI()
                   }
                   try{
                     const txHash333 = await window.ethereum
