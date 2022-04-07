@@ -10,7 +10,7 @@ const salefactoryAbi = ABI.CONTRACT_ABI.SALE_FACTORY_ABI // contract ABI
 const saleAbi = ABI.CONTRACT_ABI.SALE_ABI // contract ABI
 const salefactoryContractAddr = AddressStore.CONTRACT_ADDR.SaleFactory[0]; // contractAddr: 컨트랙트 주소
 const tokenAbi = ABI.CONTRACT_ABI.TOKEN_ABI // contract ABI
-const tokenContractAddr = AddressStore.CONTRACT_ADDR.SsafyToken[0]; // contractAddr: 컨트랙트 주소
+const tokenContractAddr = AddressStore.CONTRACT_ADDR.CurrencyAddress[0]; // contractAddr: 컨트랙트 주소
 const nftContractAddr = AddressStore.CONTRACT_ADDR.SsafyNFT[0]; // contractAddr: 컨트랙트 주소
 /**
  * 개인키로부터 주소를 추출합니다. 
@@ -283,12 +283,19 @@ export async function SubscribeUser(userAddr, myAddr, setSubscriptionsCnt) {
     alert('구매할 수 있는 구독권이 없습니다.');
     return // 종료
   }
+  // console.log('구매 가능한 구독권 tokenID 리스트:', tokenList) // 구독권은 다 같으니까 항상 0번 인덱스의 구독권을 구매하기로.
 
-  console.log(userAddr, myAddr, targetId)
+  ///////////////////////////////////////////////////////////////////////////
+  // 거래 시작
+  let salefactoryContract = new web3.eth.Contract(salefactoryAbi, salefactoryContractAddr);//loadContract();
+  
+  // set up your Ethereum transaction
+  // console.log(userAddr, tokenIndex[0], 1, tokenContractAddr, subscriptionContractAddr)
+  // 구독권 가격은 일단 항상 1SSF로, 여력 되면 추후에 수정
   const transactionParameters = {
-    to: subscriptionContract, // Required except during contract publications.
+    to: salefactoryContractAddr, // Required except during contract publications.
     from: myAddr, // must match user's active address.
-    data: subscriptionContract.methods.transferFrom(userAddr, myAddr, Number(tokenList[0])).encodeABI(), //make call to NFT smart contract
+    data: salefactoryContract.methods.createSale(userAddr, tokenList[0], 1, tokenContractAddr, subscriptionContractAddr).encodeABI(), //make call to NFT smart contract
   };
   //sign transaction via Metamask
   try {
@@ -299,109 +306,78 @@ export async function SubscribeUser(userAddr, myAddr, setSubscriptionsCnt) {
             params: [transactionParameters],
         });                
     console.log("transaction: " + txHash)
-    alert('구독 완료!')
+  
   } catch (error) {
       return {
           success: false,
           status: "😥 Something went wrong: " + error.message
       }
   }
-
-  // console.log('구매 가능한 구독권 tokenID 리스트:', tokenList) // 구독권은 다 같으니까 항상 0번 인덱스의 구독권을 구매하기로.
-
-  ///////////////////////////////////////////////////////////////////////////
-  // 거래 시작
-  // let salefactoryContract = new web3.eth.Contract(salefactoryAbi, salefactoryContractAddr);//loadContract();
-  
-  // // set up your Ethereum transaction
-  // // console.log(userAddr, tokenIndex[0], 1, tokenContractAddr, subscriptionContractAddr)
-  // // 구독권 가격은 일단 항상 1SSF로, 여력 되면 추후에 수정
-  // const transactionParameters = {
-  //   to: salefactoryContractAddr, // Required except during contract publications.
-  //   from: myAddr, // must match user's active address.
-  //   data: salefactoryContract.methods.createSale(userAddr, tokenList[0], 1, tokenContractAddr, subscriptionContractAddr).encodeABI(), //make call to NFT smart contract
-  // };
-  // //sign transaction via Metamask
-  // try {
-  //   // console.log('트랜잭션 시도')
-  //   const txHash = await window.ethereum
-  //       .request({
-  //           method: 'eth_sendTransaction',
-  //           params: [transactionParameters],
-  //       });                
-  //   console.log("transaction: " + txHash)
-  
-  // } catch (error) {
-  //     return {
-  //         success: false,
-  //         status: "😥 Something went wrong: " + error.message
-  //     }
-  // }
   
   // // 사용할 Sale 컨트랙트 주소 가져오기
-  // let saleContractAddr
-  // // let saleContractAddr = await salefactoryContract.events.NewSale().arguments[0].topics[0];
-  // salefactoryContract.events.NewSale({})
-  //   .on('data', (event) => {
-  //     // console.log('사용할 Sale 컨트랙트 주소: ', event.returnValues[0])
-  //     saleContractAddr = event.returnValues[0]
-  //     console.log('sale contract', saleContractAddr, event)
+  let saleContractAddr
+  // let saleContractAddr = await salefactoryContract.events.NewSale().arguments[0].topics[0];
+  salefactoryContract.events.NewSale({})
+    .on('data', (event) => {
+      // console.log('사용할 Sale 컨트랙트 주소: ', event.returnValues[0])
+      saleContractAddr = event.returnValues[0]
+      console.log('sale contract', saleContractAddr, event)
 
-  //     // console.log('사용할 Sale Contract 주소:', saleContractAddr)
-  //     // console.log('모든 세일 컨트랙트 주소', sales)
-  //     // 이 트랜잭션은 실패할 것으로 예상됩니다. => 승인(approve)해주었는지? or 돈이 충분히 있는지?
-  //     let tokenContract = new web3.eth.Contract(tokenAbi, tokenContractAddr);//loadContract();
+      // console.log('사용할 Sale Contract 주소:', saleContractAddr)
+      // console.log('모든 세일 컨트랙트 주소', sales)
+      // 이 트랜잭션은 실패할 것으로 예상됩니다. => 승인(approve)해주었는지? or 돈이 충분히 있는지?
+      let tokenContract = new web3.eth.Contract(tokenAbi, tokenContractAddr);//loadContract();
       
-  //     async function sendTransaction () {
-  //       // 해당 Sale 컨트랙트에 10000 SSF 권한 부여
-  //       const transactionParameters2 = {
-  //         to: userAddr, // Required except during contract publications.
-  //         from: myAddr, // must match user's active address.
-  //         data: tokenContract.methods.approve(saleContractAddr, 1).encodeABI(), //make call to NFT smart contract
-  //       };
-  //       //sign transaction via Metamask
-  //       try {
-  //         // console.log('Token 컨트랙트의 approve 트랜잭션 시도')
-  //         const txHash = await window.ethereum
-  //             .request({
-  //                 method: 'eth_sendTransaction',
-  //                 params: [transactionParameters2],
-  //             });                
-  //         // console.log("Token 컨트랙트의 approve transaction: " + txHash)
-  //         // 최후의 거래 트랜잭션  
-  //         let saleContract = new web3.eth.Contract(saleAbi, saleContractAddr);//loadContract();
-  //         const transactionParameters3 = {
-  //           to: userAddr, // Required except during contract publications.
-  //           from: myAddr, // must match user's active address.
-  //           data: saleContract.methods.purchase().encodeABI(), //make call to NFT smart contract
-  //         };
-  //         //sign transaction via Metamask
-  //         try {
-  //           // console.log('sale 컨트랙트의 purchase 트랜잭션 시도')
-  //           const txHash = await window.ethereum
-  //               .request({
-  //                   method: 'eth_sendTransaction',
-  //                   params: [transactionParameters3],
-  //               });                
-  //           console.log("sale 컨트랙트의 purchase transaction: " + txHash)    
-  //           setSubscriptionsCnt(prev => prev - 1)
-  //           alert('구독이 성공적으로 이루어졌습니다.')
-  //         } catch (error) {
-  //             return {
-  //                 success: false,
-  //                 status: "😥 Something went wrong: " + error.message
-  //             }
-  //         }          
+      async function sendTransaction () {
+        // 해당 Sale 컨트랙트에 10000 SSF 권한 부여
+        const transactionParameters2 = {
+          to: tokenContractAddr, // Required except during contract publications.
+          from: myAddr, // must match user's active address.
+          data: tokenContract.methods.approve(saleContractAddr, 1).encodeABI(), //make call to NFT smart contract
+        };
+        //sign transaction via Metamask
+        try {
+          // console.log('Token 컨트랙트의 approve 트랜잭션 시도')
+          const txHash = await window.ethereum
+              .request({
+                  method: 'eth_sendTransaction',
+                  params: [transactionParameters2],
+              });                
+          // console.log("Token 컨트랙트의 approve transaction: " + txHash)
+          // 최후의 거래 트랜잭션  
+          let saleContract = new web3.eth.Contract(saleAbi, saleContractAddr);//loadContract();
+          const transactionParameters3 = {
+            to: saleContractAddr, // Required except during contract publications.
+            from: myAddr, // must match user's active address.
+            data: saleContract.methods.purchase().encodeABI(), //make call to NFT smart contract
+          };
+          //sign transaction via Metamask
+          try {
+            // console.log('sale 컨트랙트의 purchase 트랜잭션 시도')
+            const txHash = await window.ethereum
+                .request({
+                    method: 'eth_sendTransaction',
+                    params: [transactionParameters3],
+                });                
+            console.log("sale 컨트랙트의 purchase transaction: " + txHash)    
+            setSubscriptionsCnt(prev => prev - 1)
+            alert('구독이 성공적으로 이루어졌습니다.')
+          } catch (error) {
+              return {
+                  success: false,
+                  status: "😥 Something went wrong: " + error.message
+              }
+          }          
         
-  //       } catch (error) {
-  //           return {
-  //               success: false,
-  //               status: "😥 Something went wrong: " + error.message
-  //           }
-  //       }          
-  //     }
-  //     sendTransaction()
-  //   })  
+        } catch (error) {
+            return {
+                success: false,
+                status: "😥 Something went wrong: " + error.message
+            }
+        }          
+      }
+      sendTransaction()
+    })  
 };
 
 // // 내가 보유 중인 구독권 개수(내 구독권 + 타인의 구독권 합해서)
