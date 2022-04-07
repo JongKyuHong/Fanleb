@@ -26,36 +26,42 @@ const RankTitle = () => {
         <>
         <Box sx={{
             display:'flex',  color:"#FFFFFF", justifyContent:"space-evenly",
+
   
 
 
             }}>
-            <Grid sx={{ width:"50%", paddingLeft:"35px"}}>
-            <Typography variant='h4'>
+            <Grid sx={{display:"flex", width:"7%", justifyContent:"center"}}>
+                <Typography>
+                    순위
+                </Typography>
+            </Grid>
+            <Grid sx={{display:"flex", width:"20%",justifyContent:"center"}}>
+            <Typography variant='h5' sx={{justifyItems:"center"}}>
                 아이디
             </Typography>
             </Grid>
-            <Grid sx={{marginRight:"30px", width:"10%"}}>
+            <Grid sx={{display:"flex",justifyContent:"center", width:"10%"}}>
             <Typography>
                 분류
             </Typography>
             </Grid>
-            <Grid sx={{marginRight:"30px", width:"10%"}}>
+            <Grid sx={{display:"flex",justifyContent:"center",  width:"10%"}}>
             <Typography>
                 구독자 수
             </Typography>
             </Grid>
-            <Grid sx={{marginRight:"30px", width:"10%"}}>
+            <Grid sx={{display:"flex",justifyContent:"center",  width:"10%"}}>
                 <Typography>
                     컨텐츠 수
                 </Typography>
             </Grid>
-            <Grid sx={{marginRight:"30px", width:"10%"}}>
+            <Grid sx={{display:"flex",justifyContent:"center",  width:"10%"}}>
                 <Typography>
                     거래 최고가
                 </Typography>
             </Grid>
-            <Grid sx={{marginRight:"30px", width:"10%"}}>
+            <Grid sx={{display:"flex",justifyContent:"center",  width:"10%"}}>
                 <Typography>
                     보유자 수
                 </Typography>
@@ -83,7 +89,9 @@ const RankList =({userList}) => {
     // ]
 
     useEffect( ()=>{
-        console.log('변경')
+        setSortedList(userList)
+
+        console.log('변경',userList)
     },[userList])
 
     return(
@@ -120,33 +128,39 @@ const RankItem =({item}) => {
             <Box
                 sx={{
                     display:'flex',
-                    color:"#FF00FF",
+                    color:"#C2E0FF",
                     justifyContent:"space-around",
                     width:"100%",
                     margin:"10px",
                 }}
             >
-                <Grid sx={{display:"flex", width:"35%",}}>
+                <Grid sx={{width:"7%",display:"flex",justifyContent:"center", }}>
+                    <Typography variant="h6">
+                        {id}
+                    </Typography>
+
+                </Grid>
+                <Grid sx={{display:"flex",justifyContent:"left",  width:"20%",}}>
                     <Avatar src={img_url?img_url:default_img_url} sx={{marginRight:"10px"}}/>
                     <Typography sx={{ color:"#FFFFFF", paddingLeft:"20px"}}>
                         {nickname?nickname:"무명"}
                     </Typography>
                 </Grid>
-                <Grid sx={{width:"15%",}}>
+                <Grid sx={{display:"flex",justifyContent:"center", width:"10%",}}>
                     <Typography>
                         {user_category_name?user_category_name:'미분류'}
                     </Typography>
                 </Grid>
-                <Grid sx={{width:"10%",}}>
+                <Grid sx={{display:"flex",justifyContent:"center", width:"10%",}}>
                    {subscription_cnt}
                 </Grid>
-                <Grid sx={{width:"10%",}}>
+                <Grid sx={{display:"flex",justifyContent:"center", width:"10%",}}>
                     {contents_cnt}
                 </Grid>
-                <Grid sx={{width:"10%",}}>
+                <Grid sx={{display:"flex",justifyContent:"center", width:"10%",}}>
                     {max_traded_price}
                 </Grid>
-                <Grid sx={{width:"10%",}}>
+                <Grid sx={{display:"flex",justifyContent:"center", width:"10%",}}>
                     {owner_cnt}
                 </Grid>
             </Box>
@@ -189,7 +203,7 @@ const PageButton = ({page,setPage,totalPages}) => {
 
 }
 
-const SortButton = ({setUserList, userList}) =>{
+const SortButton = ({setUserList, userList, setSortId}) =>{
     const [sub, setSub] = useState(false) // 구독자순
     const [cont, setCont] = useState(false) // 컨텐츠 수
     const [price, setPrice] = useState(false) //거래 최고가 순
@@ -199,24 +213,28 @@ const SortButton = ({setUserList, userList}) =>{
         let nowSort = e.target.value 
         switch(nowSort){
             case '구독자':
-                setUserList(userList => userList.sort((a, b) =>{
-                    return b.subscription_cnt -a.subscription_cnt 
-                }))
+                setSortId('subscription_cnt')
+                // setUserList(userList => userList.sort((a, b) =>{
+                //     return b.subscription_cnt -a.subscription_cnt 
+                // }))
                 break
             case '컨텐츠':
-                setUserList(userList => userList.sort((a, b) =>{
-                    return b.contents_cnt -a.contents_cnt 
-                }))
+                // setUserList(userList => userList.sort((a, b) =>{
+                //     return b.contents_cnt -a.contents_cnt 
+                // }))
+                setSortId('contents_cnt')
                 break
             case '최고가':
-                setUserList(userList => userList.sort((a, b) =>{
-                    return b.max_traded_price -a.max_traded_price 
-                }))
+                // setUserList(userList => userList.sort((a, b) =>{
+                //     return b.max_traded_price -a.max_traded_price 
+                // }))
+                setSortId('max_traded_price')
                 break
             case '보유자':
-                setUserList(userList => userList.sort((a, b) =>{
-                    return b.owner_cnt -a.owner_cnt 
-                }))
+                // setUserList(userList => userList.sort((a, b) =>{
+                //     return b.owner_cnt -a.owner_cnt 
+                // }))
+                setSortId('owner_cnt')
                 break
             }
         console.log(userList)
@@ -242,23 +260,39 @@ const Rank = () => {
     const [userList, setUserList] = useState([])
     const [pages, setPages] = useState(1)
     const [totalPages,setTotalPages]= useState(0)
+    const [sortId,setSortId] = useState(null)
 
     const getList = async () => {
         const option = {
             method: "GET",
-            url: `/api/ranking?page=${pages}`,
+            url: `/api/ranking?page=${pages}&search[sortBy]=${sortId}`,
         }
         try{
             const {data} = await axios(option)
-            // setUserList(()=>data.data.content)
+            setUserList(()=>data.data.content)
+            console.log(option.url)
             console.log('rank on')
             console.log(data)
             console.log(userList.length !== 0)
-            setTotalPages(data.data.total_pages)
             //기본정렬 구독자순
-            setUserList(data.data.content.sort( (a, b) =>{
-                return b.subscription_cnt -a.subscription_cnt 
-            }))
+            // setUserList(data.data.content.sort( (a, b) =>{
+            //     return b.subscription_cnt -a.subscription_cnt 
+            // }))
+        }catch(err){
+            console.log(err)
+        }
+    }
+    const getListPage = async () => {
+        const option = {
+            method: "GET",
+            url: `/api/ranking?page=${pages}&search[sortBy]=${sortId}`,
+        }
+        try{
+            const {data} = await axios(option)
+            console.log('rank on')
+            console.log(userList.length !== 0)
+            setUserList(()=>data.data.content)
+            setTotalPages(data.data.total_pages)
         }catch(err){
             console.log(err)
         }
@@ -267,22 +301,37 @@ const Rank = () => {
     useEffect( () =>{
         getList()
         console.log('리스트',userList)
+    },[sortId])
+
+    useEffect( () =>{
+        getListPage()
+        console.log("페이지변환")
     },[pages])
 
     return(
         <Page title="랭킹" minHeight="100%" alignItems="center" display="flex">
-            <Container sx={{marginTop:"100px"}}>
-            <Stack direction="column" justifyContent="center" alignItems='center' sx={{ minWidth:"400px",}}>
+            <Container sx={{marginTop:"100px", 
+            minWidth:"700px"
+        
+            }}>
+                <Box sx={{color:"#FFFFFF", margin:"50px", display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
+                    <Typography variant="h3">
+                        Fanleb 랭킹
+                    </Typography>
+                    <Typography sx={{margin:"10px"}} >
+                        인기있는 셀럽을 찾아보세요!
+                    </Typography>
+                </Box>
+            {/* <Stack direction="column" justifyContent="center" alignItems='center' sx={{ minWidth:"400px",}}> */}
                 <Box sx={{
                     display:"flex",
                     flexDirection:"column",
-                    marginLeft:"100px",
                     justifyContent:"center",
                     border:"solid 5px #C2E0FF",
                     borderRadius:'15px',
                     }}>
                     <Box sx={{display:'flex', justifyContent:"right", padding:"10px"}}>
-                        <SortButton userList={userList} setUserList={setUserList}/>
+                        <SortButton userList={userList} setUserList={setUserList} setSortId={setSortId} />
                     </Box>
                     <Box sx={{display:'flex', justifyContent:"center", padding:"10px"}}>
                         <PageButton page={pages} setPage={setPages} totalPages={totalPages}/>
@@ -292,7 +341,7 @@ const Rank = () => {
                     {/* 랭크리스트안에 버튼 */}
                 </Box>
 
-            </Stack>
+            {/* </Stack> */}
         </Container>
         </Page>
 

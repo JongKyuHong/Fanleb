@@ -177,27 +177,40 @@ const Thumbnail = ({props}) => {
     
     return (
         <>
-        <Grid item sx={{ display:"grid", width:"400px",}}
-            onClick={goToContent}
-            onMouseOver={()=>setIsHover(1)}
-            onMouseOut={()=>setIsHover(0)}
+            <Grid item 
+                sx={{ 
+                    display:"grid", 
+                    justifyContent:"center",
+                    alignItems:"center",
+                    margin:"15px",
 
-        > 
-            {/* <Link to={`detail/${token_id}`}> */}
-                <ImageListItem 
-                    key={token_id} 
-                    sx={{margin:2,padding:2,width:"400px",height:"400px"}}
-                    // {...(isHover? 'sx={{opacity:0.5}}' : null)}
+                }}
 
-                >
-                    <img
-                    src={`${img_url? img_url:default_img}?h=100`}
-                    // srcSet={`${img_url? img_url:default_img}?w=300&h=300&fit=crop&dpr=2 2x`}
-                    alt={default_img}
-                    loading="lazy"/>
-                </ImageListItem>
-            {/* </Link> */}
-        </Grid>
+                onClick={goToContent}
+                onMouseOver={()=>setIsHover(1)}
+                onMouseOut={()=>setIsHover(0)}
+            > 
+                <Link to={`detail/${token_id}`}>
+                    <img src={img_url?img_url:default_img} style={{
+                                display:"block",
+                                width:"300px",
+                                height:"300px",
+                                objectFit:"cover",
+                                borderRadius:"10px",
+                            }}
+                    />
+                        {/* <Box
+                            component="img"
+                            src={img_url?img_url:default_img}
+                            sx={{
+                                display:"block",
+                                border:"solid 1px #F8f8",
+                                width:"100%",
+                                objectFit:"cover",
+                            }}
+                        /> */}
+                </Link>
+            </Grid>
 {/* 
         <Dialog
             open={onModal}
@@ -346,7 +359,7 @@ const ContentCardList = ({contentId})=>{
     //     </Box>
     return(
         <>
-        {items && now ==="all" && items.map( (item) => (<Link key={item.token_id} to={`detail/${item.token_id}`}> <Thumbnail key={item.token_id} props ={item} onClick={handleOpen} /> </Link>)) }
+        {items && now ==="all" && items.map( (item) => (<Thumbnail key={item.token_id} props ={item} onClick={handleOpen} />)) }
 
         {/* {now ==="all" && <Typography sx={{color:"#1122FF"}} > 로딩돼</Typography>} */}
 
@@ -443,10 +456,10 @@ const MenuButton = ({contentId}) =>{
 
     return(
         <Box>
-            <Button variant={all} value="all" onClick={setShowItem}>
+            <Button color="secondary" variant={all} value="all" onClick={setShowItem}>
                 전체보기
             </Button>
-            <Button variant={collection} value="collection" onClick={setShowItem}>
+            <Button color="secondary" variant={collection} value="collection" onClick={setShowItem}>
                 컬렉션 보기
             </Button>
         </Box>
@@ -617,25 +630,19 @@ const Content = () => {
                         sx={{display:'flex'}}
                         >
                         <MenuButton contentId={contentId} />
-                        {/* {items.map( item => <SelectList key={item.id} props={item} listOn={listOn} setListOn={setListOn} setNow={setNow} /> )} */}
                     </Grid>
                 </Box>
                 {/* 내용물 리스트 */}
-                <Container
+                <Box
                     sx={{
                         display:"grid",
-                        maxWidth:"1000px",
                         width:"100%",
-                        gridTemplateColumns:"repeat(3,1fr)"
-
+                        gridTemplateColumns:"repeat(3,1fr)",
                     }}
                     >
                     <ContentCardList contentId= {contentId}/>
-                    {/* {notOn !== 1?<CollectionList collection={view} user_id={contentId}/> : onStart.map( (item,key) => <Grid sx={{   display:"grid",
-                        border:"solid #1211ff", 
-                        minwidth:"300px",
-                    }} item xs={4} key ={key} > <Thumbnail key ={key} props = {item}/> </Grid>)} */}
-                </Container>
+
+                </Box>
             </Stack>
         </Container>
         </Page>
