@@ -3,3 +3,22 @@
   -webkit-appearance: "Always Show Up/Down Arrows";
 
 }
+
+.subs-img-category {
+  color: white;
+  text-align: center;  
+}
+.subs-img-name {
+  color: rgb(32, 129, 226);
+  text-align: center;
+}
+
+@media screen and (min-width: 1600px) {
+.subs-img-category {  
+  margin-right: 50px;
+}
+
+.subs-img-name {
+  margin-right: 50px;
+}
+}

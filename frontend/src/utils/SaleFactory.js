@@ -30,7 +30,7 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
     from : _to,
     data :  salefactoryContract.methods.createSale(_to, itemId, purchasePrice, currency_addr, nft_addr).encodeABI()
   };
-
+  
   try{
     const txHash = await window.ethereum
       .request({
@@ -41,9 +41,7 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
       let saleContractAddr
       salefactoryContract.events.NewSale({})
         .on('data', (event) => {
-          console.log("hi")
           saleContractAddr = event.returnValues[0]
-        
           var data = {
             "token_id" : itemId,
             "seller_address" : _to,
@@ -51,27 +49,25 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
             "cash_contract_address" : currency_addr,
             "price" : purchasePrice
           };
-        
           var config = {
             method: 'post',
             url: 'http://j6a107.p.ssafy.io/api/sales',
             headers: { },
             data : data
           };
-        
-          await axios(config)
+            axios(config)
           .then(function (response) {
-            const res_d = response.data
-            return res_d
+            console.log(JSON.stringify(response.data));
           })
           .catch(function (error) {
             console.log(error);
           });
         })
-      
+    return saleContractAddr
   } catch (error){
     console.error(error)
   }
+  
 }
 
 

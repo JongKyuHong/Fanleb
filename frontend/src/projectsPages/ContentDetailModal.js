@@ -183,7 +183,7 @@ const Detail = ({detailId}) =>{
                           NFT 정보
                         </Typography>
                         <Box sx={{marginTop:"15px"}}>
-                          현재 가격 : {saleInfo.price}
+                          현재 가격 : {saleInfo && saleInfo.price}
                         </Box>
                         <Box sx={{margin:"20px"}}>
                           <Button variant="contained" color="secondary" onClick={toggletrade}>
