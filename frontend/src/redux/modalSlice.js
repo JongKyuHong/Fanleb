@@ -7,7 +7,7 @@ export const modalSlice = createSlice({
     isOpen: false,
     thumnailInfo: {
       thumnailImgUrl: "",
-      contentsData: "",
+      // contentsData: "",
       userImgUrl: "",
       nickname: "",
       description: "",
@@ -27,7 +27,7 @@ export const modalSlice = createSlice({
       state.isOpen = true;
       state.thumnailImgUrl = payload.imgUrl;
       // 리덕스에서 배열은 그냥 넣으면 작동이 안된다!      
-      state.contentsData.push(payload);
+      // state.contentsData.push(payload);
       state.userImgUrl = payload.userImgUrl;
       state.nickname = payload.nickname;
       state.description = payload.description;
@@ -37,7 +37,7 @@ export const modalSlice = createSlice({
     },
     removeThumnail: (state) => {
       state.thumnailImgUrl = "";
-      state.contentsData = [];
+      // state.contentsData = [];
       state.userImgUrl = "";
       state.nickname = "";
       state.description = "";
