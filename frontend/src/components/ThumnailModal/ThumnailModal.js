@@ -64,8 +64,8 @@ function ThumnailModal() {
       alert('이미 구독한 계정입니다.')
       return
     }
-    // await SubscribeUser(userAddress, myAddr, setSubscriptionsCnt);
-    await SubscribeMember(userAddress, myAddr, setSubscriptionsCnt);
+    await SubscribeUser(userAddress, myAddr, setSubscriptionsCnt);
+    // await SubscribeMember(userAddress, myAddr, setSubscriptionsCnt);
 
   }  
   useEffect(() => {    
@@ -135,7 +135,7 @@ function ThumnailModal() {
           <div className="item-content">
             <div className="item-content-title">
               <h1>{collectionName}</h1>
-              <p>From <span>4.5 SSF</span> ‧ { subscriptionCnt } available</p>
+              <p>From <span>1 SSF</span> ‧ { subscriptionCnt } available</p>
             </div>
             <div className="item-content-creator">
             <div style={{overflow: 'hidden'}}><p>{ category }</p></div>
@@ -152,7 +152,7 @@ function ThumnailModal() {
             <div className="item-content-buy">
               {/* 구독여부에 따라 보여지는 버튼 달라짐 */}
               
-              <button className="primary-btn" onClick={subscribe}>구독하기</button>            
+              <button className="primary-btn" onClick={subscribe}>구독하기 ( 1 SSF )</button>            
               <button className="secondary-btn"
               // onClick={onSub}
                 onClick={() => {
