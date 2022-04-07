@@ -56,11 +56,9 @@ const DashboardNavbar = () => {
   const { userInfo, pending, error } = useSelector(state => state.user);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [keyword, setKeyword] = useState("");
-<<<<<<< HEAD
   const [style, setStyle] = useState(false);
   const [acc, setAcc] = useState("");
-=======
->>>>>>> feature/frontend-rank
+
   //  const [user, setUser] = useState(false)
   // const handleLogout = () => {
   //   setUser(false);
@@ -116,7 +114,7 @@ const DashboardNavbar = () => {
     dispatch(toggleSubsModal())
     // window.ethereum.request({ method: 'eth_requestAccounts' }).then(res => console.log(res))
   }
-<<<<<<< HEAD
+
     const switchWallet = async () => {
       const accounts2 = await window.ethereum.request({ method: 'eth_requestAccounts' });
       const account2 = accounts2[0];
@@ -128,7 +126,7 @@ const DashboardNavbar = () => {
         // console.log(keyword)
         navigator(`/search?query=${keyword}`)
       }
-=======
+
   let account
   function startApp() {
     if (window.ethereum) {
@@ -163,7 +161,7 @@ const DashboardNavbar = () => {
     if (e.key == 'Enter') {
       // console.log(keyword)
       navigator(`/search?query=${keyword}`)
->>>>>>> feature/frontend-rank
+
     }
     const onInput = (e) => {
       // setKeyword(`안녕`)
@@ -199,7 +197,7 @@ const DashboardNavbar = () => {
           
             </div>
           </div>
-<<<<<<< HEAD
+
           <div className="navbar-sign">
             {userInfo?.userAddress?.length > 0 ? (
               <>
@@ -210,7 +208,7 @@ const DashboardNavbar = () => {
                 <button type='button' className='secondary-btn' onClick={switchWallet}>자금 요청</button>
                 {/* <button type='button' className='secondary-btn' onClick={enableEth} >지갑 연결</button> */}
                 <Avatar onClick={() => dispatch(openModal())} src={userInfo?.imageUrl} size="large" sx={{ width: 56, height: 56, cursor: 'pointer' }} />
-=======
+
         </div>
         <div className="navbar-sign">
         {userInfo?.userAddress?.length > 0 ? (
@@ -221,7 +219,6 @@ const DashboardNavbar = () => {
           <button type='button' className='secondary-btn' onClick={switchWallet}>지갑 변경</button>
           {/* <button type='button' className='secondary-btn' onClick={enableEth} >지갑 연결</button> */}
           <Avatar onClick={() => dispatch(openModal())} src={userInfo?.imageUrl} size="large" sx={{ width: 56, height: 56, cursor: 'pointer' }} />
->>>>>>> feature/frontend-rank
             
           
               </>
