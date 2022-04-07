@@ -1,23 +1,39 @@
-import {Avatar, Box, Button, Card ,Container, Divider,Link, Stack, Typography, Grid, ImageListItem, Chip} from '@mui/material';
+import {Avatar, Box, Button, Card ,Container, Divider,Link, Stack, Typography, Grid, ImageListItem, Chip, Modal} from '@mui/material';
 
 import Page from '../components/Page';
 import { useState, useEffect  } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Trade from '../utils/Sale'
 import getByTokenId from '../common/SaleInfoGetter';
 import { useSelector } from 'react-redux';
 import { Badge } from '@mui/icons-material';
 
-const ContentDetail = ()=>{
+const ContentDetailModal = ()=>{
   let {detailId} = useParams()
+  let navigate = useNavigate()
   useEffect(()=>{
     console.log(detailId,'param')
+    console.log('모달디테일로이도앻ㅆ습니다')
   },[])
 
+const [open,setOpen] = useState(true)
+const handleClose = e => {
+    setOpen(false)
+    // e.stopPropagation()
+    navigate(-1)
+
+
+}
   return(
     <>
+    <Modal
+        open={open}
+        onClose={handleClose}
+    >
+
     <Detail detailId={detailId}/>
+    </Modal>
     </>
 
   )
@@ -71,7 +87,6 @@ const Detail = ({detailId}) =>{
     return <Box sx={{ color:"#FFFFFF"}}>로딩..</Box>
     }
     return(
-      <Page title="내용페이지" maxWidth="100%" minHeight="100%" alignItems="center" display="flex">
         <Container sx={{marginTop:"100px", color:"#FFFFFF"}}>
           <Stack 
             direction="column"
@@ -192,10 +207,9 @@ const Detail = ({detailId}) =>{
             </Box>
           </Stack>
         </Container>
-      </Page>
     
 
     )
 }
 
-export default ContentDetail;
+export default ContentDetailModal;
