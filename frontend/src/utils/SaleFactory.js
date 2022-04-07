@@ -50,7 +50,7 @@ export async function Create_Sale(_to, itemId, purchasePrice) {
             const tranParameters2 = {
               to : nft_addr,
               from : _to,
-              data : nftContract.methods.setApprovalForAll(saleContractAddr, true).encodeABI()
+              data : nftContract.methods.setApprovalForAll(_to, true).encodeABI() // saleContractAddr
             }
             
             try{
