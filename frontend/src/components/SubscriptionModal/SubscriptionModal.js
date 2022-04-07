@@ -84,12 +84,12 @@ function SubscriptionModal() {
       }}
     >
       <div className='item section__padding' style={{ width: '90%', background: '#24252d', borderRadius: '30px', }}>
-        <div style={{ width: '100%', paddingTop: 100 }}>
+        <div style={{ width: '100%', paddingTop: '50px' }}>
           
           {subscriptions.length > 0 ?
             <>
-            <h1 style={{color: 'white', textAlign: 'center'}}><span style={{}}>{ userNickname }</span> 님이 보유 중인 NFT 구독권</h1>
-            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ padding: '2rem 4rem' }}>
+            <h1 style={{color: 'white', textAlign: 'center', marginBottom: '20px'}}><span style={{}}>{ userNickname }</span> 님이 보유 중인 NFT 구독권</h1>
+            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ padding: '2rem 4rem', overflow: 'auto', height: '500px' }}>
                 {subscriptions.map((subscription, index) => {
                   return <SubscriptionImage subscription={subscription} key={index} />}
                   )
@@ -131,7 +131,7 @@ function SubscriptionModal() {
           <div style={{ marginTop: '40px' }}>
             <h3 style={{color: 'white'}}>구독권 이미지: </h3>
             <input type={'file'} onChange={uploadFile} style={{ marginTop: '20px' }} />
-            <img src={pic.previewURL} />
+            <img src={pic.previewURL} style={{height: '150px'}} />
           </div>
    
             <div className="item-content-detail">

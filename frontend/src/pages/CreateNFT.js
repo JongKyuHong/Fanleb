@@ -103,7 +103,7 @@ const CreateNFT = () => {
       title,
       description,
       myCollection,
-      file
+      file,
     }
     let contentId;
     let img_url;
@@ -113,12 +113,15 @@ const CreateNFT = () => {
     } 
     // 백엔드에 컨텐츠 기본 정보 등록
     const formData = new FormData();
-    formData.append('image', newData.file);
+    formData.append('image', newData.file || newData.video);
     formData.append('content_title', newData.title);
     formData.append('content_description', newData.description);
-    
+    console.log(title,
+      description,
+      myCollection,
+      file,)
     try {
-      // console.log(`💪 "api/contents" 으로 생성 요청`)
+      console.log(`💪 "api/contents" 으로 생성 요청`)
       const res = await axios({
         method: "POST",
         url: "api/contents",
@@ -128,14 +131,14 @@ const CreateNFT = () => {
       contentId = res.data.data.id;
       img_url = res.data.data.img_url;
   
-      // console.log('백엔드에 최초로 생성한 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)      
+      console.log('백엔드에 최초로 생성한 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)      
       // 블록체인에 컨텐츠 등록
       try {
         const token_id = await registerNFTtoBackend(address, img_url);
-        // console.log('블록체인에 등록한 TokenId:', token_id)
-        // console.log('NFT 등록 이후, 백엔드에 업데이트할 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)
-        // console.log(`💪 api/contents/${contentId} 으로 업데이트 요청`)
-        // console.log('서버에 등록할 정보:', token_id, address, newData.myCollection)
+        console.log('블록체인에 등록한 TokenId:', token_id)
+        console.log('NFT 등록 이후, 백엔드에 업데이트할 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)
+        console.log(`💪 api/contents/${contentId} 으로 업데이트 요청`)
+        console.log('서버에 등록할 정보:', token_id, address, newData.myCollection)
         const { data } = await axios({
           method: 'POST',
           url: `api/contents/${contentId}`,
@@ -149,7 +152,7 @@ const CreateNFT = () => {
         // const data = await axios.post(`api/contents/${contentId}`, {"token_id": token_id,
         //     "owner_address": address,
         //     "collection": newData.myCollection.collection_name})
-        // console.log('서버에 저장한 결과:', data)
+        console.log('서버에 저장한 결과:', data)
         if (data.result === "success") {
           //alert('게시물이 정상적으로 등록되었습니다.')
           var retval = confirm("판매등록 하시겠습니까?")
@@ -237,7 +240,7 @@ const CreateNFT = () => {
     axios(`/api/collections?page=1&user_address=${address}`)
       .then(res => {
         setCollections(res.data.data.content)
-        setMyCollection(res.data.data.content[0])
+        setMyCollection(res.data.data.content[0].collection_name)        
       })
       .catch(err => console.log(err))
     
