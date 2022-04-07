@@ -33,10 +33,12 @@ const Subscribe = ({urlId, open,setOpen}) => {
     
     // logOnAddress,
 
-    useEffect(()=>{
-        console.log(logOnAddress,'addr')
-        console.log(urlId)
-        getId()
+    useEffect(() => {
+        if (open) {
+            console.log(logOnAddress,'addr')
+            console.log(urlId)
+            getId()
+        }
     },[open])
 
 

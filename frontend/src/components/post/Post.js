@@ -8,7 +8,7 @@ import axios from "axios";
 import UserImg from "./userImage";
 import empty from "./empty-image.jpg";
 import { useDispatch, useSelector } from "react-redux";
-import { updateThumnail } from "../../redux/modalSlice";
+import { openThumnailModal, updateThumnail } from "../../redux/modalSlice";
 // import CollectionImg from "./CollectionImg";
 const Post = (props) => {
   const { post: { nickname, collection_name, img_url, user_address, id }, onItemClicked } = props;
@@ -43,7 +43,7 @@ const Post = (props) => {
     thumnailData.contentsData = [...data.data];
     // console.log(thumnailData)
 
-    dispatch(updateThumnail(thumnailData))
+    dispatch(openThumnailModal(thumnailData))
   } 
   const encodeUrl = () => {
     if (img_url.includes('mp4')) {

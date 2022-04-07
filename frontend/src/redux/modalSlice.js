@@ -18,8 +18,29 @@ export const modalSlice = createSlice({
       isSubsOpen: false,
   },
   reducers: {
-    toggleModal: (state) => {
-      state.isOpen = !state.isOpen;
+    openThumnailModal: (state, {payload}) => {
+      state.isOpen = true;
+      state.isOpen = true;
+      state.thumnailImgUrl = payload.imgUrl;
+      // 리덕스에서 배열은 그냥 넣으면 작동이 안된다!      
+      // state.contentsData.push(payload);
+      state.userImgUrl = payload.userImgUrl;
+      state.nickname = payload.nickname;
+      state.description = payload.description;
+      state.category = payload.category;
+      state.userAddress = payload.userAddress;
+      state.collectionName = payload.collectionName;
+    },
+    closeThumnailModal: (state) => {
+      state.isOpen = false
+      state.thumnailImgUrl = "";
+      // state.contentsData = [];
+      state.userImgUrl = "";
+      state.nickname = "";
+      state.description = "";
+      state.category = "";
+      state.userAddress = "";
+      state.collectionName = "";
     },
     updateThumnail (state, {payload}) {
       // console.log(state.contentsData)
@@ -45,16 +66,21 @@ export const modalSlice = createSlice({
       state.userAddress = "";
       state.collectionName = "";
     },
-    toggleSubsModal: (state) => {
-      state.isSubsOpen = !state.isSubsOpen;
-    }
+    openSubsModal: (state) => {
+      state.isSubsOpen = true
+    },
+    closeSubsModal: (state) => {
+      state.isSubsOpen = false
+    },
   },
 });
 
-export const {
-  toggleModal,
+export const {  
   updateThumnail,
   removeThumnail,
-  toggleSubsModal,
+  openThumnailModal,
+  closeThumnailModal,
+  openSubsModal,
+  closeSubsModal,
 } = modalSlice.actions;
 export default modalSlice.reducer;

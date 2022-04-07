@@ -1,7 +1,7 @@
 import { Divider, Modal,Button } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { removeThumnail, toggleModal } from '../../redux/modalSlice';
+import { closeThumnailModal, removeThumnail, toggleModal } from '../../redux/modalSlice';
 import './ThumnailModal.css';
 import empty from "../post/empty-image.jpg";
 import { useNavigate } from 'react-router-dom';
@@ -18,9 +18,8 @@ function ThumnailModal() {
   const [isSubscribed, setIssubscribed] = useState(false);
   const navigator = useNavigate();
   const closeModal = () => {
-    dispatch(removeThumnail())
-    dispatch(toggleModal())
-    }
+    dispatch(closeThumnailModal())
+  }
 
   // 구독관련
   const [open, setOpen] = useState(false)
@@ -32,7 +31,7 @@ function ThumnailModal() {
   const onSub = async() =>{
     const option ={
       method:"GET",
-      url:`/api/subscribe/valid/${addr}/${userAddress}`,
+      url:`/api/subscribe/valid/${myAddr}/${userAddress}`,
     }
     let status ='기본값'
     try{
@@ -43,12 +42,12 @@ function ThumnailModal() {
         console.log(err)
       }
     
-    if (addr) {
-      if(addr === userAddress || status === 200){
+    if (myAddr) {
+      if(myAddr === userAddress || status === 200){
         closeModal()
         navigator(`/content/${userAddress}`)
       }else{
-        console.log(addr,userAddress,status)
+        console.log(myAddr,userAddress,status)
         alert('입장할 수 없습니다!')
       }
     }else{
@@ -57,19 +56,31 @@ function ThumnailModal() {
       }
   }
   const subscribe = async () => {
+    if (!userAddress.startsWith('0x')) {
+      alert('구독할 수 없는 계정입니다.')
+      return
+    }
+    if (isSubscribed) {
+      alert('이미 구독한 계정입니다.')
+      return
+    }
     await SubscribeUser(userAddress, myAddr, setSubscriptionsCnt);
 
   }  
   useEffect(() => {    
     const getData = async () => {
       const {count, status} = await getSubscriptionInfo(userAddress, myAddr);
-      
+      console.log(count, status)
       setSubscriptionsCnt(count)
       setIssubscribed(status)
     };
     if (isOpen) {
       getData();
       // console.log('모달 정보', userImgUrl, description)
+    }
+    return () => {
+      setSubscriptionsCnt(null)
+      setIssubscribed(null)
     }
   }, [isOpen])
   return (
@@ -123,7 +134,7 @@ function ThumnailModal() {
           <div className="item-content">
             <div className="item-content-title">
               <h1>{collectionName}</h1>
-              <p>From <span>4.5 SSF</span> ‧ 20 of 25 available</p>
+              <p>From <span>4.5 SSF</span> ‧ { subscriptionCnt } available</p>
             </div>
             <div className="item-content-creator">
             <div style={{overflow: 'hidden'}}><p>{ category }</p></div>
@@ -138,10 +149,21 @@ function ThumnailModal() {
               <p style={{overflow: 'hidden', width: 'auto'}}>Address: {userAddress}</p>
             </div>
             <div className="item-content-buy">
-              <button className="primary-btn" onClick={buttonClick}>구독하기 4.5 ETH</button>
-            <button className="secondary-btn"
-              onClick={onSub}
+              {/* 구독여부에 따라 보여지는 버튼 달라짐 */}
+              
+              <button className="primary-btn" onClick={subscribe}>구독하기</button>            
+              <button className="secondary-btn"
+              // onClick={onSub}
+                onClick={() => {
+                  if (!isSubscribed) {
+                    alert('입장할 수 없습니다!')
+                    return
+                }
+                closeModal()
+                navigator(`/content/${userAddress}`)
+              }}
               >입장하기</button>
+            
             </div>
           
             </div>
