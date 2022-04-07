@@ -411,7 +411,7 @@ export async function SubscribeUser(userAddr, myAddr, setSubscriptionsCnt) {
 //   // const walletAddress = userAddr;
 //   //load smart contract
 //   window.contract = new web3.eth.Contract(subscriptionAbi, subscriptionContractAddr);//loadContract();
-//   const myBalance = await window.contract.methods.balanceOf(userAddr).call();  
+//   const myBalance = await window.contract.methods.balanceOf(userAddr).call();
 //   return myBalance
 // };
 
@@ -435,8 +435,8 @@ export async function SubscribeUser(userAddr, myAddr, setSubscriptionsCnt) {
 //         .request({
 //             method: 'eth_sendTransaction',
 //             params: [transactionParameters3],
-//         });                
-//     console.log("token 컨트랙트의 mint transaction: " + txHash)    
+//         });
+//     console.log("token 컨트랙트의 mint transaction: " + txHash)
   
 //   } catch (error) {
 //       return {
@@ -446,3 +446,54 @@ export async function SubscribeUser(userAddr, myAddr, setSubscriptionsCnt) {
 //   }
   
 // };
+
+export async function SubscribeMember(userAddr, myAddr, setSubscriptionsCnt) {
+  // console.log(process.env.REACT_APP_ETHEREUM_RPC_URL)
+  const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://20.196.209.2:6174'));  
+  
+  // 구매할 구독권의 tokenId 선정
+  //load smart contract  
+  console.log(subscriptionAbi, subscriptionContractAddr)
+  let subscriptionContract = new web3.eth.Contract(subscriptionAbi, subscriptionContractAddr);//loadContract();
+  const myBalance = await subscriptionContract.methods.balanceOf(userAddr).call();
+  const tokenList = [];
+  let url
+  console.log('구독')
+  for (let i = 0; i < myBalance; i++) {
+    const tokenId = await subscriptionContract.methods.tokenOfOwnerByIndex(userAddr, i).call();
+    url = await subscriptionContract.methods.tokenURI(tokenId).call();
+    const { data } = await axios(url);    
+    if (data.author === userAddr) {
+      tokenList.push(tokenId);
+      break
+    }
+  }
+  if (tokenList.length === 0) {
+    alert('구매할 수 있는 구독권이 없습니다.');
+    return // 종료
+  }  
+  console.log('구매 가능한 구독권 tokenID 리스트:', tokenList) // 구독권은 다 같으니까 항상 0번 인덱스의 구독권을 구매하기로.
+  console.log('박찬호 주소:', userAddr, '내 주소:', myAddr, '이전할 토큰ID: ', Number(tokenList[0]))
+          const transactionParameters3 = {
+            to: subscriptionContractAddr, // Required except during contract publications.
+            from: myAddr, // must match user's active address.
+            data: subscriptionContract.methods.transferFrom(userAddr, myAddr, Number(tokenList[0])).encodeABI(), //make call to NFT smart contract
+          };
+          //sign transaction via Metamask
+          try {
+            // console.log('sale 컨트랙트의 purchase 트랜잭션 시도')
+            const txHash = await window.ethereum
+                .request({
+                    method: 'eth_sendTransaction',
+                    params: [transactionParameters3],
+                });                
+            console.log("구독권 전송(transferFrom) transaction: " + txHash)    
+            setSubscriptionsCnt(prev => prev - 1)
+            alert('성공적으로 구독되었습니다.')
+          } catch (error) {
+              return {
+                  success: false,
+                  status: "😥 Something went wrong: " + error.message
+              }
+          }
+}

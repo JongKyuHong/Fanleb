@@ -7,7 +7,7 @@ import empty from "../post/empty-image.jpg";
 import { useNavigate } from 'react-router-dom';
 import Subscribe from '../../projectsPages/Subscribe';
 import axios from 'axios';
-import { getSubscriptionInfo, SubscribeUser } from '../../utils/Subscription';
+import { getSubscriptionInfo, SubscribeMember, SubscribeUser } from '../../utils/Subscription';
 
 function ThumnailModal() {
   const { isOpen, collectionName, thumnailImgUrl, userImgUrl, nickname, description, category, userAddress, contentsData } = useSelector(state => state.modal);
@@ -64,7 +64,8 @@ function ThumnailModal() {
       alert('이미 구독한 계정입니다.')
       return
     }
-    await SubscribeUser(userAddress, myAddr, setSubscriptionsCnt);
+    // await SubscribeUser(userAddress, myAddr, setSubscriptionsCnt);
+    await SubscribeMember(userAddress, myAddr, setSubscriptionsCnt);
 
   }  
   useEffect(() => {    
