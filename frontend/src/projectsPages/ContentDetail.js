@@ -26,26 +26,25 @@ const Detail = ({detailId}) =>{
   // const detailId = props
   const address = useSelector(state => state.user.userInfo.userAddress);
   const [detailInfo, setDetailInfo] = useState()
-  const [price, setPrice] = useState()
   
-
   const getDetailInfo = async () =>{
-    const option = {
-      method: "GET",
-      url: `/api/contents/${detailId}`,
-    }
-    try{
-      const {data} = await axios(option)
-      setDetailInfo(data.data)
-    }catch(err){
-      console.log(err)
-      }
+    var config = {
+      method: 'get',
+      url: `http://j6a107.p.ssafy.io/api/contents/${detailId}`,
+      headers: { }
+    };
+    
+    axios(config)
+    .then(function (response) {
+      setDetailInfo(response.data.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
   useEffect( ()=>{
     getDetailInfo()
-
-
   },[detailId])
   const lorem = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting'
 
@@ -53,20 +52,12 @@ const Detail = ({detailId}) =>{
 
   const toggletrade = async () => {
     const res = await getByTokenId(detailInfo.token_id)
-    // var config = {
-    //   method: 'get',
-    //   url: `http://j6a107.p.ssafy.io/api/sales?token_id=${detailInfo.token_id}`,
-    //   headers: { }
-    // };
-    
-    // axios(config)
-    // .then(function (response) {
-    //   setPrice(response.data.)
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
-    Trade(address,res,detailInfo.price,detailInfo.token_id)
+    // if (res) {
+    //   //const a = await Trade(address,res,detailInfo.price,detailInfo.token_id)
+    // }
+    //Trade(address,"0x27b47c55CDe4b7Ea71b2Bd6FDF9B3206182d3744",1, 93)
+    console.log(res, 'res')
+    Trade(address, res[0], res[1], detailInfo.token_id)
   }
 
   if(!detailInfo){
@@ -157,7 +148,7 @@ const Detail = ({detailId}) =>{
                       <Divider variant="middle" />
                     <Grid item>
                       <Button variant="contained" color="secondary">
-                        현재 가격:1
+                        현재 가격:{detailInfo.price}
                       </Button>
                       <Button variant="contained" color="secondary" onClick={toggletrade}>
                         구매하기
