@@ -8,14 +8,13 @@ function SubscriptionImage({ subscription }) {
   const [nickname, setNickname] = useState("");
   const [category, setCategory] = useState("");
   const getUserInfo = async (addr) => {
-    const { data } = await axios(`api/users/address?user_address=${addr}`)
+    const { data } = await axios(`/api/users/address?user_address=${addr}`)
     return data
   }
   
   useEffect(() => {
     if (subscription) {
       axios(subscription).then(res => {    
-        // console.log(res.data.imgUrl)
         setImage(res.data.imgUrl)
         setAuthor(res.data.author)
         getUserInfo(res.data.author)
