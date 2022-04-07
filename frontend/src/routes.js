@@ -11,6 +11,7 @@ import ItemPurchase from './pages/ItemPurchase';
 import CreateNFT from './pages/CreateNFT';
 import Content from './projectsPages/Content'
 import ContentDetail from './projectsPages/ContentDetail'
+import ContentDetailModal from './projectsPages/ContentDetailModal'
 import SearchResult from './pages/SearchResult';
 import Test from './projectsPages/Test';
 import Rank from './projectsPages/Rank';
@@ -41,11 +42,12 @@ export default function Router() {
         { element: <Navigate to="/content" replace /> },
         { path: '', element: <Content /> },
         { path: ':collectionId', element: <Content/> },
-        { path: 'detail/:detailId', element: <ContentDetail/> }
+        { path: 'detail/:detailId', element: <ContentDetailModal/> }
 
         // { path: '/:collectionId/*', element: <Content/> }
       ]
     },
+
     {
       path: '/detail/:detailId',
       element: <MainLayout />,

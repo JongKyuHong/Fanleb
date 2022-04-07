@@ -6,7 +6,7 @@ Divider,
 styled} from '@mui/material';
 
 import React, { useContext, useState, useEffect  } from 'react';
-import { useParams } from 'react-router-dom';
+import { Routes, useParams, } from 'react-router-dom';
 import { ContentContext } from './ContentContext';
 
 
@@ -198,7 +198,7 @@ const Thumbnail = ({props}) => {
                 </ImageListItem>
             {/* </Link> */}
         </Grid>
-
+{/* 
         <Dialog
             open={onModal}
             onClose={handleClose}
@@ -207,7 +207,7 @@ const Thumbnail = ({props}) => {
             <Link to={`detail/${token_id}`}>
                 {token_id}번 게시글로 이동합니다
             </Link>
-        </Dialog>
+        </Dialog> */}
 
         </>
 
@@ -346,7 +346,7 @@ const ContentCardList = ({contentId})=>{
     //     </Box>
     return(
         <>
-        {items && now ==="all" && items.map( (item,key) => (<Thumbnail key={key} props ={item} onClick={handleOpen} />)) }
+        {items && now ==="all" && items.map( (item) => (<Link key={item.token_id} to={`detail/${item.token_id}`}> <Thumbnail key={item.token_id} props ={item} onClick={handleOpen} /> </Link>)) }
 
         {/* {now ==="all" && <Typography sx={{color:"#1122FF"}} > 로딩돼</Typography>} */}
 
