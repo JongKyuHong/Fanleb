@@ -1454,7 +1454,7 @@ const ABI = {
       "stateMutability": "nonpayable",
       "type": "function"
     }
-    ],
+  ],
   SUBSCRIPTION_ABI: [
     {
       "inputs": [],
