@@ -36,7 +36,7 @@ const CreateNFT = () => {
   const [videoSrc, setVideoSrc] = useState(undefined);
 
   const updateFiles = (incommingFiles) => {
-    console.log("incomming files", incommingFiles);
+    //console.log("incomming files", incommingFiles);
     setFiles(incommingFiles);
     setFile(incommingFiles[0].file)
   };
@@ -46,7 +46,7 @@ const CreateNFT = () => {
   };
 
   const handleWatch = (vidSrc) => {
-    console.log("handleWatch", vidSrc);
+    ///console.log("handleWatch", vidSrc);
     setVideoSrc(vidSrc);
   };
 
@@ -72,7 +72,7 @@ const CreateNFT = () => {
       // 생성된 컬렉션 이름 넣어주기 setMycollection
       setMyCollection(myCollections[0])
       // console.log(myCollection)
-      console.log(myCollections[0])
+      //console.log(myCollections[0])
       alert('새로운 컬렉션을 만들었습니다.')
       setModalOpen(false)      
       
@@ -136,9 +136,9 @@ const CreateNFT = () => {
       try {
         const token_id = await registerNFTtoBackend(address, img_url);
         console.log('블록체인에 등록한 TokenId:', token_id)
-        console.log('NFT 등록 이후, 백엔드에 업데이트할 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)
-        console.log(`💪 api/contents/${contentId} 으로 업데이트 요청`)
-        console.log('서버에 등록할 정보:', token_id, address, newData.myCollection)
+        //console.log('NFT 등록 이후, 백엔드에 업데이트할 정보, 컨텐트ID:', contentId, '이미지URL:', img_url)
+        //console.log(`💪 api/contents/${contentId} 으로 업데이트 요청`)
+        //console.log('서버에 등록할 정보:', token_id, address, newData.myCollection)
         const { data } = await axios({
           method: 'POST',
           url: `api/contents/${contentId}`,
@@ -152,10 +152,10 @@ const CreateNFT = () => {
         // const data = await axios.post(`api/contents/${contentId}`, {"token_id": token_id,
         //     "owner_address": address,
         //     "collection": newData.myCollection.collection_name})
-        console.log('서버에 저장한 결과:', data)
+        //console.log('서버에 저장한 결과:', data)
         if (data.result === "success") {
           //alert('게시물이 정상적으로 등록되었습니다.')
-          var retval = confirm("판매등록 하시겠습니까?")
+          var retval = window.confirm("판매등록 하시겠습니까?")
           if(retval) {
             navigator(`/register/sale/${token_id}`)
           } else{
@@ -167,7 +167,7 @@ const CreateNFT = () => {
           alert('게시물 작성을 실패했습니다.')
         }
       } catch (err) {
-        console.log('블록체인 등록 에러')
+        //console.log('블록체인 등록 에러')
         alert('NFT 등록에 실패했습니다.')        
         navigator('/create')
       }
@@ -207,7 +207,7 @@ const CreateNFT = () => {
           // console.log('새로운 체인 추가')
         } catch (addError) {
           // handle "add" error
-          console.log('체인 추가 실패')
+          //console.log('체인 추가 실패')
           alert('Metamask에서 SSAFY 네트워크를 추가해주세요.\nchainId: 31221 \nchainName: SSAFY \nrpcUrls: http://20.196.209.2:8545')
         }
       }
