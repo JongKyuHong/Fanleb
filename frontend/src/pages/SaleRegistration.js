@@ -205,11 +205,11 @@ const SaleRegistration = () => {
    */
 
   return (
-    <Page title="SSAFY NFT" maxWidth="100%" minHeight="100%">
+    <Page title="fanleb" maxWidth="100%" minHeight="100%">
       {isComplete === false ? (
         <>
           {isSale === true ? (
-            <Container sx={{ pt: 3, pl: 10, pr: 10, color:"#FFFFFF" }}>
+            <Container sx={{ pt: 3, pl: 10, pr: 10, }}>
               <Typography variant="h3" sx={{ pb: 3, pr: 10 }}>
                 판매 정보를 등록해주세요.
               </Typography>
@@ -257,7 +257,7 @@ const SaleRegistration = () => {
                   <Stack spacing={3}>
                     <Stack direction="row" alignItems="center">
                       <TextField
-                        sx={{ width: '100%' }}
+                        sx={{ width: '100%', color:"#FFFFFF" }}
                         type="number"
                         label="즉시 구매가"
                         {...getFieldProps('price')}
