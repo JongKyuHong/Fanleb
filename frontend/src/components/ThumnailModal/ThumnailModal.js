@@ -106,7 +106,7 @@ function ThumnailModal() {
       }
 
       try{
-          // const data = await axios(option)
+          const data = await axios(option)
           console.log(data.status)
       }catch(err){
           console.log(err)
