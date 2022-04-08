@@ -592,7 +592,7 @@ const Content = () => {
             profile, setProfile,
             page, setPage,
         }}>
-            {/* <ConfirmSub contentId={contentId}/> */}
+            <ConfirmSub contentId={contentId}/>
         <Page title="컨텐츠" maxWidth="100%" minHeight="100%" alignItems="center" display="flex">
         <Container sx={{marginTop:"100px"}}>
         <Stack direction="column" justifyContent="center" alignItems='center' sx={{ minWidth:"400px",}}>

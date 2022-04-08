@@ -82,6 +82,7 @@ function ThumnailModal() {
       window.open('https://metamask.io/download/', '_blank')
       }
   }
+
   const subscribe = async () => {
     if (!userAddress.startsWith('0x')) {
       alert('구독할 수 없는 계정입니다.')
@@ -92,9 +93,27 @@ function ThumnailModal() {
       return
     }
     await SubscribeUser(userAddress, myAddr, setSubscriptionsCnt);
+    await onBack()
     // await SubscribeMember(userAddress, myAddr, setSubscriptionsCnt);
+  }
+  
+    //구독하기 백엔드
+    const onBack = async() =>{
+      const option ={
+        method:"POST",
+        url:`/api/subscribe/${myAddr}/${userAddress}`,
+        data:"",
+      }
 
-  }  
+      try{
+          const data = await axios(option)
+          console.log(data.status)
+      }catch(err){
+          console.log(err)
+          console.log('구독하기백엔드에러')
+        }
+  } 
+
   useEffect(() => {    
     const getData = async () => {
       const {count, status} = await getSubscriptionInfo(userAddress, myAddr);
