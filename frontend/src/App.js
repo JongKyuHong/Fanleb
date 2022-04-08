@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import ScrollToTop from './components/scrollTop';
 import ThumnailModal from './components/ThumnailModal/ThumnailModal';
 import SubscriptionModal from './components/SubscriptionModal/SubscriptionModal';
+import Loading from './components/Loading';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -142,7 +143,8 @@ export default function App() {
     <>
       {/* <InfoModal /> */}
       <ThemeConfig>
-        <ScrollToTop />
+        <ScrollToTop />        
+        <Loading />
         <UserInfoModal userInfo={userInfo} address={address} />
         <ThumnailModal />
         <SubscriptionModal />

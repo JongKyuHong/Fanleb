@@ -3,6 +3,7 @@ import AddressStore from '../common/AddressStore';
 import ABI from '../common/ABI';
 import { create } from 'ipfs-http-client';
 import axios from 'axios';
+import { closeLoadingSpinner } from '../redux/modalSlice';
  // 사피 네트워크에 배포한 계약 정보
 const subscriptionAbi = ABI.CONTRACT_ABI.SUBSCRIPTION_ABI // contract ABI
 const subscriptionContractAddr = AddressStore.CONTRACT_ADDR.SubscriptionNFT[0]; // contractAddr: 컨트랙트 주소
@@ -183,7 +184,7 @@ export async function getSubscriptionInfo(userAddr, myAddr) {
   }
   
 
-
+  
 
   // let j = 0;
   // if (userAddr !== myAddr) {
