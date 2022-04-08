@@ -1,4 +1,4 @@
-import { Divider, Modal,Button } from '@mui/material';
+import { Divider, Modal,Button, CardMedia } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { closeThumnailModal, removeThumnail, toggleModal } from '../../redux/modalSlice';
@@ -16,11 +16,38 @@ function ThumnailModal() {
   const myAddr = useSelector(state => state.user.userInfo.userAddress)
   const [subscriptionCnt, setSubscriptionsCnt] = useState(0);
   const [isSubscribed, setIssubscribed] = useState(false);
+  const [video, setVideo] = useState(false);
   const navigator = useNavigate();
   const closeModal = () => {
     dispatch(closeThumnailModal())
   }
+  const detectMedia = (inputUrl) => {
+    if (inputUrl === null || inputUrl === NaN || inputUrl === undefined) {
+      return
+    }
+    const images = ["jpg", "gif", "png"]
+    const videos = ["mp4", "3gp", "ogg"]
+    // const url = new URL(inputUrl)
+    // let extension = inputUrl?.split(".")
+    // extension = extension[extension?.length - 1]
+    
+    let extension = inputUrl.split(".")
+    // console.log(extension)
+    extension = extension[extension.length - 1]
+    if (images.includes(extension)) {
+      setVideo(false)      
+      
+    } else if (videos.includes(extension)) {      
+      setVideo(true)      
+    }
+    // if (images.includes(inputUrl)) {
+    //   setVideo(false)      
+      
+    // } else if (videos.includes(inputUrl)) {      
+    //   setVideo(true)      
+    // }
 
+  }
   // 구독관련
   const [open, setOpen] = useState(false)
   const buttonClick = () => {
@@ -76,6 +103,7 @@ function ThumnailModal() {
       setIssubscribed(status)
     };
     if (isOpen) {
+      detectMedia(thumnailImgUrl)
       getData();
       // console.log('모달 정보', userImgUrl, description)
     }
@@ -96,8 +124,13 @@ function ThumnailModal() {
       }}
     >
       <div className='item section__padding' style={{width: '90%', background: '#24252d', borderRadius: '30px', }}>
-        <div className="item-image">
-          <img src={thumnailImgUrl ? thumnailImgUrl : empty} alt="item" />
+          <div className="item-image">
+            {video ?
+              <CardMedia className="video-player profile-image post-video" component="video" src={thumnailImgUrl ? thumnailImgUrl : empty} loading="lazy" style={{height: '100%' }} loop autoPlay={true} />
+              :
+              <CardMedia component="img" src={thumnailImgUrl ? thumnailImgUrl : empty} alt="item" />
+
+            }
         </div>
         {/* <div className="item-content">
           <div className="item-content-title">

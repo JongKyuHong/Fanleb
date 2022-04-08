@@ -3,9 +3,10 @@ import {Avatar, Box, Button, Card ,Container, Stack, Typography, Grid, ImageList
 Dialog,
 Chip,
 Divider,
-styled} from '@mui/material';
+styled,
+getStepButtonUtilityClass} from '@mui/material';
 
-import React, { useContext, useState, useEffect  } from 'react';
+import React, { useContext, useState, useEffect, useCallback  } from 'react';
 import { Routes, useParams, } from 'react-router-dom';
 import { ContentContext } from './ContentContext';
 
@@ -21,6 +22,8 @@ import { LocalConvenienceStoreOutlined, SettingsPowerOutlined } from '@mui/icons
 import ContentDetail from './ContentDetail';
 import ConfirmSub from './ConfirmSub';
 import { useSelector } from 'react-redux';
+import { useInView } from "react-intersection-observer"
+import InfiniteScroll from 'react-infinite-scroll-component';
 // 프로필 관련
 const ProfileCard = ({contentId}) => {
     const {profile, setProfile} = useContext(ContentContext)
@@ -89,6 +92,7 @@ const ProfileDetail = ({props}) => {
             sx={{
                 display:'flex',
                 marginTop:2,
+                marginRight:"10px",
             }}
         >
             <Grid>
@@ -96,7 +100,7 @@ const ProfileDetail = ({props}) => {
                     게시물  
                 </Typography> */}
             </Grid>
-            <Grid>
+            <Grid sx={{marginRight:"10px"}}>
                 <Typography>
                     구독자 {props && cur_subscribe_cnt}
                 </Typography>
@@ -234,7 +238,7 @@ const CollectionList = ({props}) => {
     const getCollectionItem = async() =>{
         const option = {
             method: "GET",
-            url: `/api/collections/${id}/contents?page=1&user_address=1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa`
+            url: `/api/collections/${id}/contents?page=1&user_address=${contentId}`
         }
         try{
             const {data} = await axios(option)
@@ -252,24 +256,35 @@ const CollectionList = ({props}) => {
     useEffect(()=>{
         console.log("콜렉션불러오기")
         getCollectionItem()
+        console.log(collectionItem)
     },[])
 
     const default_img ='http://j6a107.p.ssafy.io/static/media/main-logo.91c83371.png'
 
     return (
         <>
-            <Grid item sx={{ display:"grid",border:"solid #1211ff", minwidth:"300px",}}
+            <Grid item sx={{ display:"grid", 
+                    justifyContent:"center",
+                    alignItems:"center",
+                    margin:"15px",
+                    color:"#FFFFFF"    
+                }}
             >
             {/* <Link to={`${contentId}/${id}`}> */}
-                <ImageListItem key={collectionItem && collectionItem.img_url} sx={{
-                    border:'1px solid #22ff00',
-                }}>
                     <img
-                    src={`${collectionItem?collectionItem.img_url:default_img}?w=300&h=300&fit=crop&auto=format`}
-                    srcSet={`${collectionItem? collectionItem.img_url:default_img}?w=300&h=300&fit=crop&auto=format&dpr=2 2x`}
-                    alt={collection_name}
-                    loading="lazy"/>
-                </ImageListItem>
+                    src={`${collectionItem?collectionItem.img_url:default_img}`}
+                    style={{
+                        display:"block",
+                        width:"300px",
+                        height:"300px",
+                        objectFit:"cover",
+                        borderRadius:"10px",
+                    }}
+                    />
+                    <Typography>
+                        {collectionItem && collectionItem.collection.collection_name}
+                    </Typography>
+
             {/* </Link> */}
         </Grid>
         </>
@@ -280,21 +295,29 @@ const CollectionList = ({props}) => {
 const ContentCardList = ({contentId})=>{
     const {now, items, setItems, setOnModal, collectionId, setNow} = useContext(ContentContext)
 
-    const [loading, setLoading] = useState(0)
     const handleOpen = () => setOnModal(true);
     const handleClose = () => setOnModal(false);
-
+    
     // const [items, setItems] = useState()
     let url = ''
     
-    const getItems = async() =>{
+    const [hasMore, setHasMore] = useState(true);
+    //
+    const [page, setPage] = useState(1)
+    const [loading, setLoading] = useState(false)
+    const [ref, inView] = useInView()
+
+    const getItems = useCallback(async() =>{
         console.log(now)
         switch(now){
             case "collection":
-                url = `/api/collections?page=1&user_address=${contentId}`
+                url = `/api/collections?page=${page}&user_address=${contentId}`
                 break;
             case "all":
-                url = `/api/contents?page=1&user_address=${contentId}`
+                url = `/api/contents?page=${page}&user_address=${contentId}`
+                break;
+            case "buy":
+                url = `/api/contents?address?page=${page}&user_address=${contentId}`
         }
         const option = {
             method: "GET",
@@ -303,63 +326,74 @@ const ContentCardList = ({contentId})=>{
         console.log(url,"url",now)
         try{
             const getData = await axios(option)
-            setItems(getData.data.data.content)
+            const getRes = getData.data.data.content
+            if (now ==='all'){
+            await setItems(items.concat(getRes))
+            console.log(getData)
             console.log(getData.data.data.content,'getData')
             console.log(items,"itemson")
+            }
+            if (now ==='buy'){
+                const buyItems = getRes.filter(item =>{ return item.recent_owner_address !== null})
+                console.log(getRes,'asdasdas')
+                setItems(items.concat(buyItems))
+                console.log("바이 성공")
+            }
+            setLoading(false)
         }catch(err){
             console.log(err)
         }
-    }
+    }, [page])
 
     useEffect(()=>{
-        const start = async ()=>{
-            await getItems()
-            console.log(items,"items")
-            setLoading(1)
-            console.log(now,"현재의상태입니다",loading)
-            console.log(now==='all')
-        }
-        start()
+        getItems()
+    },[getItems])
 
+    useEffect(()=>{
+        setPage(1)
     },[now])
 
     useEffect(()=>{
-        const getCollections = async ()=>{
-            const option = {
-                method: "GET",
-                url:`api/collections/${collectionId}/contents?page=1&user_address=1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa`
-            }
-            try{const getData = await axios(option)
-            setItems(getData.data.data.content)
-            setNow('')
-            }catch(err){
-                console.log(err)
-            }
-        }
-        if(Boolean(collectionId)){
-            getCollections()
-            console.log(now,'콜렉션ㄴ나우')
-        }
-        console.log(items,'콜렉션불러온다음')
-    },[collectionId])
+       if (inView && !loading){
+           setPage(prevState=> prevState + 1)
+       }
+    }, [inView, loading])
 
-
-    const goToContent = () =>{
-        console.log("goto")
-    }
+    // useEffect(()=>{
+    //     const getCollections = async ()=>{
+    //         const option = {
+    //             method: "GET",
+    //             url:`api/collections/${collectionId}/contents?page=1&user_address=1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa`
+    //         }
+    //         try{const getData = await axios(option)
+    //         setItems(getData.data.data.content)
+    //         setNow('')
+    //         }catch(err){
+    //             console.log(err)
+    //         }
+    //     }
+    //     if(Boolean(collectionId)){
+    //         getCollections()
+    //         console.log(now,'콜렉션ㄴ나우')
+    //     }
+    //     console.log(items,'콜렉션불러온다음')
+    // },[collectionId])
 
     if(!items){
         return <Box sx={{ color:"#1122FF"}}>
             loading...
             </Box>
     }   
-    // if(!items){
-    //     return <Box sx={{ color:"#FFFFFF"}}> 로딩..
-    //     <ContentCardList contentId= {contentId}/>
-    //     </Box>
     return(
         <>
-        {items && now ==="all" && items.map( (item) => (<Thumbnail key={item.token_id} props ={item} onClick={handleOpen} />)) }
+        {/* <InfiniteScroll
+            dataLength={items?.length}
+            next={fetchData}
+            hasMore={hasMore}
+            Loader={<h4>Loading...</h4>}
+        > */}
+            {items && now !== 'collection' && items.map( (item) => (<div key={item.token_id}  ref={ref}><Thumbnail key={item.token_id} props ={item} onClick={handleOpen} /> </div>)) }
+        {/* </InfiniteScroll> */}
 
         {/* {now ==="all" && <Typography sx={{color:"#1122FF"}} > 로딩돼</Typography>} */}
 
@@ -432,6 +466,7 @@ const MenuButton = ({contentId}) =>{
     const {now, setNow} = useContext(ContentContext)
     const [all, setAll] = useState("contained")
     const [collection, setCollection] = useState("text")
+    const [buy, setBuy] = useState("text")
 
     const setShowItem = (event) =>{
         const state = event.target.value
@@ -443,9 +478,15 @@ const MenuButton = ({contentId}) =>{
         if(now ==="all"){
             setAll("contained")
             setCollection("text")
+            setBuy("text")
         }else if(now === "collection"){
             setAll("text")
+            setBuy("text")
             setCollection("contained")
+        }else if(now === "buy"){
+            setAll("text")
+            setBuy("contained")
+            setCollection("text")
         }
     }
     useEffect(()=>{
@@ -459,8 +500,11 @@ const MenuButton = ({contentId}) =>{
             <Button color="secondary" variant={all} value="all" onClick={setShowItem}>
                 전체보기
             </Button>
-            <Button color="secondary" variant={collection} value="collection" onClick={setShowItem}>
-                컬렉션 보기
+            {/* <Button color="secondary" variant={collection} value="collection" onClick={setShowItem}>
+                컬렉션
+            </Button> */}
+            <Button color="secondary" variant={buy} value="buy" onClick={setShowItem}>
+                구매아이템
             </Button>
         </Box>
     )
@@ -495,7 +539,7 @@ const MenuButton = ({contentId}) =>{
 
 const Content = () => {
     const {contentId, collectionId} = useParams()
-    const [items, setItems] = useState() // 메인페이지 보여주는 아이템들
+    const [items, setItems] = useState([]) // 메인페이지 보여주는 아이템들
     const [now, setNow] = useState("all") // 현재 보여주는 콜렉션종류
     const [userData, setUserData] = useState() // 프로필데이터
     const [profile, setProfile] = useState()
@@ -513,78 +557,6 @@ const Content = () => {
     // 구독하고있는 유저인지 확인 하기
     const logOnAddress = useSelector(state => state.user.userInfo.userAddress)
     
-    // 초기 아이템 값 9개
-    const [list, setList] = useState({items:9, preItem:0})
-    // const handleScroll = () => {
-    //     const scrollHeight = document.documentElement.scrollHeight;
-    //     const scrollTop = document.documentElement.scrollTop;
-    //     const clientHeight = document.documentElement.clientHeight;
-
-    //     if(scrollTop + clientHeight >= scrollHeight){
-    //         setList({preitem:items, items:items+=3});
-    //         dump.slice(list.preItem, list.items)
-    //         console.log('스크롤 자르기')
-    //     }}
-            
-    // useEffect(() => {
-    //     window.addEventListener('scroll', handleScroll);
-    //     console.log('스크롤링')
-    //     console.log(document.documentElement.scrollHeight
-    //         ,document.documentElement.scrollTop
-    //        ,document.documentElement.clientHeight)
-    //     return () => {window.removeEventListener('scroll', handleScroll)}
-    //     },[])
-    // const getStart = async() =>{
-    //     const option = {
-    //         method: "GET",
-    //         url: `/api/contents?page=1&user_address=${contentId}`
-    //     }
-    //     try{
-    //         const {data} = await axios(option)
-    //         setOnStart(data.data.content)
-    //         console.log(data.data.content,'시작성공')
-    //         const cnt = data.data.content
-    //         setUserData(cnt.length)
-    //     }catch(err){
-    //         console.log(err)
-    //         console.log("스타트에러")
-    //     }
-    // }
-    // const getContentList = async () =>{
-    //     const option2 = {
-    //         method: "GET",
-    //         url: `/api/collections?page=1&user_address=${contentId}`
-    //     }
-    //     try{
-    //         const getcon = await axios(option2)
-    //         const data = await getcon.data.data.content
-    //         setItems(data)
-    //         // console.log(data)
-    //         console.log(getcon.data.data.content,'content')
-    //     }catch(err){
-    //         console.log(err)
-    //         console.log("초기에러",contentId)
-    //     }
-    // }
-
-
-    // useEffect(() => {
-    //     getStart()
-    //     // getContentList()
-    // //     let isComponentMounted = true
-    // //     const seq = async()=>{
-    // //         if (isComponentMounted) {
-    // //             await getStart()
-    // //             await getContentList()  
-    // //             console.log("초기성공")
-    // //             console.log(items,'안아이템')
-    // //         }     
-    // //     }
-    // //     seq()
-    // //     return () =>{
-    // //         isComponentMounted = false
-    // //     }
-    // },[])
 
     // useEffect(()=>{
     //     if(now !== undefined){
@@ -633,14 +605,17 @@ const Content = () => {
                     </Grid>
                 </Box>
                 {/* 내용물 리스트 */}
-                <Box
+                <Box container
                     sx={{
                         display:"grid",
-                        width:"100%",
-                        gridTemplateColumns:"repeat(3,1fr)",
+                        border:"5px solid",
+                        borderRadius:"15px",
+                        // gridTemplateRows:"repeat(3,1fr)",
+                        gridTemplateColumns:"repeat(3, 1fr)",
                     }}
                     >
-                    <ContentCardList contentId= {contentId}/>
+                        <ContentCardList contentId= {contentId}/>
+
 
                 </Box>
             </Stack>

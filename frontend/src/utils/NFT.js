@@ -67,7 +67,7 @@ export async function registerNFTtoBackend(userAddr, tokenUrl) {
       from: userAddr, // must match user's active address.
       'data': window.contract.methods.create(userAddr, tokenUrl).encodeABI() //make call to NFT smart contract 
   };
-
+  
   //sign transaction via Metamask
   try {
     const txHash = await window.ethereum

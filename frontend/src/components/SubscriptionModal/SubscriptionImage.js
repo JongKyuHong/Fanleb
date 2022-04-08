@@ -2,6 +2,7 @@ import { Grid } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import empty from "../post/empty-image.jpg";
+import './Subs.css';
 function SubscriptionImage({ subscription }) {
   const [image, setImage] = useState("");
   const [author, setAuthor] = useState("");
@@ -30,8 +31,8 @@ function SubscriptionImage({ subscription }) {
   }, [])
   return (<Grid item xs={3}>
             <img src={image ? image : empty} alt="" style={{ display: 'inline-block', width: '150px', height: '150px' }} />
-            <p style={{color: 'white', textAlign: 'center'}}>{ category }</p>
-            <p style={{ color: 'rgb(32, 129, 226)', textAlign: 'center' }}> { nickname }</p>  
+            <p className='subs-img-category'>{ category }</p>
+            <p className='subs-img-name' > { nickname }</p>  
           </Grid>)
 }
 
