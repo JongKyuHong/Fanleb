@@ -1,4 +1,4 @@
-import {Avatar, Box, Button, Card ,Container, Divider,Link, Stack, Typography, Grid, ImageListItem, Chip, Modal} from '@mui/material';
+import {Avatar, Box, Button, Card, Container, Divider,Link, Stack, Typography, Grid, ImageListItem, Chip, Modal, CardMedia} from '@mui/material';
 
 import Page from '../components/Page';
 import { useState, useEffect  } from 'react';
@@ -71,17 +71,17 @@ const Detail = ({detailId}) =>{
     try{
       const {data} = await axios(option)
       setDetailInfo(data.data)
+      // console.log(data.data.img_url)
+      detectMedia(data.data.img_url)     
     }catch(err){
       console.log(err)
     }
-   await detectMedia(detailInfo && detailInfo.img_url)
 
   }
 
   useEffect( ()=>{
     getDetailInfo()
-    console.log(detailInfo,'detialinfo')
-  },[detailId])
+  },[detailId])  
 
   const toggletrade = async () => {
     const data = await Trade(address, saleInfo.sale_contract_address, saleInfo.price, detailInfo.token_id)
@@ -162,8 +162,25 @@ const Detail = ({detailId}) =>{
                   alignItems:"center",
                 }}
                 >
-                   {video ?
-            <CardMedia className="video-player profile-image" component="video" src={img_url ? img_url : empty} loading="lazy" style={{ objectFit: 'cover' }} loop onMouseOver={playVideo} onMouseOut={pauseVideo} ref={ref} controlsList="noplaybackrate" />
+            {video ?
+              <Box
+                sx={{
+                  width: "100%",
+                  height:"100%",
+                }}
+              >
+
+              <iframe                
+                src={detailInfo.img_url ? detailInfo.img_url : empty}       
+                autoPlay
+                allowFullScreen
+                loading="lazy"
+                width="100%"
+                height="100%"
+              />
+
+                
+              </Box>
             :
               <Box
                 component="img"

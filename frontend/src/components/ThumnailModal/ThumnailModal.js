@@ -1,7 +1,7 @@
 import { Divider, Modal,Button, CardMedia } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { closeThumnailModal, removeThumnail, toggleModal } from '../../redux/modalSlice';
+import { closeLoadingSpinner, closeThumnailModal, openLoadingSpinner, removeThumnail, toggleModal } from '../../redux/modalSlice';
 import './ThumnailModal.css';
 import empty from "../post/empty-image.jpg";
 import { useNavigate } from 'react-router-dom';
@@ -106,7 +106,7 @@ function ThumnailModal() {
       }
 
       try{
-          const data = await axios(option)
+          // const data = await axios(option)
           console.log(data.status)
       }catch(err){
           console.log(err)
@@ -116,7 +116,9 @@ function ThumnailModal() {
 
   useEffect(() => {    
     const getData = async () => {
-      const {count, status} = await getSubscriptionInfo(userAddress, myAddr);
+      dispatch(openLoadingSpinner());
+      const { count, status } = await getSubscriptionInfo(userAddress, myAddr);
+      dispatch(closeLoadingSpinner());
       console.log(count, status)
       setSubscriptionsCnt(count)
       setIssubscribed(status)

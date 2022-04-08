@@ -4,7 +4,8 @@ Dialog,
 Chip,
 Divider,
 styled,
-getStepButtonUtilityClass} from '@mui/material';
+getStepButtonUtilityClass,
+CardMedia} from '@mui/material';
 
 import React, { useContext, useState, useEffect, useCallback  } from 'react';
 import { Routes, useParams, } from 'react-router-dom';
@@ -161,10 +162,26 @@ const Thumbnail = ({props}) => {
     const [isHover,setIsHover] = useState(0)
     const handleOpen = () => setOnModal(true);
     const handleClose = () => setOnModal(false);
-
-
+    const [video, setVideo] = useState(false);
+    const detectMedia = (inputUrl) => {
+        if (inputUrl === null || inputUrl === NaN || inputUrl === undefined) {
+            return
+        }
+        const images = ["jpg", "gif", "png"]
+        const videos = ["mp4", "3gp", "ogg"]        
+        let extension = inputUrl.split(".")
+        
+        extension = extension[extension.length - 1]
+        if (images.includes(extension)) {
+            setVideo(false)      
+        
+        } else if (videos.includes(extension)) {      
+            setVideo(true)      
+        }
+    }
     useEffect(()=>{
         console.log("아이템불러오기")
+        detectMedia(img_url)
     },[])
 
     const goToContent= () =>{
@@ -172,7 +189,7 @@ const Thumbnail = ({props}) => {
         console.log(content_title)
         console.log(token_id)
         setOnModal(true)
-        setOnToken(token_id)
+        setOnToken(token_id)        
     }
     const default_img ='http://j6a107.p.ssafy.io/static/media/main-logo.91c83371.png'
     // const ImageListItem= styled('ImageListItem')({
@@ -195,14 +212,39 @@ const Thumbnail = ({props}) => {
                 onMouseOut={()=>setIsHover(0)}
             > 
                 <Link to={`detail/${token_id}`}>
-                    <img src={img_url?img_url:default_img} style={{
+                    {video ?
+                        <CardMedia
+                            component="video"
+                            loading="lazy"
+                            src={img_url ? img_url : default_img}
+                            style={{
                                 display:"block",
                                 width:"300px",
                                 height:"300px",
                                 objectFit:"cover",
                                 borderRadius:"10px",
                             }}
-                    />
+                        />
+                        :
+                        <CardMedia
+                            component="img"
+                            src={img_url ? img_url : default_img} style={{
+                                display:"block",
+                                width:"300px",
+                                height:"300px",
+                                objectFit:"cover",
+                                borderRadius:"10px",
+                            }}
+                    />  
+                    }
+                    {/* <img src={img_url?img_url:default_img} style={{
+                                display:"block",
+                                width:"300px",
+                                height:"300px",
+                                objectFit:"cover",
+                                borderRadius:"10px",
+                            }}
+                    /> */}
                         {/* <Box
                             component="img"
                             src={img_url?img_url:default_img}
@@ -349,18 +391,28 @@ const ContentCardList = ({contentId})=>{
 
     useEffect(()=>{
         getItems()
+        return () => {
+            setItems([])
+            setLoading(false)
+        }
     },[getItems])
 
     useEffect(()=>{
         console.log(now,page,items,'now changeggege')
         getItems()
-        
+        return () => {
+            setItems([])
+            setLoading(false)
+        }
     },[now])
 
     useEffect(()=>{
        if (inView && !loading){
            setPage(prevState=> prevState + 1)
-       }
+        }
+        return () => {            
+            setLoading(false)
+        }
     }, [inView, loading])
 
     // useEffect(()=>{
