@@ -20,11 +20,13 @@ import { openSubsModal } from '../../redux/modalSlice';
 
 const Menu = () => {
   const navigator = useNavigate()
+  const logOnAddress = useSelector(state => state.user.userInfo.userAddress)
   return(
 
     <>
     {/* <Link to="/create"><p>등록하기</p> </Link>      */}    
-    <p onClick={() => navigator(`/rank/`)}>순위보기</p>         
+    <p onClick={() => navigator(`/rank/`)}>RANK</p>         
+    <p onClick={() => navigator(`/content/${logOnAddress}`)}>MY PAGE</p>         
     
     
   </>
