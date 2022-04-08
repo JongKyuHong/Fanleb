@@ -172,7 +172,7 @@ const DashboardNavbar = () => {
                   <button type='button' className='primary-btn' onMouseOver={() => setStyle(true)} onMouseOut={() => setStyle(false)} style={style ? { opacity: 0.8, textDecoration: 'none' } : {}}>등록하기</button>
                 </Link>
                 <button type='button' className='secondary-btn' onClick={openSubscriptionModal}>내 구독권</button>
-                <button type='button' className='secondary-btn' onClick={switchWallet}>지갑 변경</button>
+                // <button type='button' className='secondary-btn' onClick={switchWallet}>지갑 변경</button>
                 {/* <button type='button' className='secondary-btn' onClick={enableEth} >지갑 연결</button> */}
                 <Avatar onClick={openInfoModal} src={userInfo?.imageUrl} size="large" sx={{ width: 56, height: 56, cursor: 'pointer' }} />
             
