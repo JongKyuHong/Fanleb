@@ -293,7 +293,7 @@ const CollectionList = ({props}) => {
 }
 // 아이템 보기
 const ContentCardList = ({contentId})=>{
-    const {now, items, setItems, setOnModal, collectionId, setNow} = useContext(ContentContext)
+    const {now, items, setItems, setOnModal, collectionId, setNow, setPage,page} = useContext(ContentContext)
 
     const handleOpen = () => setOnModal(true);
     const handleClose = () => setOnModal(false);
@@ -303,12 +303,12 @@ const ContentCardList = ({contentId})=>{
     
     const [hasMore, setHasMore] = useState(true);
     //
-    const [page, setPage] = useState(1)
+
     const [loading, setLoading] = useState(false)
     const [ref, inView] = useInView()
 
     const getItems = useCallback(async() =>{
-        console.log(now)
+        console.log(now,'getitme시작 나우')
         switch(now){
             case "collection":
                 url = `/api/collections?page=${page}&user_address=${contentId}`
@@ -327,11 +327,12 @@ const ContentCardList = ({contentId})=>{
         try{
             const getData = await axios(option)
             const getRes = getData.data.data.content
+            console.log(now,'now입니다')
             if (now ==='all'){
             await setItems(items.concat(getRes))
             console.log(getData)
             console.log(getData.data.data.content,'getData')
-            console.log(items,"itemson")
+            console.log("전체보기")
             }
             if (now ==='buy'){
                 const buyItems = getRes.filter(item =>{ return item.recent_owner_address !== null})
@@ -350,7 +351,9 @@ const ContentCardList = ({contentId})=>{
     },[getItems])
 
     useEffect(()=>{
-        setPage(1)
+        console.log(now,page,items,'now changeggege')
+        getItems()
+        
     },[now])
 
     useEffect(()=>{
@@ -463,15 +466,19 @@ const ContentCardList = ({contentId})=>{
 
 //리스트 고르는 버튼
 const MenuButton = ({contentId}) =>{
-    const {now, setNow} = useContext(ContentContext)
+    const {now, setNow, setPage, setItems,} = useContext(ContentContext)
     const [all, setAll] = useState("contained")
     const [collection, setCollection] = useState("text")
     const [buy, setBuy] = useState("text")
 
     const setShowItem = (event) =>{
         const state = event.target.value
-        setNow(state)
-        console.log(state,'실행 됨')
+        if (now !== state){
+            setItems([])
+            setNow(state)
+            setPage(1)
+        }
+        console.log(now,'실행 됨')
 
     }
     const status = ()=>{
@@ -543,6 +550,7 @@ const Content = () => {
     const [now, setNow] = useState("all") // 현재 보여주는 콜렉션종류
     const [userData, setUserData] = useState() // 프로필데이터
     const [profile, setProfile] = useState()
+    const [page, setPage] = useState(1)
 
 
     //
@@ -580,6 +588,7 @@ const Content = () => {
             onToken, setOnToken,
             contentId, collectionId,
             profile, setProfile,
+            page, setPage,
         }}>
             {/* <ConfirmSub contentId={contentId}/> */}
         <Page title="컨텐츠" maxWidth="100%" minHeight="100%" alignItems="center" display="flex">

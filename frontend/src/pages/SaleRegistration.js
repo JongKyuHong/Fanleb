@@ -209,7 +209,7 @@ const SaleRegistration = () => {
       {isComplete === false ? (
         <>
           {isSale === true ? (
-            <Container sx={{ pt: 3, pl: 10, pr: 10, }}>
+            <Container sx={{ pt: 3, pl: 10, pr: 10, color:"#FFFFFF" }}>
               <Typography variant="h3" sx={{ pb: 3, pr: 10 }}>
                 판매 정보를 등록해주세요.
               </Typography>
@@ -257,7 +257,7 @@ const SaleRegistration = () => {
                   <Stack spacing={3}>
                     <Stack direction="row" alignItems="center">
                       <TextField
-                        sx={{ width: '100%', color:"#FFFFFF" }}
+                        sx={{ width: '100%', color:"#FFFFFF", backgroundColor:"#FFFFFF"}}
                         type="number"
                         label="즉시 구매가"
                         {...getFieldProps('price')}
