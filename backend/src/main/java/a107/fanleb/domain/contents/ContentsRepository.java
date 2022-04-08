@@ -28,6 +28,6 @@ public interface ContentsRepository extends JpaRepository<Contents, Integer> {
 
     Page<Contents> findByOwnerAddressAndCollection(Pageable pageable, String ownerAddress, Collections collection);
 
-    Page<Contents> findByRecentOwnerAddressIsNullAndOwnerAddressOrRecentOwnerAddress(Pageable pageable, String address, String address2);
+    Page<Contents> findByRecentOwnerAddress(Pageable pageable, String address);
 
 }
