@@ -114,9 +114,9 @@ font-weight: normal;
   width: 100px;
 }
 
-.post-video::-webkit-media-controls {
+/* .post-video::-webkit-media-controls {
   display: none;
-}
+} */
 .vsc-controller {
   display: none;
 }

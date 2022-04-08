@@ -130,9 +130,7 @@ const Post = (props) => {
             />
           }           */}
           {video ?
-            <CardMedia className="video-player profile-image" component="video" src={img_url ? img_url : empty} loading="lazy" style={{ objectFit: 'cover' }} loop onMouseOver={playVideo} onMouseOut={pauseVideo} ref={ref} controlsList="noplaybackrate" />
-
-            
+            <CardMedia className="video-player profile-image" component="video" src={img_url ? img_url : empty} loading="lazy" style={{ objectFit: 'cover' }} loop onMouseOver={playVideo} onMouseOut={pauseVideo} ref={ref} controlsList="noplaybackrate" />            
             :
             <CardMedia
               component='img'

@@ -1,7 +1,7 @@
 import { Divider, Modal,Button, CardMedia } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { closeThumnailModal, removeThumnail, toggleModal } from '../../redux/modalSlice';
+import { closeLoadingSpinner, closeThumnailModal, openLoadingSpinner, removeThumnail, toggleModal } from '../../redux/modalSlice';
 import './ThumnailModal.css';
 import empty from "../post/empty-image.jpg";
 import { useNavigate } from 'react-router-dom';
@@ -82,6 +82,7 @@ function ThumnailModal() {
       window.open('https://metamask.io/download/', '_blank')
       }
   }
+
   const subscribe = async () => {
     if (!userAddress.startsWith('0x')) {
       alert('구독할 수 없는 계정입니다.')
@@ -92,12 +93,32 @@ function ThumnailModal() {
       return
     }
     await SubscribeUser(userAddress, myAddr, setSubscriptionsCnt);
+    await onBack()
     // await SubscribeMember(userAddress, myAddr, setSubscriptionsCnt);
+  }
+  
+    //구독하기 백엔드
+    const onBack = async() =>{
+      const option ={
+        method:"POST",
+        url:`/api/subscribe/${myAddr}/${userAddress}`,
+        data:"",
+      }
 
-  }  
+      try{
+          const data = await axios(option)
+          console.log(data.status)
+      }catch(err){
+          console.log(err)
+          console.log('구독하기백엔드에러')
+        }
+  } 
+
   useEffect(() => {    
     const getData = async () => {
-      const {count, status} = await getSubscriptionInfo(userAddress, myAddr);
+      dispatch(openLoadingSpinner());
+      const { count, status } = await getSubscriptionInfo(userAddress, myAddr);
+      dispatch(closeLoadingSpinner());
       console.log(count, status)
       setSubscriptionsCnt(count)
       setIssubscribed(status)

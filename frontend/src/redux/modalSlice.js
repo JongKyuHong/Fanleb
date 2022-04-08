@@ -15,7 +15,8 @@ export const modalSlice = createSlice({
       userAddress: "",
       collectionName: "",
     },
-      isSubsOpen: false,
+    isSubsOpen: false,
+    isLoading: false,
   },
   reducers: {
     openThumnailModal: (state, {payload}) => {
@@ -72,6 +73,12 @@ export const modalSlice = createSlice({
     closeSubsModal: (state) => {
       state.isSubsOpen = false
     },
+    openLoadingSpinner: (state) => {
+      state.isLoading = true
+    },
+    closeLoadingSpinner: (state) => {
+      state.isLoading = false
+    },
   },
 });
 
@@ -82,5 +89,7 @@ export const {
   closeThumnailModal,
   openSubsModal,
   closeSubsModal,
+  openLoadingSpinner,
+  closeLoadingSpinner,
 } = modalSlice.actions;
 export default modalSlice.reducer;

@@ -147,7 +147,9 @@ public class ContentsService {
         //recent_owner_address == null and owner_address=:
         //or
         //recent_owner_address ==:
-        return contentsRepository.findByRecentOwnerAddressIsNullAndOwnerAddressOrRecentOwnerAddress(pageable, address, address);
+//        return contentsRepository.findByRecentOwnerAddressIsNullAndOwnerAddressOrRecentOwnerAddress(pageable, address, address);
+        return contentsRepository.findByRecentOwnerAddress(pageable, address);
+
     }
 
     @Transactional(readOnly = true)

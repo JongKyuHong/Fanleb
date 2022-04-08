@@ -123,17 +123,7 @@ const SaleRegistration = () => {
    * 판매 종료 시간은 해달 날짜의 자정(0시)으로 고정됩니다.
    * 필요에 따라 시간을 지정할 수 있도록 변경해도 괜찮습니다. 
    */
-  // const checkDate = () => {
-  //   const now = parseInt((moment() / 1000).toFixed(0));
-  //   const endDate = parseInt((moment(date) / 1000).toFixed(0));
 
-  //   if (now > endDate) alert('당일은 판매 종료일로 설정할 수 없습니다.');
-  //   else {
-  //     setCurrent(now);
-  //     setDue(endDate);
-  //     toggleApprove();
-  //   }
-  // };
 
 
   /**
@@ -213,20 +203,13 @@ const SaleRegistration = () => {
    * 위 createSaleContract()에서
    * 정상 수행 후 반환되는 판매 정보를 API로 호출하여 업데이트합니다.
    */
-  // const registerSaleInfo = async (w_a, s_addr) => {
-  //   setLoading(false);
-  //   //const ch = SALE_Registration_API(tokenId, w_a, s_addr, AddressStore.CONTRACT_ADDR.SsafyToken);
-  //   if (ch) { 
-  //     setIsComplete(true)
-  //   }
-  // };
 
   return (
-    <Page title="SSAFY NFT" maxWidth="100%" minHeight="100%">
+    <Page title="fanleb" maxWidth="100%" minHeight="100%">
       {isComplete === false ? (
         <>
           {isSale === true ? (
-            <Container sx={{ pt: 3, pl: 10, pr: 10 }}>
+            <Container sx={{ pt: 3, pl: 10, pr: 10, color:"#FFFFFF" }}>
               <Typography variant="h3" sx={{ pb: 3, pr: 10 }}>
                 판매 정보를 등록해주세요.
               </Typography>
@@ -274,7 +257,7 @@ const SaleRegistration = () => {
                   <Stack spacing={3}>
                     <Stack direction="row" alignItems="center">
                       <TextField
-                        sx={{ width: '100%' }}
+                        sx={{ width: '100%', color:"#FFFFFF", backgroundColor:"#FFFFFF"}}
                         type="number"
                         label="즉시 구매가"
                         {...getFieldProps('price')}

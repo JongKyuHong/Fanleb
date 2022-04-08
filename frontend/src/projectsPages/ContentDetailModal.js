@@ -1,4 +1,4 @@
-import {Avatar, Box, Button, Card ,Container, Divider,Link, Stack, Typography, Grid, ImageListItem, Chip, Modal} from '@mui/material';
+import {Avatar, Box, Button, Card, Container, Divider,Link, Stack, Typography, Grid, ImageListItem, Chip, Modal, CardMedia} from '@mui/material';
 
 import Page from '../components/Page';
 import { useState, useEffect  } from 'react';
@@ -71,26 +71,64 @@ const Detail = ({detailId}) =>{
     try{
       const {data} = await axios(option)
       setDetailInfo(data.data)
+      // console.log(data.data.img_url)
+      detectMedia(data.data.img_url)     
     }catch(err){
       console.log(err)
     }
+
   }
 
   useEffect( ()=>{
     getDetailInfo()
-  },[detailId])
+  },[detailId])  
 
   const toggletrade = async () => {
     const data = await Trade(address, saleInfo.sale_contract_address, saleInfo.price, detailInfo.token_id)
     navigate(-1)
   }
-  let text= '가수 겸 뮤지컬 배우 김준수가 클래스가 다른 럭셔리 드레스룸을 공개했다.지난 6일 방송된 채널A  또한 그의 옷이 걸려 있는 옷걸이에는 모두의 예명을 로고처럼 박혀있어 시선을 모았다. 김준수는 라고 설명했다.  김원희는  이에 김준수는 답했고 출연자들은 “정말 신기하다. 클래스가 다르다”라고 감탄했  후 김준수는 마음에 드는 옷들을 꺼내서 피팅하기 시작했다. 그는라며 힘겨워하는 모습을 보였다'
+
+  const [video, setVideo] = useState(false);
+  const playVideo = () => {
+    ref.current.play()
+  }
+  const pauseVideo = () => {
+    ref.current.pause()
+  }
+  
+  const detectMedia = (inputUrl) => {
+    if (inputUrl === null || inputUrl === NaN || inputUrl === undefined) {
+      return
+    }
+    const images = ["jpg", "gif", "png"]
+    const videos = ["mp4", "3gp", "ogg"]
+    // const url = new URL(inputUrl)
+    // let extension = inputUrl?.split(".")
+    // extension = extension[extension?.length - 1]
+    
+    let extension = inputUrl.split(".")
+    // console.log(extension)
+    extension = extension[extension.length - 1]
+    if (images.includes(extension)) {
+      setVideo(false)      
+      
+    } else if (videos.includes(extension)) {      
+      setVideo(true)      
+    }
+  }
+    // if (images.includes(inputUrl)) {
+    //   setVideo(false)      
+      
+    // } else if (videos.includes(inputUrl)) {      
+    //   setVideo(true)      
+    // }
+
 
   if(!detailInfo){
     return <Box sx={{ color:"#FFFFFF"}}>로딩..</Box>
     }
     return(
-        <Container sx={{marginTop:"100px", color:"#FFFFFF"
+        <Container sx={{marginTop:"50px", color:"#FFFFFF"
         }}>
           {/* <Stack 
             direction="column"
@@ -124,14 +162,34 @@ const Detail = ({detailId}) =>{
                   alignItems:"center",
                 }}
                 >
-                    <Box
-                      component="img"
-                      src={detailInfo.img_url}
-                      sx={{width:"100%",
-                          height:"100%",
-                    }}
-                    />
+            {video ?
+              <Box
+                sx={{
+                  width: "100%",
+                  height:"100%",
+                }}
+              >
 
+              <iframe                
+                src={detailInfo.img_url ? detailInfo.img_url : empty}       
+                autoPlay
+                allowFullScreen
+                loading="lazy"
+                width="100%"
+                height="100%"
+              />
+
+                
+              </Box>
+            :
+              <Box
+                component="img"
+                src={detailInfo.img_url}
+                sx={{width:"100%",
+                    height:"100%",
+                  }}
+              />
+            }
 
               </Grid>
               <Box className='content'
@@ -142,7 +200,7 @@ const Detail = ({detailId}) =>{
                   
                 }}
                 >
-                    <Grid item>
+                    <Grid item sx={{marginLeft:"10px", marginTop:"10px"}}>
                       <Typography variant='h4'>
                         {detailInfo.content_title}
                       </Typography>
@@ -164,7 +222,7 @@ const Detail = ({detailId}) =>{
                     </Grid>
                     <Grid item 
                       sx={{padding:"30px",
-                          height:"300px",
+                          height:"200px",
                           overflow:"auto",
                       }}
                     >
@@ -179,17 +237,22 @@ const Detail = ({detailId}) =>{
                       <Divider />
                     <Grid item>
                       <Box sx={{padding:"20px",}}>
-                        <Typography>
+                        <Typography variant='h6'>
                           NFT 정보
                         </Typography>
+                      <Box sx={{padding:"20px",}}>
+                        <Typography >
+                          지갑 주소: {detailInfo.owner_address}
+                        </Typography>
+                      </Box>
                         <Box sx={{marginTop:"15px"}}>
-                          현재 가격 : {saleInfo.price}
+                          {saleInfo ? `현재 가격 :  ${saleInfo.price}`:null}
                         </Box>
-                        <Box sx={{margin:"20px"}}>
+                        {saleInfo? <Box sx={{margin:"20px"}}>
                           <Button variant="contained" color="secondary" onClick={toggletrade}>
                             구매하기
                           </Button>
-                        </Box>
+                        </Box>:null}
                       </Box>
                     </Grid>
                   </Grid>

@@ -16,16 +16,17 @@ import './navbar.css';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 import { Link } from "react-router-dom";
 import { openModal, updateAddress, updateSuccess } from '../../redux/userSlice';
-import token_transfer from '../../utils/token_transfer';
 import { openSubsModal } from '../../redux/modalSlice';
 
 const Menu = () => {
   const navigator = useNavigate()
+  const logOnAddress = useSelector(state => state.user.userInfo.userAddress)
   return(
 
     <>
     {/* <Link to="/create"><p>등록하기</p> </Link>      */}    
-    <p onClick={() => navigator(`/rank/`)}>순위보기</p>         
+    <p onClick={() => navigator(`/rank/`)}>RANK</p>         
+    <p onClick={() => navigator(`/content/${logOnAddress}`)}>MY PAGE</p>         
     
     
   </>
@@ -171,7 +172,7 @@ const DashboardNavbar = () => {
                   <button type='button' className='primary-btn' onMouseOver={() => setStyle(true)} onMouseOut={() => setStyle(false)} style={style ? { opacity: 0.8, textDecoration: 'none' } : {}}>등록하기</button>
                 </Link>
                 <button type='button' className='secondary-btn' onClick={openSubscriptionModal}>내 구독권</button>
-                <button type='button' className='secondary-btn' onClick={switchWallet}>지갑 변경</button>
+                
                 {/* <button type='button' className='secondary-btn' onClick={enableEth} >지갑 연결</button> */}
                 <Avatar onClick={openInfoModal} src={userInfo?.imageUrl} size="large" sx={{ width: 56, height: 56, cursor: 'pointer' }} />
             

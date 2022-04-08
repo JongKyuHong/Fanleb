@@ -54,6 +54,9 @@ const confirmSub = ({contentId, setSub}) => {
 
     useEffect(()=>{
         onSub()
+        return () => {
+            setOpen(false)
+        }
     },[])
 
 
