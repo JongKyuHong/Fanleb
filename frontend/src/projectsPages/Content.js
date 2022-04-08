@@ -317,7 +317,7 @@ const ContentCardList = ({contentId})=>{
                 url = `/api/contents?page=${page}&user_address=${contentId}`
                 break;
             case "buy":
-                url = `/api/contents?address?page=${page}&user_address=${contentId}`
+                url = `/api/contents/address?page=${page}&user_address=${contentId}`
         }
         const option = {
             method: "GET",
