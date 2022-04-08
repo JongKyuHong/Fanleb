@@ -335,7 +335,8 @@ const ContentCardList = ({contentId})=>{
             console.log("전체보기")
             }
             if (now ==='buy'){
-                const buyItems = getRes.filter(item =>{ return item.recent_owner_address !== null})
+                console.log(url,'바이유알엘')
+                const buyItems = getData.data.data.content
                 console.log(getRes,'asdasdas')
                 setItems(items.concat(buyItems))
                 console.log("바이 성공")
@@ -475,6 +476,7 @@ const MenuButton = ({contentId}) =>{
         const state = event.target.value
         if (now !== state){
             setItems([])
+            setPage(0)
             setNow(state)
             setPage(1)
         }
