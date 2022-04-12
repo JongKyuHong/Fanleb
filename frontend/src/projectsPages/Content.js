@@ -347,6 +347,7 @@ const ContentCardList = ({contentId})=>{
     //
 
     const [loading, setLoading] = useState(false)
+    cosnt [maxPage, setMaxPage] = useState(false)
     const [ref, inView] = useInView()
 
     const getItems = useCallback(async() =>{
@@ -369,6 +370,7 @@ const ContentCardList = ({contentId})=>{
         try{
             const getData = await axios(option)
             const getRes = getData.data.data.content
+            setMaxPage(getRData.data.data.total_page)
             console.log(now,'now입니다')
             if (now ==='all'){
             await setItems(items.concat(getRes))
@@ -407,7 +409,7 @@ const ContentCardList = ({contentId})=>{
     },[now])
 
     useEffect(()=>{
-       if (inView && !loading){
+       if (inView && !loading && prevState !== maxPage){
            setPage(prevState=> prevState + 1)
         }
         return () => {            
