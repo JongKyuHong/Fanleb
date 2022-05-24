@@ -62,17 +62,17 @@
 
 * 지갑 연동 후 메인페이지
 
-  ![지갑연동 후 메인 페이지](README.assets/지갑연동후메인페이지.PNG)
+  ![지갑연동 후 메인 페이지](README.assets/지갑연동 후 메인 페이지.PNG)
 
 * NFT등록 페이지
 
-  ![NFT등록 페이지1](README.assets/NFT등록페이지1.PNG)
+  ![NFT등록 페이지1](README.assets/NFT등록 페이지1.PNG)
 
-  ![NFT등록 페이지2](README.assets/NFT등록페이지2.PNG)
+  ![NFT등록 페이지2](README.assets/NFT등록 페이지2.PNG)
 
 * 컬렉션 생성 모달
 
-  ![컬렉션 생성](README.assets/컬렉션생성.PNG)
+  ![컬렉션 생성](README.assets/컬렉션 생성.PNG)
 
 * 구독권 발행 모달
 
@@ -88,9 +88,9 @@
 
 * NFT 상세 페이지
 
-  ![NFT상세 페이지](README.assets/NFT상세페이지.PNG)
+  ![NFT상세 페이지](README.assets/NFT상세 페이지.PNG)
 
 * 컨텐츠 페이지
 
-  ![컨텐츠 페이지](README.assets/컨텐츠페이지.PNG)
+  ![컨텐츠 페이지](README.assets/컨텐츠 페이지.PNG)
 
