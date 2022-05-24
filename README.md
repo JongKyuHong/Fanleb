@@ -61,17 +61,17 @@
 
 * 지갑 연동 후 메인페이지
 
-  ![지갑연동 후 메인 페이지](README.assets/지갑연동 후 메인 페이지.PNG)
+  ![지갑연동 후 메인 페이지](https://user-images.githubusercontent.com/65146977/170068854-f9c00fe9-d41f-4464-84d6-9b9ab5350498.PNG)
 
 * NFT등록 페이지
 
-  ![NFT등록 페이지1](README.assets/NFT등록 페이지1.PNG)
+  ![NFT등록 페이지1](https://user-images.githubusercontent.com/65146977/170068998-f5a252c5-183d-4be0-acce-b9f617ccc4f1.PNG)
 
-  ![NFT등록 페이지2](README.assets/NFT등록 페이지2.PNG)
+  ![NFT등록 페이지2](https://user-images.githubusercontent.com/65146977/170069042-df7ab6d7-9ee9-44bf-a7b2-e4152374f2ef.PNG)
 
 * 컬렉션 생성 모달
 
-  ![컬렉션 생성](README.assets/컬렉션 생성.PNG)
+  ![컬렉션 생성](https://user-images.githubusercontent.com/65146977/170069105-899f8540-27d0-476d-b6a5-253d2c5de403.PNG)
 
 * 구독권 발행 모달
 
@@ -87,9 +87,9 @@
 
 * NFT 상세 페이지
 
-  ![NFT상세 페이지](README.assets/NFT상세 페이지.PNG)
+  ![NFT상세 페이지](https://user-images.githubusercontent.com/65146977/170069205-f37c8c2e-619a-4477-9310-29d4943cefe5.PNG)
 
 * 컨텐츠 페이지
 
-  ![컨텐츠 페이지](README.assets/컨텐츠 페이지.PNG)
+  ![컨텐츠 페이지](https://user-images.githubusercontent.com/65146977/170069270-9ed3c208-b5cb-49e2-9121-3be2de328bbb.PNG)
 
