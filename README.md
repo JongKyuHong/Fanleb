@@ -62,7 +62,7 @@
 
 * 지갑 연동 후 메인페이지
 
-  ![지갑연동 후 메인 페이지](README.assets/지갑연동 후 메인 페이지-16533868959341.PNG)
+  ![지갑연동 후 메인 페이지](README.assets/지갑연동 후 메인 페이지.PNG)
 
 * NFT등록 페이지
 
@@ -76,21 +76,21 @@
 
 * 구독권 발행 모달
 
-  ![구독권발행](README.assets/구독권발행-16533869525212.PNG)
+  ![구독권발행](README.assets/구독권발행.PNG)
 
 * 세부페이지
 
-  ![세부페이지](README.assets/세부페이지-16533869634963.PNG)
+  ![세부페이지](README.assets/세부페이지.PNG)
 
 * 검색 결과 페이지
 
-  ![검색결과페이지](README.assets/검색결과페이지-16533869795795.PNG)
+  ![검색결과페이지](README.assets/검색결과페이지.PNG)
 
 * NFT 상세 페이지
 
-  ![NFT상세 페이지](README.assets/NFT상세 페이지-16533870137876.PNG)
+  ![NFT상세 페이지](README.assets/NFT상세 페이지.PNG)
 
 * 컨텐츠 페이지
 
-  ![컨텐츠 페이지](README.assets/컨텐츠 페이지-16533870275917.PNG)
+  ![컨텐츠 페이지](README.assets/컨텐츠 페이지.PNG)
 
