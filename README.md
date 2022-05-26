@@ -31,7 +31,7 @@
 
 
 
-## 사용 기술 🖱 ![사용기술](README.assets/사용기술.PNG)
+## 사용 기술 🖱 ![사용기술](https://user-images.githubusercontent.com/65146977/170509024-afecdbf5-556a-4eea-9167-0717fffc549d.PNG)
 
 
 
@@ -41,23 +41,23 @@
 
 - #### 협업툴
 
-  ![협업툴1](README.assets/협업툴1.PNG)
+  ![협업툴1](https://user-images.githubusercontent.com/65146977/170509236-43ec2ff6-5d15-422d-89c6-1fafe8ba4794.PNG)
 
-  ![협업툴2](README.assets/협업툴2.PNG)
+  ![협업툴2](https://user-images.githubusercontent.com/65146977/170509267-628d25fc-d416-42ee-98cc-019e9e432cd3.PNG)
 
 * 전체일정
 
-  ![전체일정](README.assets/전체일정.PNG)
+  ![전체일정](https://user-images.githubusercontent.com/65146977/170509352-396181a5-3e32-4c2b-85c5-fed1a28912fa.PNG)
 
 ## 서비스 내용 👐
 
 * 메인 페이지
 
-  ![메인페이지](README.assets/메인페이지.PNG)
+  ![메인페이지](https://user-images.githubusercontent.com/65146977/170509396-72b6d972-e565-4e96-9026-d64b78fff3b5.PNG)
 
 * 프로필 수정 모달
 
-  ![프로필수정](README.assets/프로필수정.PNG)
+  ![프로필수정](https://user-images.githubusercontent.com/65146977/170509428-e031dd4e-fbfe-4264-9c1c-06377a57a142.PNG)
 
 * 지갑 연동 후 메인페이지
 
@@ -75,15 +75,15 @@
 
 * 구독권 발행 모달
 
-  ![구독권발행](README.assets/구독권발행.PNG)
+  ![구독권발행](https://user-images.githubusercontent.com/65146977/170509471-80cb9b22-203c-4210-bbbc-23e8c8e66145.PNG)
 
 * 세부페이지
 
-  ![세부페이지](README.assets/세부페이지.PNG)
+  ![세부페이지](https://user-images.githubusercontent.com/65146977/170509504-8bede09b-7228-43df-9bd0-04a0d298a654.PNG)
 
 * 검색 결과 페이지
 
-  ![검색결과페이지](README.assets/검색결과페이지.PNG)
+  ![검색결과페이지](https://user-images.githubusercontent.com/65146977/170509580-1cf8e9d1-bc75-42f8-9efe-652a49957ce6.PNG)
 
 * NFT 상세 페이지
 
